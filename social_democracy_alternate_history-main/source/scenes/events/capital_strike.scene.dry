@@ -1,0 +1,52 @@
+title: Kapitalstreik
+subtitle: Deutschlands Industrie läuft auf Sparflamme...
+view-if: (capital_strike_progress >= 10 or budget <= -5) and spd_in_government
+new-page: true
+max-visits: 1
+on-arrival: unemployed += 5; workers_spd*= 0.7; new_middle_spd -= 15; old_middle_spd -= 15; unemployed_spd*=0.7; rural_spd -= 15; pro_republic -= 15; capital_strike_seen = 1; z_relation -= 10; dvp_relation -= 10; workers_nsdap += 8; unemployed_nsdap += 10; new_middle_nsdap += 15; old_middle_nsdap += 15; rural_nsdap += 15; economic_growth -= 4;
+tags: event
+
+= Kapitalstreik
+
+Unsere Politik hat die Kapitalisten aufs Äußerste verärgert. Die Investitionen sind zurückgegangen und die Fabriken stehen still, sodass die Arbeiter ihrer Arbeit nicht nachgehen können. Unterdessen stimmt die bürgerliche Presse einen ständigen Chor hasserfüllter Schmähungen gegen uns und unsere Wirtschaftspolitik an.
+
+Was können wir tun?
+
+- @seize
+- @capital_controls
+- @propaganda
+- @nothing
+
+@seize
+title: Befähigt die Arbeiter, die Fabriken zu übernehmen!
+unavailable-subtitle: [? if left_strength <= reformist_strength + neorevisionist_strength : Der Großteil der Partei unterstützt diese radikale Maßnahme nicht. ?] [? if judicial_reform < 3 : Die Justiz würde sich dieser Maßnahme widersetzen. ?] [? if rb_militancy < 0.25 : Wenn wir die Stärke unserer paramilitärischen Kräfte erhöhten, könnten wir dies vielleicht tun. ?] [? if works_councils < 1 : Wir benötigen zunächst die Unterstützung der Betriebsräte. ?]
+choose-if: left_strength > reformist_strength + neorevisionist_strength and (judicial_reform >= 3 or rb_militancy >= 0.25) and works_councils >= 1
+on-arrival: nationalization_progress += 1; coup_progress += 6; unemployed -= 2; unemployed -= 1 if works_councils >= 3; works_program += 1; workers_spd += 10*(1-dissent); unemployed_spd += 10*(1-dissent); coalition_dissent += 2; dvp_relation -= 4; workers_nsdap -= 8*(1-dissent); unemployed_nsdap -= 8*(1-dissent); left_strength += 15; reformist_dissent += 10; left_dissent -= 10; factory_takeovers += 1; economic_growth += 2;
+
+Wenn die Kapitalisten uns angreifen, müssen wir zurückschlagen. Wir haben die Arbeiter dazu befähigt, die Fabriken, die von den Kapitalisten stillgelegt wurden, zu besetzen und die volle Kontrolle über sie zu übernehmen. Die Faschisten bezeichnen uns natürlich als Diebe und Plünderer.
+
+
+@capital_controls
+title: Führen wir Kapitalkontrollen ein, um die Auswirkungen abzumildern.
+choose-if: judicial_reform >= 2
+unavailable-subtitle: Die Justiz würde dies niemals zulassen.
+on-arrival: unemployed -= 1.5; workers_spd += 6*(1-dissent); unemployed_spd += 6*(1-dissent); economic_growth += 2;
+
+Kapitalkontrollen könnten einige der schlimmsten wirtschaftlichen Auswirkungen des Kapitalstreiks abmildern.
+
+
+
+@propaganda
+title: Starten wir eine Propagandakampagne, die den Kapitalisten die Schuld an der Krise gibt.
+subtitle: -1 Ressource
+choose-if: (radio >= 2 or commercialized_media >= 3) and resources >= 1
+unavailable-subtitle: [? if radio < 2 and commercialized_media < 3 : Wir haben unsere Medien nicht ausreichend ausgebaut. ?] [? if resources < 1: Wir haben nicht genügend Ressourcen. ?]
+on-arrival: workers_spd += 7*(1-dissent); new_middle_spd += 6*(1-dissent); unemployed_spd += 6*(1-dissent); pro_republic += 5*(1-dissent); resources -= 1
+
+Wir starten eine Gegenpropaganda-Kampagne, um die Kapitalisten für die Wirtschaftskrise verantwortlich zu machen und nutzen dafür all unsere Medienkanäle. Dank unserer bestehenden Medienstruktur gelingt es uns mäßig gut, die Kritik der Bevölkerung auf die Kapitalisten und von uns selbst weg zu lenken.
+
+
+@nothing
+title: Wir können nichts tun.
+
+Es gibt nichts, was wir im Rahmen der verfassungsrechtlichen und gesetzlichen Grenzen tun können.

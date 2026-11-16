@@ -1,0 +1,33 @@
+title: Der Abschluss des Weltbühne Prozesses
+subtitle: Carl von Ossietzky and collaborators are finally sentenced.
+new-page: true
+view-if: year = 1931 and month >= 11 and weltbuhne_seen = 1 and not weltbuhne_dropped
+max-visits: 1
+on-arrival: weltbuhne_conclusion = 1
+face-image: img/weltbune.jpg
+tags: event
+go-to: weltbuhne_dropped if judicial_reform >= 3; weltbuhne_convicted if judicial_reform < 3
+
+= Abschluss des Weltbühne Prozesses
+
+@weltbuhne_convicted
+on-arrival: west_relation -= 1; east_relation -= 1; reparations_negotiation -= 1; nationalism += 5; pacifism -= 1
+
+Endlich ist im Weltbühne-Prozess ein Urteil ergangen: Der Herausgeber Carl von Ossietzky und der Journalist Walter Kreiser wurden wegen der Enthüllung militärischer Geheimnisse zu 18 Monaten Haft verurteilt. In der internationalen Gemeinschaft herrscht Empörung, man sieht darin ein weiteres Beispiel für Deutschlands Abgleiten in den Militarismus.
+
+- @drop_case: Moment! Vielleicht können wir die Journalisten begnadigen?
+- @root: Akzeptieren wir die Entscheidung des Gerichts.
+
+@drop_case
+choose-if: justice_minister_party = "SPD"
+view-if: spd_in_government
+unavailable-subtitle: We do not control the Justice Ministry.
+on-arrival: west_relation += 1; east_relation += 1; reparations_negotiation += 1; pacifism += 1
+
+Durch unsere Kontrolle über das Justizministerium sind wir in der Lage, von Ossietzky und Kreiser zu begnadigen. Dies stellt einen Teil unseres Ansehens bei Pazifisten und in der internationalen Gemeinschaft wieder her.
+
+
+@weltbuhne_dropped
+on-arrival: west_relation += 1; east_relation += 1; reparations_negotiation += 1; ddp_relation += 3; pacifism += 1
+
+Endlich hat ein Richter im „Weltbühne“-Prozess eine Entscheidung getroffen und den Redakteur Carl von Ossietzky sowie den Journalisten Walter Kreiser von allen Vorwürfen freigesprochen! Die internationale Gemeinschaft und die Pazifisten in Deutschland begrüßen das Urteil mit Freude. Man kann nun sagen, dass Deutschland seinen alten imperialen Militarismus endlich überwunden hat.

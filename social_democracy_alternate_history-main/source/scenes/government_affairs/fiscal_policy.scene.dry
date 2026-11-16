@@ -1,0 +1,139 @@
+title: Fiskalpolitik
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: fiscal_policy_timer += 6; month_actions += 1
+view-if: spd_in_government = 1 and finance_minister_party = "SPD" and fiscal_policy_timer = 0
+card-image: img/portraits/HilferdingRudolf.jpg
+go-to: fiscal_menu
+#subtitle: Fragen der Besteuerung, des Haushalts und der Zölle.
+
+= Fiskalpolitik
+
+Die Fiskalpolitik umfasst Fragen der Besteuerung und des Haushalts.
+
+
+@fiscal_menu
+
+Steuersätze für höhere Einkommen: [+ upper_tax_rates : taxation +]
+
+Steuersätze für niederigere Einkommen: [+ lower_tax_rates : taxation +]
+
+- @raise_rich: Steuern für Reichen erhöhen.
+- @raise_poor
+- @raise_overall: Gesamtsteuerlast erhöhen.
+- @cut_rich
+- @cut_poor
+- @cut_overall: Gesamtsteuerlast senken.
+- @raise_progressive: Steuersystem progressiver gestalten, indem die Steuern für die Reichen erhöht und die Steuern für die Armen gesenkt werden.
+- @regressive
+- @tariffs
+- @root: Steuersystem nicht verändern.
+- @easy_discard
+- @cancel_advisor_action
+
+@raise_progressive
+subtitle: Dies ändert nichts am Gesamtumsatz. [? if lower_tax_rates < -5 : Die Steuersätze für die untere Einkommensschicht sind bereits zu niedrig, um sie noch weiter zu senken. ?] [? if upper_tax_rates > 5 : Die Steuersätze für die Oberschicht sind zu hoch, um sie zu erhöhen. ?]
+choose-if: lower_tax_rates >= -5 and upper_tax_rates <= 5
+on-arrival: workers_spd += 6*(1-dissent); old_middle_spd -= 4; new_middle_spd -= 4; coalition_dissent += 1 if in_grand_coalition; dvp_relation -= 4; finance_goal_completed += 1; upper_tax_rates += 1; lower_tax_rates -= 1; capital_strike_progress += 1; capital_strike_progress += 1 if upper_tax_rates > 1; capital_strike_progress += 1 if upper_tax_rates > 3; new_middle_spd -= 2 if upper_tax_rates > 1; old_middle_spd -= 2 if upper_tax_rates > 1
+
+Eine stärkere Progressivität des Steuersystems kommt bei unserer Basis gut an, verärgert jedoch unsere bürgerlichen Koalitionspartner sowie die geringe Zahl unserer bürgerlichen Wähler.
+
+@raise_rich
+subtitle: +2 Budget
+unavailable-subtitle: Tax rates are already too high.
+choose-if: upper_tax_rates <= 5
+on-arrival: upper_tax_rates += 1; capital_strike_progress += 1; capital_strike_progress += 1 if upper_tax_rates > 1; capital_strike_progress += 1 if upper_tax_rates > 3; workers_spd += 4*(1-dissent); old_middle_spd -= 4; new_middle_spd -= 4; coalition_dissent += 1 if in_grand_coalition; coalition_dissent += 1 if capital_strike_progress >= 5; budget += 2; dvp_relation -= 4; unemployed += 1; finance_goal_completed += 1; inflation -= 0.6; economic_growth -= 0.4; new_middle_spd -= 2 if upper_tax_rates > 1; old_middle_spd -= 2 if upper_tax_rates > 1; left_dissent -= 3; labor_dissent -= 3
+
+Steuererhöhungen für Reiche sind bei unserer Basis beliebt, verprellen jedoch das Bürgertum. Zudem dämpfen Steuererhöhungen die wirtschaftliche Nachfrage, was zu höherer Arbeitslosigkeit führen kann.
+
+
+@raise_poor
+title: Verbrauchersteuern erhöhen, die die Armen überproportional belasten.
+subtitle: +2 Budget
+unavailable-subtitle: Die Steuersätze sind bereits zu hoch.
+choose-if: lower_tax_rates <= 5
+on-arrival: budget += 2; workers_spd -= 4; kpd_coalition_dissent += 1; lower_tax_rates += 1; workers_spd -= 5 if lower_tax_rates >= 2; labor_dissent += 3; left_dissent += 3
+
+Wir haben die Steuern für die Armen und die Arbeiterklasse erhöht. Das schadet unserer Unterstützung bei den Arbeitern.
+
+
+@cut_overall
+subtitle: -3 Budget
+unavailable-subtitle: -3 Budget - [? if upper_tax_rates < -5 or lower_tax_rates < -5 : Die Steuersätze sind bereits zu niedrig. ?]
+choose-if: budget >= 3 and upper_tax_rates >= -5 and lower_tax_rates >= -5
+on-arrival: budget -= 3; upper_tax_rates -= 1; lower_tax_rates -= 1; new_middle_spd += 5*(1-dissent); old_middle_spd += 4*(1-dissent); workers_spd += 3*(1-dissent); dvp_relation += 5*(1-dissent); z_relation += 5*(1-dissent); unemployed -= 1.5 if unemployed >= 5; capital_strike_progress -= 1 if upper_tax_rates < 0; inflation += 1; economic_growth += 0.6;
+
+Steuersenkungen kommen vor allem den Reichen und der Mittelschicht zugute, die mehr Steuern zahlen als die Arbeiterschaft. Unsere Koalitionspartner begrüßen unseren orthodoxen Wirtschaftskurs.
+
+@cut_poor
+title: Senkung der Verbrauchssteuern für einkommensschwache Bevölkerungsschichten.
+subtitle: -2 Budget
+unavailable-subtitle: -2 Budget - [? if lower_tax_rates < -5: Die Steuersätze sind bereits zu niedrig. ?]
+choose-if: budget >= 2 and lower_tax_rates >= -5
+on-arrival: budget -= 2; lower_tax_rates -= 1; workers_spd += 5*(1-dissent); unemployed -= 0.7 if unemployed >= 5; inflation += 0.6; economic_growth += 0.4; finance_goal_completed += 1; labor_dissent -= 3; left_dissent -= 3;
+
+Unsere Steuersenkungen kommen überproportional den Armen und der Arbeiterklasse zugute.
+
+
+@cut_rich
+title: Einkommenssteuer für Reiche senken.
+subtitle: -2 Budget
+unavailable-subtitle: -2 Budget - [? if upper_tax_rates < -5: Die Steuersätze sind bereits zu niedrig.. ?]
+choose-if: budget >= 2 and upper_tax_rates >= -5
+on-arrival: budget -= 2; upper_tax_rates -= 1; new_middle_spd += 5*(1-dissent); old_middle_spd += 4*(1-dissent); dvp_relation += 4*(1-dissent); z_relation += 4*(1-dissent); unemployed -= 0.7 if unemployed >= 5; capital_strike_progress -= 1 if upper_tax_rates < 0; inflation += 0.6; economic_growth += 0.4; labor_dissent += 3; left_dissent += 3
+
+Wir haben die Einkommens- und Vermögenssteuern für die Reichen und die Mittelschicht gesenkt. Die bürgerlichen Parteien billigen diesen orthodoxen Wirtschaftskurs.
+
+
+@raise_overall
+subtitle: +3 Budget
+unavailable-subtitle: Die Steuersätze sind bereits zu hoch.
+choose-if: upper_tax_rates <= 5 and lower_tax_rates <= 5
+on-arrival: budget += 3; new_middle_spd -= 4; old_middle_spd -= 4; workers_spd -= 4; unemployed += 2; kpd_coalition_dissent += 1; lower_tax_rates += 1; upper_tax_rates += 1; capital_strike_progress += 1 if upper_tax_rates > 1; capital_strike_progress += 1 if upper_tax_rates > 2; workers_spd -= 5 if lower_tax_rates > 1; inflation -= 1.1; economic_growth -= 0.6; new_middle_spd -= 2 if upper_tax_rates > 1; old_middle_spd -= 2 if upper_tax_rates > 1;
+
+Steuererhöhungen schaden unserer Unterstützung bei all jenen, die Steuern zahlen. [? if in_grand_coalition or in_weimar_coalition : Unsere Koalitionspartner unterstützen jedoch eher die Idee des „gemeinsamen Opfers“ als die einfache Besteuerung der Reichen. ?] Steuererhöhungen verringern zudem die wirtschaftliche Nachfrage, was zu höherer Arbeitslosigkeit führen kann.
+
+@regressive
+title: Senkung der Steuern für Reiche bei gleichzeitiger Erhöhung der Verbrauchsteuern (die die Arbeiterklasse stärker treffen).
+subtitle: Dies ändert nichts am Gesamtumsatz. [? if upper_tax_rates < -5 : Die Steuersätze für Reiche sind bereits zu niedrig, um sie noch weiter zu senken. ?] [? if lower_tax_rates > 5 : Die Steuersätze für die untere Einkommensschicht sind zu hoch, um sie zu erhöhen. ?]
+choose-if: lower_tax_rates <= 5 and upper_tax_rates >= -5
+on-arrival: workers_spd -= 6; new_middle_spd += 5*(1-dissent); old_middle_spd += 5*(1-dissent); dvp_relation += 5; z_relation += 4; coalition_dissent -= 1 if in_grand_coalition and coalition_dissent > 0; kpd_coalition_dissent += 1; upper_tax_rates -= 1; lower_tax_rates += 1; workers_spd -= 5 if lower_tax_rates >= 2; capital_strike_progress -= 1 if upper_tax_rates < 0; labor_dissent += 5; left_dissent += 5
+
+Unsere regressive Steuerpolitik begünstigt die Reichen, während sie den Armen und der Arbeiterklasse schadet. Unsere bürgerlichen Koalitionspartner billigen diesen orthodoxen Wirtschaftskurs.
+
+
+@tariffs
+title: Zölle stattdessen verändern.
+
+Zölle sind eine weitere Möglichkeit, unsere Regierung zu finanzieren.
+
+Historisch gesehen haben sich Sozialisten für Freihandel und ein System niedriger Zölle ausgesprochen. Beschäftigte in exportorientierten Industriezweigen profitieren vom Freihandel, ebenso wie von niedrigeren Preisen für importierte Güter des täglichen Bedarfs. Ändern die gegenwärtigen wirtschaftlichen Rahmenbedingungen diese Rechnung?
+
+Aktuelles Zollniveau: [+ tariffs : taxation +]
+
+- @raise_tariffs
+- @lower_tariffs
+- @fiscal_menu: Steuern anstelle von Zöllen verändern.
+- @root: Keine Zölle oder Steuern verändern.
+- @easy_discard
+
+@raise_tariffs
+title: Einfuhrzölle erhöhen.
+subtitle: +2 Budget. Andere Länder werden mit der Erhöhung ihrer eigenen Zölle reagieren. [? if tariffs > 5 : Weitere Zollerhöhungen werden keine zusätzlichen Einnahmen bringen, da wir bereits nahezu wirtschaftliche Autarkie erreicht haben. ?]
+choose-if: tariffs <= 5
+on-arrival: tariffs += 1; inflation += 1 if inflation > 0; inflation += 0.5 if inflation <= 0; unemployed += 1.5; budget += 2; workers_spd -= 5; unemployed_spd -= 5; rural_spd += 4*(1-dissent); old_middle_spd += 3*(1-dissent); ddp_relation -= 5; dvp_relation -= 2; west_relation -= 1; east_relation -= 1; reparations_negotiation -= 2; eu_progress -= 1 if eu_progress > 0; peoples_party_support += 1; economic_growth -= 0.4; capital_strike_progress += 1 if tariffs >= 3
+
+Steigende Zölle führen zu höheren Preisen für Grundgüter, treiben die Inflation in die Höhe und beeinträchtigen den Konsum der Arbeitnehmerschaft. Vergeltungszölle mindern die Wettbewerbsfähigkeit deutscher Exporte und lassen die Arbeitslosigkeit unter den Beschäftigten steigen. Zudem schaffen sie ein Klima internationalen Misstrauens und schwächen unsere Verhandlungsposition gegenüber anderen Ländern.
+
+Andererseits profitieren landwirtschaftliche Erzeuger und einige Kleinunternehmen von höheren Zöllen, da die Landwirte nun höhere Preise für Getreide erzielen können und zuvor nicht wettbewerbsfähige Betriebe nun bestehen können.
+
+@lower_tariffs
+title: Niedrigere Einfuhrzölle.
+choose-if: budget >= 2 and tariffs > -5
+subtitle: -2 Budget. [? if tariffs <= -5 : Es gibt keine Zölle mehr, die gesenkt werden könnten. ?]
+on-arrival: tariffs -= 1; budget -= 2; inflation -= 0.5; workers_spd += 4*(1-dissent); unemployed_spd += 4*(1-dissent); rural_spd -= 5; old_middle_spd -= 3; west_relation += 1; east_relation += 1; eu_progress += 1 if eu_progress > 0; economic_growth += 0.4;
+
+Eine Senkung der Zölle kommt Arbeitern und der städtischen Armutsbevölkerung zugute, da sie die Preise für Güter des täglichen Bedarfs senkt. Zudem begrüßen andere Länder niedrigere Zölle und sind eher zu Verhandlungen über zahlreiche Themen bereit.
+
+Landwirte leiden unter dieser Politik, da billiges Importgetreide für manche Kleinproduzenten den Ruin bedeutet. Generell sind billige Importe nachteilig für kleinbetriebliche Wirtschaftszweige, die auf den Binnenmarkt ausgerichtet sind.

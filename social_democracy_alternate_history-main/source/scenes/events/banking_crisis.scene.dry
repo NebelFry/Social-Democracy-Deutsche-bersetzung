@@ -1,0 +1,48 @@
+title: Bankenkrise
+subtitle: Der Zusammenbruch des deutschen Bankensystems...
+new-page: true
+on-arrival: banking_crisis_seen = 1; workers_kpd += 5; workers_nsdap += 3; new_middle_nsdap += 3; old_middle_nsdap += 4; rural_nsdap += 3; unemployed += 3; crisis_urgency += 1; workers_spd -= 4 if spd_in_government; new_middle_spd -= 5 if spd_in_government; old_middle_spd -= 5 if spd_in_government; rural_spd -= 4 if spd_in_government; economic_growth -= 1;
+tags: event
+view-if: customs_union = 1 and banking_crisis_timer = 0
+max-visits: 1
+face-image: img/danat_bank.jpg
+
+= Bankenkrise
+
+Die Darmstädter und Nationalbank – kurz Danat-Bank – ist zusammengebrochen! Mit ihr stürzt ein Großteil des deutschen Bankensystems in sich zusammen. Als Ursache hierfür gilt das Bestreben der Regierung, eine Zollunion mit Österreich zu verwirklichen, was zu faktischen internationalen Sanktionen führte.
+
+Dies ist ein bürgerlicher Streit, doch die Kosten wird das Proletariat tragen. Die Menschen sehen sich wachsendem Hunger und zunehmender Armut gegenüber, und womöglich tragen wir eine Mitschuld daran.
+
+- @nothing_to_do: Wir können nichts tun.
+- @stabilization: Ergreifen wir Maßnahmen zur Stabilisierung der Wirtschaft!
+- @austerity: Kanzler [+ chancellor +]s Antwort ist immer mehr Sparen.
+- @end_toleration: Wir haben genug von der Sparpolitik. Beendet das Tolerierungsabkommen!
+
+@nothing_to_do
+view-if: spd_in_government = 1
+on-arrival: welfare -= 1; workers_spd -= 3; unemployed_spd -= 3; pro_republic -= 3
+
+Im Grunde können wir nichts tun.
+
+@stabilization
+view-if: spd_in_government = 1
+subtitle: -1 budget
+choose-if: budget >= 1
+on-arrival: workers_spd += 3*(1-dissent); new_middle_spd += 3*(1-dissent); old_middle_spd += 2*(1-dissent); rural_spd += 2*(1-dissent); unemployed -= 2; inflation += 1 if inflation < 0; budget -= 1; workers_nsdap -= 3; economic_growth += 0.9;
+
+Angesichts der Bankenkrise haben wir Notfallmaßnahmen ergriffen, um die Wirtschaft durch die Zufuhr von Geld in das Bankensystem zu stabilisieren. Das mag zwar nicht ausreichen, stoppt aber vorübergehend die Blutung.
+
+@austerity
+view-if: spd_in_government = 0
+on-arrival: welfare -= 1; workers_spd -= 3; unemployed_spd -= 3; pro_republic -= 3; economic_growth -= 1;
+
+Kanzler [+ chancellor +] reagiert auf die Bankenkrise mit weiteren Kürzungen bei den Sozialleistungen.
+
+@end_toleration
+view-if: spd_toleration = 1
+on-arrival: time_to_election = 3; spd_in_government = 0; in_grand_coalition = 0; spd_toleration = 0;
+call: set_next_election_time
+
+Wir haben genug von [+ chancellor +]s Sparpolitik. Nachdem [+ chancellor +] versucht hatte, mittels Notverordnungen eine weitere Kürzung der Sozialleistungen durchzusetzen, haben wir gemeinsam mit den anderen Parteien daran gearbeitet, diese Politik rückgängig zu machen. Als Reaktion darauf wurde der Reichstag aufgelöst und Neuwahlen wurden angesetzt.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].

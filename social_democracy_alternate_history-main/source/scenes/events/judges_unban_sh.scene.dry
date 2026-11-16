@@ -1,0 +1,7 @@
+title: Stahlhelm wieder erlaubt
+subtitle: Die Richter haben den Stahlhelm wieder legalisiert.
+view-if: sh_banned == 1 and sh_ban_timer == 0 and judicial_reform < 2
+on-arrival: sh_banned = 0; sh_strength += 100; sh_militancy += 0.01
+tags: event
+
+Gerichte haben die Wiederzulassung des Stahlhelms angeordnet. Umgehend nehmen sie die Massenrekrutierung wieder auf.

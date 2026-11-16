@@ -1,0 +1,21 @@
+title: 1934
+subtitle: Ein neues Jahr
+new-page: true
+tags: event
+priority: 2
+view-if: year >= 1934 and month >= 1
+max-visits: 1
+on-arrival: {!
+if (Q.unemployed >= 20) {
+    Q.unemployed -= 2;
+    Q.inflation += 1;
+}
+!}
+
+= 1934
+
+Ein neues Jahr beginnt. [? if works_program = 0 : Die Wirtschaftskrise scheint ihren Tiefpunkt erreicht zu haben, doch das Leid ist nach wie vor groß. Es ist noch nicht zu spät, ein wirtschaftliches Rettungsprogramm aufzulegen. ?][? if works_program >= 1 and unemployment >= 15 : Wir haben mit der Einführung eines Arbeitsbeschaffungsprogramms begonnen, doch die Wirtschaft hat weiterhin mit Problemen zu kämpfen. Die Erholung hat eingesetzt, aber es muss noch mehr getan werden. ?][? if works_program >= 1 and unemployment < 15 : Unser Arbeitsbeschaffungsprogramm hat uns erfolgreich durch die schlimmste Phase der Krise geführt. Die Wirtschaft erholt sich und die Menschen blicken endlich optimistisch in die Zukunft. ?]
+
+[? if return_to_normalcy: Mit der Rückkehr zur Normalität wandelt sich die politische Landschaft in Deutschland. Der Liberalismus gewinnt im Mittelstand wieder an Boden, und die radikalen Parteien des rechten Spektrums verlieren an Zuspruch. ?]
+
+[? if president = "Hindenburg" : Der Präsident ist gesundheitlich angeschlagen; es wird nicht erwartet, dass er das Jahr überlebt. ?]

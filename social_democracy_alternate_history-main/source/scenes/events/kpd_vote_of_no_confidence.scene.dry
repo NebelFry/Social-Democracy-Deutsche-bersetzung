@@ -1,0 +1,82 @@
+title: Die KPD beantragt ein Misstrauensvotum gegen die amtierende Regierung!
+subtitle: Wir haben die KPD zu sehr verärgert...
+new-page: true
+view-if: spd_in_government = 1 and ((in_popular_front = 1 and kpd_coalition_dissent >= 3) or (in_left_front = 1 and kpd_coalition_dissent >= 4)) and spd_r < 50 and not constructive_vonc
+tags: event
+go-to: menu
+
+= Misstrauensvotum
+
+Die KPD hat aufgrund unserer verschiedenen politischen Maßnahmen und Meinungsverschiedenheiten ein Misstrauensvotum gegen uns beantragt. Sollte dieses Erfolg haben, wird es in einigen Monaten Neuwahlen geben.
+
+@menu
+
+- @try_assuage: Versuchen wir, sie irgendwie zu besänftigen.
+- @support_center: Könnten wir eine neue Regierung unter Beteiligung der Zentrumspartei und [+ ddp_name +] (und möglicherweise der DVP) bilden?
+- @let_it_happen: Lassen wir die Abstimmung stattfinden.
+
+@try_assuage
+
+Wie besänftigen wir die KPD?
+
+- @resources: Nutzen wir unsere Ressourcen, um Meinungsverschiedenheiten innerhalb der Koalition zu verringern.
+- @thalmann: Ernennen wir Thälmann anstelle von [+ chancellor +] zum Reichskanzler.
+- @support_center: Könnten wir eine neue Regierung bilden?
+- @let_it_happen: Schon gut. Lasst die Abstimmung stattfinden.
+
+@thalmann
+choose-if: president == "Braun"
+subtitle: Dies wäre der Vorwand für einen rechten Putsch.
+unavailable-subtitle: [? if president == "Hindenburg" : Präsident Hindenburg würde dies niemals zulassen. ?]
+on-arrival: chancellor = "Thälmann"; chancellor_party = "KPD"
+
+Nur sehr widerwillig ernennt Präsident [+ president +] [+ chancellor +] zum Kanzler.
+
+Umgehend macht sich [+ chancellor +] daran, ein „Sowjetdeutschland“ aufzubauen: Er konzentriert so viel Macht wie möglich in der KPD, säubert staatliche Institutionen von Antikommunisten und hetzt Straßenkämpfer auf die „Volksfeinde“.
+
+Als Reaktion auf die Ernennung von [+ chancellor +] zum Reichskanzler starten rechte Kräfte fast augenblicklich einen Putschversuch. Truppen des Stahlhelms und der Nazi-SA marschieren in Berlin ein und liefern sich sofort Gefechte mit unseren Anhängern! Reaktionäre Offiziere der Reichswehr haben ihre Truppen aus den Kasernen geführt und sich mit dem Stahlhelm verbündet, um eine Machtübernahme der KPD zu verhindern. Wir sehen uns gezwungen, an der Seite der KPD zu stehen – ob wir wollen oder nicht.
+
+- @civil_war
+
+
+@resources
+choose-if: resources >= 3 and kpd_ultimatum_seen = 0
+unavailable-subtitle: -3 Ressourcen - [? if resources < 3 : Wir haben nicht genügend Ressourcen. ?][? if kpd_ultimatum_seen : Dies geht über den Punkt hinaus, an dem Ressourcen noch Abhilfe schaffen könnten. ?]
+subtitle: -3 Ressourcen
+on-arrival: resources -= 3; kpd_coalition_dissent -= 1;
+
+Durch die Übertragung von Ressourcen an unsere Koalitionspartner können wir deren Widerstand gegen unsere Politik verringern. Dies ist eine plumpe, aber wirksame Lösung.
+
+
+@support_center
+choose-if: (weimar_coalition >= 50 and z_relation >= 40) or (grand_coalition >= 50 and z_relation >= 45 and dvp_relation >= 30)
+unavailable-subtitle: [? if grand_coalition < 50 : Das würde uns keine Mehrheit verschaffen. ?] [? if z_relation < 45 : Nach der Zusammenarbeit mit den Kommunisten möchte die Zentrumspartei keine Koalition mit uns bilden. ?] [? if dvp_relation < 30 : Die DVP würde lieber den Sturz der Regierung sehen, als uns vor den Kommunisten zu retten. ?]
+
+Wir könnten versuchen, die KPD aus unserer Regierungskoalition zu drängen und eine neue Regierung[? if spd_r <= 50 : mit den bürgerlichen Parteien ?] zu bilden.
+
+- @election_1928.spd_majority: Eine SPD-Regierung bilden – ohne die KPD?
+- @election_1928.weimar_coalition: Eine Weimarer Koalition bilden?
+- @election_1928.grand_coalition: Eine Große Koalition bilden?
+- @let_it_happen: Wir können nichts tun.
+
+
+@let_it_happen
+view-if: not constructive_vonc
+on-arrival: kpd_relation -= 8; workers_kpd -= 5; workers_spd -= 8; unemployed_spd -= 6
+go-to: let_it_happen_braun if president = "Braun"; let_it_happen_hindenburg if president = "Hindenburg"
+
+# if Braun is president, we are now a caretaker government. If Hindenburg is president, Brüning is a caretaker government
+
+@let_it_happen_braun
+on-arrival: next_election_time = time + 3 if next_election_time >= time + 3; next_election_month = month + 3 if next_election_time >= time + 3; next_election_year = year if next_election_time >= time+3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; spd_in_government = 0; in_popular_front = 0; in_left_front = 0; foreign_minister_party = "I"; interior_minister_party = "I"; justice_minister_party = "I"; labor_minister_party = "I"; reichswehr_minister_party = "I"; economic_minister_party = "I"; finance_minister_party = "I"; agriculture_minister_party = "I";
+
+Die Abstimmung ist erfolgreich und unsere Koalition ist zerbrochen. Kanzler [+ chancellor +] wird bis zur nächsten Wahl eine Übergangsregierung führen.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+@let_it_happen_hindenburg
+on-arrival: next_election_time = time + 3 if next_election_time >= time + 3; next_election_month = month + 3 if next_election_time >= time + 3; next_election_year = year if next_election_time >= time+3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; spd_in_government = 0; in_popular_front = 0; in_left_front = 0; chancellor = "Brüning"; chancellor_party = "Z "; foreign_minister_party = "DVP"; interior_minister_party = "Z"; justice_minister_party = "I"; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = ddp_name; finance_minister_party = "DVP"; agriculture_minister_party = "Z"; coalition_dissent = 0; kpd_coalition_dissent = 0; pro_republic -= 5; old_middle_spd -= 3; new_middle_spd -= 2; workers_spd -= 3 if pro_republic < 50; workers_spd -= 4 if pro_republic < 40; old_middle_nsdap += 4 if pro_republic < 50; new_middle_nsdap += 3 if pro_republic < 50
+
+Die Abstimmung war erfolgreich und unsere Regierung ist zurückgetreten. Reichskanzler Brüning wurde zum Leiter einer geschäftsführenden Regierung ernannt, die sich ausschließlich aus den bürgerlichen Parteien zusammensetzt.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].

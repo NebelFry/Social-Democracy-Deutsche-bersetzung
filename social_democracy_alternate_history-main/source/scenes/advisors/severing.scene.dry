@@ -1,0 +1,32 @@
+title: Carl Severing
+is-pinned-card: true
+tags: advisor, reformist
+card-image: img/portraits/SeveringCarl.jpg
+view-if: severing_advisor = 1
+new-page: true 
+
+= Carl Severing
+
+Severing war Innenminister sowohl der Deutschen Republik als auch des Staates Preußen und sein vorrangiges Ziel ist es, die Sicherheitsbehörden gezielt gegen die Feinde der Republik einzusetzen.
+
+- @prussian_bulwark
+- @police_affairs
+- @root: Zurück
+
+@prussian_bulwark
+title: Preußisches Bollwerk
+subtitle: Severing hat Einfluss auf die preußische Politik.
+choose-if: advisor_action_timer <= 0 and spd_prussia = 1
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_prussia : Die SPD hat Preußen nicht unter ihrer Kontrolle. ?]
+on-arrival: advisor_action_timer = 6; prussian_affairs_timer -= 6; last_advisor_action = 1
+go-to: prussian_affairs
+
+
+@police_affairs
+title: Polizeiangelegenheiten 
+subtitle: Wir können unsere Polizeipolitik festlegen.
+choose-if: advisor_action_timer == 0 and spd_in_government and interior_minister_party == "SPD"
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government : Die SPD ist nicht in der Regierung. ?][? if interior_minister_party != "SPD": Die SPD hat nicht das Innenministerium. ?]
+on-arrival: advisor_action_timer = 6; police_timer -= 6; last_advisor_action = 1
+go-to: police
+

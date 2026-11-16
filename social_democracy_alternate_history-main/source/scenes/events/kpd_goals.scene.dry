@@ -1,0 +1,27 @@
+title: Die KPD legt ihre Zielliste für die Koalition vor.
+view-if: (in_popular_front = 1 or in_left_front = 1) and kpd_goals_seen = 0 and kpd_coalition_success = 0 and next_election_time - time > 12 and spd_in_government
+on-arrival: kpd_goals_seen = 1; welfare_goal = 1; foreign_goal = 0; agriculture_goal = 1 if agriculture_minister_party != "KPD"; economy_goal = 1 if economic_minister_party != "KPD"; finance_goal = 1 if finance_minister_party != "KPD"; labor_goal = 1 if labor_minister_party != "KPD"; reichswehr_goal = 1 if reichswehr_minister_party != "KPD"; kpd_ultimatum_timer = 12; kpd_ultimatum_timer = 16 if kpd_relation >= 60; kpd_ultimatum_timer = 24 if kpd_party_leader == "Conciliators" or constructive_vonc; kpd_ultimatum_timer = next_election_time - time - 1 if next_election_time - time <= 12;
+new-page: true
+tags: event
+
+= Ziele der KPD
+
+Die KPD legt uns eine Liste von Zielen für die Koalition vor:
+
+[? if welfare_goal = 1 : - Sozialhilfeprogramme ausweiten. ?]
+
+[? if agriculture_goal = 1 : - Bodenreformprogramm durchführen. ?]
+
+[? if economy_goal = 1 : - Einleitung einer umfassenden Verstaatlichung der Wirtschaft. ?]
+
+[? if finance_goal = 1 : - Besteuerung progressiver gestalten. ?]
+
+[? if labor_goal = 1 : - Arbeiter in Arbeitskämpfen unterstützen. ?]
+
+[? if foreign_goal = 1 : - Beziehungen zur Sowjetunion verbessern. ?]
+
+#[? if interior_goal = 1 : - Verbietet die SA und den Stahlhelm. ?]
+
+[? if reichswehr_goal = 1 : - Mittel für die Reichswehr kürzen. ?]
+
+Sie erklären, dass sie die Erfüllung dieser Ziele innerhalb von [+ kpd_ultimatum_timer +] Monaten erwarten. Andernfalls werden sie für die Auflösung der Koalition stimmen.

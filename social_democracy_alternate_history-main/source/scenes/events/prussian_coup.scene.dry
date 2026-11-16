@@ -1,0 +1,61 @@
+title: Putsch in Preußen
+subtitle: Der Reichskanzler versucht, die preußische Regierung zu stürzen.
+view-if: (chancellor = "Papen" or chancellor = "Schleicher") and president = "Hindenburg" and year >= 1932 and month >= 8 and spd_in_government == 0 and spd_prussia = 1 and not presidential_powers
+on-arrival: prussian_coup_seen = 1
+new-page: true
+tags: event
+max-visits: 1
+face-image: img/Reichswehr.jpg
+
+= Putsch in Preußen
+
+Eine Krise! Der Reichskanzler [+ chancellor +] hat die Absetzung der preußischen Regierung im Wege der sogenannten „Reichsexekution“ angeordnet. Er begründet dies damit, dass die preußische Staatsregierung aufgrund der Straßenkämpfe zwischen SA, Reichsbanner und anderen paramilitärischen Verbänden nicht mehr in der Lage sei, die Ordnung aufrechtzuerhalten – und das, obwohl seine eigene Regierung diese Verbände zuvor legalisiert hatte.
+
+Die Rechtmäßigkeit der Maßnahme ist fragwürdig. Viele unserer Mitglieder sind bereit, Widerstand zu leisten.
+
+- @defend
+- @surrender
+
+
+@defend
+title: Kämpft gegen den Umsturzversuch!
+subtitle: Die Gewerkschaften werden zum Generalstreik aufrufen. Das Reichsbanner und die loyalen Teile der preußischen Polizei werden Widerstand gegen den Putsch leisten.
+unavailable-subtitle: Wir verfügen nicht über die Kräfte, um Widerstand zu leisten.
+choose-if: rb_strength*rb_militancy >= 200
+
+Reichswehr und Stahlhelm umzingeln bereits Berlin, und die SA unterstützt sie. Das könnte auf einen Bürgerkrieg hinauslaufen. Das ist uns doch klar, oder?
+
+- @defend_2: Wir werden kämpfen, selbst wenn es zu einem Bürgerkrieg führt.
+- @surrender
+
+@defend_2
+on-arrival: resist_coup = 1; defense_strength = rb_strength*rb_militancy*(1-dissent/2); defense_strength += prussian_police_strength*prussian_police_militancy*prussian_police_loyalty if spd_prussia; enemy_strength = sa_strength*sa_militancy + sh_strength*sh_militancy; enemy_strength += reichswehr_strength*reichswehr_militancy*(1-reichswehr_loyalty)/2; defense_strength += workers_spd_normalized*(2 - dissent)*(2 - unemployed/100);
+go-to: defend_2_civil_war if defense_strength < enemy_strength; defend_2_victory if defense_strength >= enemy_strength
+
+@defend_2_victory
+on-arrival: sa_strength *= 0.8; sh_strength *= 0.8; pro_republic += 10; workers_spd += 6; unemployed_spd += 6; workers_nsdap -= 6; unemployed_nsdap -= 6; coup_victory = 1
+achievement: bollwerk_der_demokratie
+go-to: defend_2_victory_2
+
+Unsere Streitkräfte stellen sich den Regierungstruppen und ihren reaktionären Hilfstruppen entgegen und irgendwie ziehen sich unsere Feinde kampflos zurück! Angesichts unserer Machtdemonstration sahen sie sich überlegen und beschlossen, sich davonzuschleichen. Der Reichskanzler [+ chancellor +] nimmt die Entlassung der preußischen Regierung zurück – zumindest vorerst.
+
+Die Machtdemonstration hat die Unterstützung für die Republik und für die SPD neu belebt und die Faschisten geschwächt.
+
+@defend_2_victory_2
+achievement: drei_pfeile
+
+
+@defend_2_civil_war
+
+Unsere Kräfte stehen den Regierungstruppen und deren Anhängern auf den Straßen Berlins gegenüber, und es entbrennen bewaffnete Kämpfe. Die Reaktionäre weichen nicht von ihren Positionen. Wir befinden uns in einer ungünstigen Lage.
+
+- @civil_war: Es ist Bürgerkrieg.
+
+
+
+
+@surrender
+title: Die preußische Regierung aufgeben.
+on-arrival: spd_prussia = 0; workers_spd -= 5; left_dissent += 10; labor_dissent += 10; rb_militancy = rb_militancy/2; rb_strength -= 1000;
+
+Ein Schleier aus Hoffnungslosigkeit und Verzweiflung legt sich über die Sozialdemokratie. Wir haben versagt. Viele im Reichsbanner geben einfach auf – demoralisiert, weil ihre Führung keinen Aufruf zum Handeln ergehen lässt.

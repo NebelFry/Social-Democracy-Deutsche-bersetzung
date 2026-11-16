@@ -1,0 +1,57 @@
+title: Die Eiserne Front
+new-page: true
+is-card: true
+view-if: iron_front_formed == 1 and iron_front_timer = 0
+on-arrival: iron_front_timer = 7; month_actions += 1; rb_militarization_cost = 2 if rb_militancy > 0.1 else rb_militarization_cost = 1; rb_militarization_cost = 3 if rb_militancy > 0.25
+card-image: img/iron_front.png
+frequency: 200
+tags: party_affairs, antifascism
+
+= Die Eiserne Front
+
+Die Eiserne Front ist unsere neue antifaschistische Koordinierungsfront, bestehend aus der SPD, den Gewerkschaften und dem Reichsbanner. Wie sollen wir die Eiserne Front nutzen?
+
+[? if workers_spd < 45 or workers_spd < workers_nsdap or workers_spd < workers_kpd : Leider wird die Wirksamkeit der Eisernen Front durch die Unbeliebtheit der SPD beeinträchtigt, da diese nicht mehr die dominierende Partei unter den Arbeitern ist. Viele Mitglieder des Reichsbanners sind ausgetreten und viele Arbeiter zeigen kein Interesse. ?]
+
+- @defense: Kundgebung zur Verteidigung gegen die Faschisten mit dem Reichsbanner.
+- @pacifism: Kundgebung für Pazifismus, gegen Nationalismus und Krieg.
+- @republic: Kundgebung zur Rettung der demokratischen Republik vor der Diktatur.
+- @wtb: Kundgebung für wirtschaftlichen Wandel und den WTB-Plan.
+- @antisemitism
+- @easy_discard
+
+@defense
+subtitle: -[+ rb_militarization_cost +] Ressourcen
+choose-if: resources >= rb_militarization_cost
+on-arrival: resources -= rb_militarization_cost; rb_strength += 50; rb_militancy += 0.05; z_relation -= 5 if historical_mode
+
+Die Eiserne Front mobilisiert zur kämpferischen Verteidigung der Republik gegen die faschistischen Paramilitärs und stärkt dabei das Reichsbanner.
+
+[? if historical_mode : Die Zentrumspartei verurteilt die Militarisierung des Reichsbanners und der Eisernen Front und ihre Mitglieder verlassen die republikanische Organisation.. ?]
+
+
+@pacifism
+on-arrival: pacifism += 1; nationalism -= 5 if pacifism >= 3; workers_spd += 5*(1-dissent) if pacifism >= 4; unemployed_spd += 4*(1-dissent) if pacifism >= 4; new_middle_spd += 4*(1-dissent) if pacifism >= 4
+
+Die Eiserne Front mobilisiert gegen Nationalismus und Krieg.
+
+@republic
+on-arrival: pro_republic += 5*(1-dissent); democratization += 1; workers_spd += 5*(1-dissent) if democratization >= 4; unemployed_spd += 4*(1-dissent) if democratization >= 4; new_middle_spd += 4*(1-dissent) if democratization >= 4
+
+Die Eiserne Front mobilisiert zur Verteidigung der demokratischen Republik und gegen die Diktatur.
+
+@wtb
+choose-if: return_to_normalcy = 0
+unavailable-subtitle: Die Wirtschaftskrise ist inzwischen weitgehend vorüber und die Öffentlichkeit ist nicht mehr daran interessiert, etwas darüber zu hören.
+view-if: wtb_adopted == 1
+on-arrival: workers_spd += 8*(1-dissent); unemployed_spd += 8*(1-dissent); new_middle_spd += 5*(1-dissent); old_middle_spd += 3*(1-dissent); rural_spd += 3*(1-dissent);
+
+Der WTB-Plan ist der Sammelpunkt für die gesamte SPD und ihre Vorfeldorganisationen, einschließlich der Eisernen Front.
+
+@antisemitism
+title: Kundgebung gegen Antisemitismus und zur Verteidigung jüdischer Deutscher.
+view-if: confronting_antisemitism > 1
+on-arrival: nationalism -= 4*(1-dissent); pro_republic += 3*(1-dissent); confronting_antisemitism += 1; workers_nsdap -= 4*(1-dissent); unemployed_nsdap -= 4*(1-dissent);
+
+# TODO
+The Nazis and other far-right political movements are increasingly turning their hatred against the Jewish community of Germany. The Iron Front rallies in defense of individual Jews and the broader community against violence.

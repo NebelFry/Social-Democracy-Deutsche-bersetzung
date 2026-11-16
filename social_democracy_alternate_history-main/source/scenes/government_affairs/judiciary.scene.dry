@@ -1,0 +1,37 @@
+title: Justizreform
+new-page: true
+is-card: true
+view-if: spd_in_government = 1 and justice_minister_party = "SPD" and judiciary_timer = 0
+on-arrival: month_actions += 1; judiciary_timer += 6
+card-image: img/portraits/RadbruchGustav.jpg
+tags: govt_affairs, cabinet
+
+= Justizreform
+
+Die Justiz ist neben dem Militär einer der reaktionärsten Bestandteile des Staatsapparats. Viele Juristen bekleiden ihre Ämter bereits seit der Kaiserzeit. Sie verhängen gegen gewalttätige Faschisten wie Adolf Hitler lächerlich milde Strafen, während sie Linke und Pazifisten wegen geringerer Vergehen rücksichtslos verfolgen.
+
+[? if judicial_reform <= 0 : Innerhalb unserer Partei besteht eine große Nachfrage nach einer Justizreform, auch wenn uns dies auf Konfrontationskurs mit unseren Koalitionspartnern bringen könnte. ?]
+[? if judicial_reform == 1 : Wir haben den Weg zur Justizreform eingeschlagen. Zwar wurden einige der rückständigsten und voreingenommensten Richter ausgetauscht, doch viele sind weiterhin im Amt. Es muss noch mehr getan werden. ?]
+[? if judicial_reform >= 2 : Wir haben die Justiz teilweise erfolgreich reformiert. Zumindest werden die Gerichte unsere Versuche, rechtsextreme Verbrechen strafrechtlich zu verfolgen, nicht aktiv behindern. ?]
+
+- @reform: Umfassende Justizreformen durchführen.
+- @minor_reforms: Kleinere Justizreformen durchführen.
+- @as_is: Justiz belassen wie sie ist.
+- @easy_discard
+- @cancel_advisor_action
+
+@reform
+subtitle: -1 Budget
+unavailable-subtitle: Nicht genügend Budget.
+choose-if: budget >= 1
+on-arrival: budget -= 1; democratization += 2; coalition_dissent += 1 if in_grand_coalition == 1; workers_spd += 5*(1-dissent) if democratization >= 3; judicial_reform += 2; pro_republic += 5*(1-dissent); coup_progress += 1; coalition_dissent += 1 if historical_mode
+
+Wir untersuchen Fälle von Juristen, die Voreingenommenheit oder Korruption gezeigt haben und versuchen, sie abzusetzen und durch demokratisch orientiertere Juristen zu ersetzen. Dies stößt – auch innerhalb unserer Koalition – in konservativen Kreisen naturgemäß auf erheblichen Unmut.
+
+@minor_reforms
+on-arrival: democratization += 1; workers_spd += 3*(1-dissent) if democratization >= 3; judicial_reform += 1; pro_republic += 3*(1-dissent); judiciary_timer += 6
+
+Wir versuchen, die offensichtlich voreingenommenen und korrupten Richter zu entfernen, während wir den Großteil des Systems unangetastet lassen. Die Reform der Justiz ist ein langwieriger Prozess.
+
+@as_is
+go-to: root

@@ -1,0 +1,647 @@
+title: Game Over.
+new-page: true
+go-to: eg_menu
+on-arrival: {!
+Q.game_over = 1;
+// Achievements:
+// Große Koalition - bilde eine Große Koalition
+// Eiserne Front - bilde die Eiserne Front.
+this.achieve('game_completed');
+
+// Roter Zar von Preußen - Am Ende des Spiels ist Otto Braun gleichzeitig Präsident, Reichskanzler und Ministerpräsident von Preußen.
+if (Q.president == 'Braun' && Q.chancellor == 'Braun' && Q.spd_prussia) {
+    this.achieve('red_tzar_of_prussia');
+}
+// Bürgerkrieg - beginne einen langen Bürgerkrieg.
+if (Q.long_war) {
+    this.achieve('civil_war');
+}
+// Sieg für die Republik - die Republik blieb standhaft
+if (Q.republic_victory) {
+    this.achieve('victory_for_the_republic');
+}
+// Einigkeit - überlebe auf einfach ohne einen Bürgerkrieg.
+// Einigkeit und Recht - überlebe auf normal ohne einen Bürgerkrieg.
+// Einigkeit und Recht und Freiheit - überlebe auf schwer ohne einen Bürgerkrieg.
+
+// Einheitsfront - bilde die Einheitsfront mit der KPD und gewinne den Bürgerkrieg.
+
+// Volksfront - bilde die Volksfront und gewinne den Bürgerkrieg.
+
+// Verfassungskoalition - bilde eine Verfassungskoalition.
+// Wirtschaftspolitik - verabschiede einen Wirtschaftsplan.
+// Wirtschaftswunder - senke die Arbeitslosigkeit bis 1933 auf unter 10 % und erreiche einen ausgeglichenen Haushalt.
+if (Q.year >= 1932  && Q.unemployed < 8.6 && Q.budget > 0 && Q.inflation < 5) {
+    this.achieve('wirtschaftswunder');
+}
+// Bollwerk der Demokratie - verteidige dich gegen den preußischen Staatsstreich und gewinne.
+if (Q.republic_victory && Q.resist_coup) {
+    this.achieve('bollwerk_der_demokratie');
+}
+// Der österreichische Gefreiter - deportiere Hitler
+// Volkspartei - form a people's party
+// Hirschfeld - legalisiere 2 Homosexuellen und Trans Rechte.
+if (Q.homosexual_rights >= 2) {
+    this.achieve('hirschfeld');
+}
+// Mädchen und Uniform - der Platz einer Frau ist im Reichsbanner.
+// Gleichheit - unterstütze Reformen zur Stärkung von Frauenrechten.
+if ((Q.womens_work && Q.womens_rights >= 5) || (Q.abortion_rights && Q.womens_rights >= 3)) {
+    this.achieve('equality');
+}
+
+// Sohn seiner Klasse - wähle Ernst Thälmann als Präsidenten oder Kanzler.
+if (Q.chancellor == "Thälmann" || Q.president == "Thälmann") {
+    this.achieve('sohn_seiner_klasse');
+}
+
+// calculate normalized class voting for the achievements
+for (var c of Q.classes) {
+    var class_votes = 0;
+    for (var party of Q.parties) {
+        if (Q[c+'_'+party] < 0) {
+            Q[c+'_'+party] = 0;
+        }
+        class_votes += Q[c+'_'+party];
+    }
+    for (var party of Q.parties) {
+        Q[c + '_' + party + '_normalized'] = Math.round(100*Q[c+'_'+party]/class_votes);
+    }
+}
+
+// Die Rote Fahne - schließe dich der KPD beim 1. Mai Aufmarsch an.
+// Mehrheitspartei - bilde eine SPD Mehrheitsregierung im Reichstag.
+// Panik im Mittelstand - habe über 50% Untertützung im neuen Mittelstand.
+if (Q.new_middle_spd_normalized && Q.new_middle_spd_normalized >= 50) {
+    this.achieve('panik_im_mittelstand');
+}
+// Bauernrevolution - habe über 50% Unterstützung in der ländlichen Bevölkerung.
+if (Q.rural_spd_normalized && Q.rural_spd_normalized >= 50) {
+    this.achieve('bauernrevolution');
+}
+if (Q.catholics_spd_normalized && Q.catholics_spd_normalized >= 50) {
+    this.achieve('katholischer_sozialismus');
+}
+if (Q.workers_spd_normalized >= 80 && Q.new_middle_spd_normalized <= 20 && Q.old_middle_spd_normalized <= 20 && Q.rural_spd_normalized <= 20) {
+    this.achieve('klassenkampf');
+}
+if (Q.workers_spd_normalized >= 40 && Q.new_middle_spd_normalized >= 40 && Q.old_middle_spd_normalized >= 40 && Q.rural_spd_normalized >= 40) {
+    this.achieve('grosse_volkspartei');
+}
+// Räterepublik - leite den Übergang zu einer sozialistischen Wirtschaft ein.
+if (Q.spd_in_government && ((Q.nationalization_progress >= 2 && Q.economic_democracy >= 3) || (Q.nationalization_progress >= 1 && Q.economic_democracy >= 4))) {
+    this.achieve('raterepublik');
+}
+// Polykrise - überstehe einen faschistischen Putsch und einen Kapitalstreik.
+if (Q.march_on_berlin_seen && Q.capital_strike_seen && Q.chancellor != "Hitler" && Q.president != "Hitler" && !Q.total_defeat) {
+    this.achieve("polykrise");
+}
+// Wirtschaftsexperiment - implementiere 2 verschiedene Wirtschaftspläne.
+if ((Q.nationalization_progress >= 1 && Q.wtb_implemented >= 1) || (Q.wtb_implemented >= 1 && Q.moderate_plan_progress >= 1) || (Q.nationalization_progress >= 1 && Q.moderate_plan_progress >= 1)) {
+    this.achieve("wirtschaftsexperiment");
+}
+// Syndikalismus - unterstütze die Fabrikübernahmen durch Arbeiter.
+if (Q.factory_takeovers >= 2) {
+    this.achieve("syndikalismus");
+}
+// Stolperstein - verliere den Bürgerkrieg gegen Hitler.
+if ((Q.chancellor_party == "NSDAP" || Q.chancellor == "Hitler" || Q.president == "Hitler") && Q.total_defeat) {
+    this.achieve('stolperstein');
+}
+// Heidelberger Programm - verwirkliche die Ziele des Heidelberger Programms - den Wohlstand steigern, das Justizwesen reformieren, die Rechte der Frauen fördern, eine progressive Besteuerung einführen, Betriebsräte einrichten, eine Europäische Union aufbauen.
+if ((Q.welfare > 0 && Q.judicial_reform >= 2 && Q.womens_work >= 1 && Q.family_law >= 1 && Q.upper_tax_rates > Q.lower_tax_rates && Q.works_councils > 0 && Q.eu > 0)) {
+    this.achieve('heidelberger_programm');
+}
+!}
+
+= Ende
+
+
+@eg_menu
+
+- #endings
+- @end_game: Spiel zu Ende.
+
+
+@hitler_wins
+view-if: (chancellor == "Hitler" or president == "Hitler") and (total_defeat==1 or civil_war_seen == 0)
+title: Adolf Hitler hat die unangefochtene Macht über Deutschland.
+tags: endings
+go-to: eg_menu
+
+Adolf Hitler hat die unangefochtene Macht über Deutschland. Die SPD ist ebenso wie alle demokratischen Kräfte gescheitert..
+
+[? if civil_war_seen == 1 : Zumindest haben wir uns gewehrt. Vielleicht wird unser Widerstand in einer unvorhersehbaren Zukunft gewürdigt werden.. ?]
+
+@war_against_hitler
+view-if: (chancellor == "Hitler" or president == "Hitler") and (long_war == 1)
+title: Adolf Hitler ist an der Macht, aber wir kämpfen dafür ihn zu stoppen.
+tags: endings
+go-to: eg_menu
+
+Adolf Hitler hat in Deutschland die Macht übernommen. Wir haben jedoch die demokratischen Kräfte des Landes gegen ihn mobilisiert und wehren uns. Der Ausgang dieses Krieges ist ungewiss.
+
+
+@no_hitler
+view-if: chancellor != "Hitler" and president != "Hitler" and president != "Göring" and chancellor_party != "NSDAP"
+title: Hitler hat Deutschland noch nicht unter seiner Kontrolle...
+tags: endings
+go-to: eg_menu
+
+Hitler hat Deutschland noch nicht unter seiner Kontrolle. [? if chancellor == "Papen" : Der Autoritarismus und die rechtsextreme Politik von Reichskanzler Papen ebnen jedoch den Weg für Hitler – oder jemanden wie ihn –, die Macht zu übernehmen.. ?] [? if chancellor == "Schleicher" : Der Autoritarismus und die Intrigen von Reichskanzler Schleicher ebnen jedoch den Weg für Hitler – oder jemanden wie ihn –, die Macht zu übernehmen. ?][? if resist_coup == 1 and republic_victory == 0 and long_war == 0 and coup_victory == 0 : Angesichts unserer Niederlage beim preußischen Putsch scheint die extreme Rechte auf dem Vormarsch zu sein. ?][? if chancellor == "Brüning" : Die Sparpolitik von Reichskanzler Brüning und das Anhalten der Wirtschaftskrise ebnen jedoch den Weg für Hitler oder jemanden wie ihn, an die Macht zu kommen. ?]
+
+[? if hitler_deported == 1 : Wir haben Hitler nach Österreich abgeschoben. Hoffentlich kehrt er nie wieder zurück.. ?]
+
+@nsdap_win
+view-if: chancellor == "Goebbels" or president == "Göring"
+title: Trotz Hitlers Vertreibung haben die Nazis dennoch die Macht übernommen...
+tags: endings
+go-to: eg_menu
+
+Trotz Hitlers Vertreibung hat sich die NSDAP irgendwie doch noch an die Macht geschlichen. [? if long_war == 1 : Wir kämpfen gegen sie um die Kontrolle über Deutschland. ?]
+
+
+@civil_war_won
+title: Wir haben den Bürgerkrieg gewonnen.
+view-if: republic_victory == 1
+tags: endings
+go-to: eg_menu
+
+Wir haben den Bürgerkrieg gegen die reaktionären Kräfte gewonnen. Deutschland wird sich für immer verändern, aber es ist noch zu früh, um zu wissen wie.
+
+@civil_war_lost
+title: Wir haben den Bürgerkrieg verloren.
+view-if: total_defeat == 1
+tags: endings
+go-to: eg_menu
+
+Wir haben den Bürgerkrieg verloren. Zumindest war es ein schneller Staatsstreich, der beendet war, bevor Deutschland in einen längeren Krieg hineingezogen werden konnte.
+
+@long_war
+title: Deutschland wird von einem Bürgerkrieg heimgesucht.
+view-if: long_war == 1
+tags: endings
+go-to: eg_menu
+
+Deutschland befindet sich derzeit im Griff eines Bürgerkriegs, eines brutalen Konflikts, dessen Ende nicht absehbar ist. Tausende Menschen haben bereits ihr Leben verloren und es ist wahrscheinlich, dass der Krieg erst dann enden wird, wenn Deutschlands Städte in Schutt und Asche liegen. 
+
+[? if is_favorable == 0 : Die derzeitigen Bedingungen sind für uns nicht günstig.. ?][? if west_relation >= 2: Unsere Sache findet im Westen großen Anklang, doch die dortigen Regierungen zögern uns Hilfe zu leisten. ?][? if soviet_aid >= 1 : Die Sowjetunion hat den Kommunisten, nicht aber den Sozialisten und Demokraten, Unterstützung gewährt, um die künftige Regierung Deutschlands mitzugestalten.. ?][? if east_aid >= 1 : Polen und die Tschechoslowakei haben Hilfe im Kampf gegen die Faschisten geschickt. ?]
+
+
+@braun_victorious
+title: Otto Braun ist siegreich
+view-if: president == "Braun"
+tags: endings
+go-to: eg_menu
+
+Otto Braun wurde zum Reichspräsidenten gewählt. Er hatte nie danach gestrebt, der mächtigste Mann Deutschlands zu sein, doch nun ist er es.
+
+@president_schumacher
+title: Kurt Schumacher ist siegreich
+view-if: president == "Schumacher"
+tags: endings
+go-to: eg_menu
+
+Kurt Schumacher wurde zum Reichspräsidenten gewählt. Als junges und ehrgeiziges SPD-Mitglied wird er Deutschland in den kommenden Jahren prägen.
+
+@president_juchacz
+title: Marie Juchacz ist Präsidentin
+view-if: president == "Juchacz"
+tags: endings
+go-to: eg_menu
+
+Marie Juchacz wurde zur Reichspräsidentin gewählt. Sie ist die erste Frau die zum Staatsoberhaupt einer Republik gewählt wurde und wird die Entwicklung Deutschlands in den kommenden Jahren mitgestalten.
+
+@president_einstein
+title: Albert Einstein ist Präsident
+view-if: president == "Einstein"
+tags: endings
+go-to: eg_menu
+
+Albert Einstein, der wohl berühmteste Wissenschaftler der Welt, wurde zum Reichspräsidenten gewählt. Als deutscher Jude und Pazifist verkörpert er das Gegenteil von allem, wofür die Nationalsozialisten standen und ist ein Symbol für eine neue Republik, die ihre wechselvolle Vergangenheit hinter sich gelassen hat.
+
+
+
+@spd_victorious
+title: SPD weiterhin in der Regierung
+view-if: spd_in_government == 1 and chancellor_party == "SPD" and total_defeat == 0 and long_war == 0
+tags: endings
+go-to: eg_menu
+
+Die SPD ist nach wie vor in der Regierung vertreten unter Kanzler [+ chancellor +]. Angesichts der Umstände ist dies eine beachtliche Leistung..
+
+@communist_victory
+title: Kommunisitscher Sieg
+view-if: chancellor_party == "KPD" or president == "Thälmann" and total_defeat == 0 and long_war == 0
+tags: endings
+go-to: eg_menu
+
+Die KPD hat mit unserer Unterstützung in Deutschland die Macht übernommen. Sie wird versuchen, Deutschland nach sowjetischem Vorbild umzugestalten. Inwieweit ihr dies gelingen wird, bleibt abzuwarten.
+
+@works_program
+title: Arbeitsbeschaffungsprogramm verabschiedet!
+view-if: works_program > 0
+tags: endings
+go-to: eg_menu
+
+Unsere Regierung hat ein Arbeitsbeschaffungsprogramm verabschiedet!
+
+@unemployment_reduced
+title: Die Arbeitslosigkeit ist gegenüber ihrem Höchststand zurückgegangen.
+view-if: unemployed <= 20 and unemployed >= 10 and year >= 1930
+tags: endings
+go-to: eg_menu
+
+Die Arbeitslosenquote ist zwar nach wie vor unangenehm hoch, liegt aber bei weitem nicht auf ihrem Höchststand. Das ist ein Erfolg unserer Wirtschaftspolitik.
+
+@unemployment_reduced_2
+title: Die Arbeitslosigkeit konnte erfolgreich gesenkt werden!
+view-if: unemployed < 10 and year >= 1930
+tags: endings
+go-to: eg_menu
+
+Die Arbeitslosenquote ist deutlich gesunken! Das ist ein Erfolg unserer Wirtschaftspolitik.
+
+
+
+@unemployment_high
+title: Die Arbeitslosigkeit ist nach wie vor zu hoch.
+view-if: unemployed >= 20 and (chancellor != "Hitler" and president != "Hitler") and (total_defeat == 0) and long_war == 0
+tags: endings
+go-to: eg_menu
+
+Die Arbeitslosigkeit befindet sich nach wie vor auf einem gefährlich hohen Niveau. Auch wenn Hitler nicht an der Macht ist, sind die Voraussetzungen für Instabilität und Extremismus gegeben.
+
+
+@emergency_government
+title: SPD regiert in einer Notstandsregierung.
+view-if: in_emergency_government == 1
+tags: endings
+go-to: eg_menu
+
+Die SPD regiert als Teil einer Not-Minderheitsregierung unter der Führung von Präsidenten [+ president +] und Kanzler [+ chancellor +]. Dies ist eine vorübergehende und instabile Konstellation, die den Weg für weiteren Autoritarismus ebnet..
+
+@peoples_party_achieved
+title: Die SPD ist eine „Volkspartei“.
+view-if: peoples_party == 1
+tags: endings
+go-to: eg_menu
+
+Die SPD wurde zur „Volkspartei“ erklärt, die das gesamte Volk vertritt und nicht nur die Arbeiterklasse. Diese Politik hat viele Befürworter und Kritiker, und wie es mit der Partei weitergehen wird ist noch unklar.
+
+@nationalization_achieved
+title: Die Vergesellschaftung der Wirtschaft hat begonnen.
+view-if: nationalization_progress >= 2
+tags: endings
+go-to: eg_menu
+
+Im Rahmen unseres sozialistischen Wirtschaftsplans haben wir einen wesentlichen Teil der Wirtschaft verstaatlicht und damit den Übergang zum tatsächlichen Sozialismus eingeleitet.
+
+@works_councils
+title: Betriebsräte haben mehr Macht.
+view-if: works_councils >= 3
+tags: endings
+go-to: eg_menu
+
+Betriebsräte haben nun deutlich mehr Einfluss, wodurch die Arbeiter demokratische Kontrolle über ihr wirtschaftliches Leben erhalten.
+
+@european_union
+title: Es gibt nun eine Europäische Union!
+view-if: eu = 1
+tags: endings
+go-to: eg_menu
+
+Wir haben zum Aufbau einer Europäischen Union beigetragen, um dem Kontinent Frieden und Wohlstand zu bringen. Die Zeit wird zeigen, wie wirksam sie sein wird.
+
+@achievements
+title: Errungenschaften
+view-if: achievement_game_completed == 1
+tags: endings
+go-to: eg_menu if started == 1; root.start_menu_2 if started == 0
+
+= Gewonnene Errungenschaften in diesem Durchgang
+
+
+[? if game_achievement_eiserne_front : **Eiserne Front** - die Eiserne Front bilden. ?]
+
+[? if game_achievement_civil_war : **Bürgerkrieg** - in einen langen Bürgerkrieg eintreten. ?]
+
+[? if game_achievement_einigkeit : **Einigkeit** - Erreiche das Spielende ohne Bürgerkrieg im einfachen Modus. ?]
+
+[? if game_achievement_einigkeit_und_recht : **Einigkeit und Recht** - Das Spielende auf dem Schwierigkeitsgrad „Normal“ ohne einen Bürgerkrieg erreichen. ?]
+
+[? if game_achievement_einigkeit_und_recht_und_freiheit : **Einigkeit und Recht und Freiheit** - Erreiche das Ende des Spiels ohne Bürgerkrieg auf dem Schwierigkeitsgrad „Schwer“. ?]
+
+[? if game_achievement_schwarz_rot_gold : **Schwarz-Rot-Gold** - Das Spielende im historischen Modus ohne einen Bürgerkrieg erreichen. ?]
+
+[? if game_achievement_victory_for_the_republic: **Sieg für die Republik** - den Bürgerkrieg gewinnen. ?]
+
+[? if game_achievement_bollwerk_der_demokratie: **Bollwerk der Demokratie** - Leiste Widerstand gegen den preußischen Putsch und siege. ?]
+
+[? if game_achievement_red_tzar_of_prussia : **Roter Zar von Preußen** - Otto Braun ist Präsident, Kanzler und Ministerpräsident. ?]
+
+[? if game_achievement_einheitsfront: **Einheitsfront** - Bilde eine Regierung aus SPD und KPD. ?]
+
+[? if game_achievement_einheitsfront_2: **Sieg für die Einheitsfront** - Bilde eine Linke Front, die den Forderungen der KPD standhält. ?]
+
+[? if game_achievement_volksfront: **Volksfront** - Bilde eine Regierung aus SPD, KPD, Z und DDP. ?]
+
+[? if game_achievement_grosse_volksfront: **Große Volksfront** - Bilde unter der Führung von Joos für die Zentrumspartei und der Führung der Versöhner in der KPD eine Regierung aus SPD, KPD, Zentrum und DDP. ?]
+
+[? if game_achievement_volksfront_2: **Sieg für die Volksfront** - Bilde eine Volksfront, die die Forderungen der KPD übersteht. ?]
+
+[? if game_achievement_constitutional_coalition: **Verfassungskoalition** - eine „Verfassungskoalition“ bilden. ?]
+
+[? if game_achievement_weimar_coalition: **Weimarer Koalition** - eine Weimarer Koalition bilden. ?]
+
+[? if game_achievement_majority_party: **Mehrheitspartei** - eine Mehrheitsregierung aus allein der SPD bilden. ?]
+
+[? if game_achievement_minderheitsregierung: **Minderheitsregierung** - eine SPD-Minderheitsregierung bilden. ?]
+
+[? if game_achievement_volkspartei: **Volkspartei** - Die SPD ist eine Volkspartei. ?]
+
+[? if game_achievement_sohn_seiner_klasse: **Sohn seiner Klasse** - Ernst Thälmann ist entweder Präsident oder Kanzler. ?]
+
+[? if game_achievement_rote_millionar: **Der rote Millionär** - Willi Münzenberg ist Präsident. ?]
+
+[? if game_achievement_versohnler: **Versöhnler** - Die Versöhner führen die KPD. ?]
+
+[? if game_achievement_deport_hitler : **Der österreichische Gefreite** - Hitler abgeschoben. ?]
+
+[? if game_achievement_wirtschaftspolitik: **Wirtschaftspolitik** - einen Wirtschaftsplan verabschieden. ?]
+
+[? if game_achievement_wirtschaftswunder: **Wirtschaftswunder** - Nach 1932 eine geringere Arbeitslosigkeit als 1928, eine Inflation von unter 5 % und einen Haushaltsüberschuss aufweisen. ?]
+
+[? if game_achievement_wirtschaftsexperiment: **Wirtschaftsexperiment** - zwei verschiedene Wirtschaftspläne umsetzen. ?]
+
+[? if game_achievement_freie_marktwirtschaft: **Freie Marktwirtschaft** - Überlebe bis zum Ende des Spiels, ohne einen Wirtschaftsplan zu übernehmen. ?]
+
+[? if game_achievement_equality: **Gleichheit** - Reformen für Frauenrechte verabschieden. ?]
+
+[? if game_achievement_hirschfeld: **Hirschfeld** - Reformen für die Rechte von Homosexuellen verabschieden. ?]
+
+[? if game_achievement_women_reichsbanner: **Mädchen in Uniform** - Der Platz der Frau ist im Reichsbanner. ?]
+
+[? if game_achievement_anders_als_die_andern: **Anders als die Andern** - Sexuelle Minderheiten werden die Republik verteidigen. ?]
+
+[? if game_achievement_bruder_zur_sonne: **Brüder, zur Sonne, zur Freiheit** - Die Arbeitslosigkeit senken, Reparationszahlungen aussetzen, Frauenrechte stärken, einen SPD-Präsidenten wählen und Hitler abschieben – und das alles in einem einzigen Spieldurchgang auf mindestens dem Schwierigkeitsgrad „Normal“. ?]
+
+[? if game_achievement_die_rote_fahne: **Die Rote Fahne** - sich der KPD bei ihrem Maiaufmarsch anschließen. ?]
+
+[? if game_achievement_panik_im_mittelstand: **Panik im Mittelstand** - Die Unterstützung der SPD im neuen Mittelstand liegt bei mindestens 50 %. ?]
+
+[? if game_achievement_bauernrevolution: **Bauernrevolution** - Die Unterstützung für die SPD in ländlichen Gebieten liegt bei mindestens 50 %. ?]
+
+[? if game_achievement_katholischer_sozialismus: **Katholischer Sozialismus** - Die Unterstützung für die SPD unter Katholiken liegt bei mindestens 50 %. ?]
+
+[? if game_achievement_grosse_volkspartei: **Große Volkspartei** - Alle Klassen verfügen über mindestens 40 % Unterstützung für die SPD. ?]
+
+[? if game_achievement_klassenkampf: **Klassenkampf** - Die Unterstützung für die SPD unter Arbeitern liegt bei mindestens 80 %, während sie in der Mittelschicht und in ländlichen Gebieten unter 20 % beträgt. ?]
+
+[? if game_achievement_raterepublik: **Räterepublik** - die Umgestaltung zu einer sozialistischen Wirtschaft einleiten. ?]
+
+[? if game_achievement_polykrise: **Polykrise** - einen Kapitalstreik und einen faschistischen Putsch überstehen. ?]
+
+[? if game_achievement_syndikalismus: **Syndikalismus** - die Übernahme von Fabriken durch die Arbeiter unterstützen. ?]
+
+[? if game_achievement_drei_pfeile: **Drei Pfeile** - einen Putsch ohne Bürgerkrieg niederschlagen. ?]
+
+[? if game_achievement_ausnahmezustand: **Ausnahmezustand** - Notstandsbefugnisse nutzen, um Wahlen abzusagen. ?]
+
+[? if game_achievement_eu: **Vereinigte Staaten von Europa** - eine „Europäische Union“ bilden. ?]
+
+[? if game_achievement_heidelberger_programm: **Heidelberger Programm** - die Ziele des Heidelberger Programms der SPD verwirklichen: soziale Wohlfahrt, Justizreform, Frauenrechte am Arbeitsplatz und in der Familie, progressive Besteuerung, Betriebsräte sowie die Bildung einer Europäischen Union. ?]
+
+[? if game_achievement_verfassungsreform: **Verfassungsreform** - eine Verfassungsänderung verabschieden. ?]
+
+[? if game_achievement_zeppelin_kapitan : **Zeppelinkapitän** - Hugo Eckener wurde zum Präsidenten gewählt. ?]
+
+[? if game_achievement_wahlrechts : **Wahlrechts für Frauen** - Marie Juchacz wurde zur Präsidentin gewählt. ?]
+
+[? if game_achievement_bundesrepublik : **Bundesrepublik** - Konrad Adenauer oder Kurt Schumacher wurde zum Präsidenten gewählt und Verfassungsreformen haben die Macht des Präsidenten beschnitten. ?]
+
+[? if game_achievement_republik_der_wissenschaft : **Republik der Wissenschaft** - Albert Einstein wurde zum Präsidenten gewählt. ?]
+
+[? if game_achievement_arbeiter_von_wien : **Arbeiter von Wien** - Sieg der SPÖ in Österreich. ?]
+
+[? if game_achievement_stolperstein: **Stolperstein** - Wir haben verloren, aber die Geschichte könnte uns ein Denkmal setzen... ?]
+
+
+
+= Alle gewonnenen Errungenschaften
+ 
+ 
+[? if achievement_eiserne_front : **Eiserne Front** - die Eiserne Front bilden. ?]
+ 
+[? if achievement_civil_war : **Bürgerkrieg** - in einen langen Bürgerkrieg eintreten. ?]
+ 
+[? if achievement_einigkeit : **Einigkeit** - Erreiche das Spielende ohne Bürgerkrieg im einfachen Modus. ?]
+ 
+[? if achievement_einigkeit_und_recht : **Einigkeit und Recht** - Das Spielende auf dem Schwierigkeitsgrad „Normal“ ohne einen Bürgerkrieg erreichen. ?]
+ 
+[? if achievement_einigkeit_und_recht_und_freiheit : **Einigkeit und Recht und Freiheit** - Erreiche das Ende des Spiels ohne Bürgerkrieg auf dem Schwierigkeitsgrad „Schwer“. ?]
+ 
+[? if achievement_schwarz_rot_gold : **Schwarz-Rot-Gold** - Das Spielende im historischen Modus ohne einen Bürgerkrieg erreichen. ?]
+ 
+[? if achievement_victory_for_the_republic: **Sieg für die Republik** - den Bürgerkrieg gewinnen. ?]
+ 
+[? if achievement_bollwerk_der_demokratie: **Bollwerk der Demokratie** - Leiste Widerstand gegen den preußischen Putsch und siege. ?]
+ 
+[? if achievement_red_tzar_of_prussia : **Roter Zar von Preußen** - Otto Braun ist Präsident, Kanzler und Ministerpräsident. ?]
+ 
+[? if achievement_einheitsfront: **Einheitsfront** - Bilde eine Regierung aus SPD und KPD. ?]
+ 
+[? if achievement_einheitsfront_2: **Sieg für die Einheitsfront** - Bilde eine Linke Front, die den Forderungen der KPD standhält. ?]
+ 
+[? if achievement_volksfront: **Volksfront** - Bilde eine Regierung aus SPD, KPD, Z und DDP. ?]
+ 
+[? if achievement_grosse_volksfront: **Große Volksfront** - Bilde unter der Führung von Joos für die Zentrumspartei und der Führung der Versöhner in der KPD eine Regierung aus SPD, KPD, Zentrum und DDP. ?]
+ 
+[? if achievement_volksfront_2: **Sieg für die Volksfront** - Bilde eine Volksfront, die die Forderungen der KPD übersteht. ?]
+ 
+[? if achievement_constitutional_coalition: **Verfassungskoalition** - eine „Verfassungskoalition“ bilden. ?]
+ 
+[? if achievement_weimar_coalition: **Weimarer Koalition** - eine Weimarer Koalition bilden. ?]
+ 
+[? if achievement_majority_party: **Mehrheitspartei** - eine Mehrheitsregierung aus allein der SPD bilden. ?]
+ 
+[? if achievement_minderheitsregierung: **Minderheitsregierung** - eine SPD-Minderheitsregierung bilden. ?]
+ 
+[? if achievement_volkspartei: **Volkspartei** - Die SPD ist eine Volkspartei. ?]
+ 
+[? if achievement_sohn_seiner_klasse: **Sohn seiner Klasse** - Ernst Thälmann ist entweder Präsident oder Kanzler. ?]
+ 
+[? if achievement_rote_millionar: **Der rote Millionär** - Willi Münzenberg ist Präsident. ?]
+ 
+[? if achievement_versohnler: **Versöhnler** - Die Versöhner führen die KPD. ?]
+ 
+[? if achievement_deport_hitler : **Der österreichische Gefreite** - Hitler abgeschoben. ?]
+ 
+[? if achievement_wirtschaftspolitik: **Wirtschaftspolitik** - einen Wirtschaftsplan verabschieden. ?]
+ 
+[? if achievement_wirtschaftswunder: **Wirtschaftswunder** - Nach 1932 eine geringere Arbeitslosigkeit als 1928, eine Inflation von unter 5 % und einen Haushaltsüberschuss aufweisen. ?]
+ 
+[? if achievement_wirtschaftsexperiment: **Wirtschaftsexperiment** - zwei verschiedene Wirtschaftspläne umsetzen. ?]
+ 
+[? if achievement_freie_marktwirtschaft: **Freie Marktwirtschaft** - Überlebe bis zum Ende des Spiels, ohne einen Wirtschaftsplan zu übernehmen. ?]
+ 
+[? if achievement_equality: **Gleichheit** - Reformen für Frauenrechte verabschieden. ?]
+ 
+[? if achievement_hirschfeld: **Hirschfeld** - Reformen für die Rechte von Homosexuellen verabschieden. ?]
+ 
+[? if achievement_women_reichsbanner: **Mädchen in Uniform** - Der Platz der Frau ist im Reichsbanner. ?]
+ 
+[? if achievement_anders_als_die_andern: **Anders als die Andern** - Sexuelle Minderheiten werden die Republik verteidigen. ?]
+ 
+[? if achievement_bruder_zur_sonne: **Brüder, zur Sonne, zur Freiheit** - Die Arbeitslosigkeit senken, Reparationszahlungen aussetzen, Frauenrechte stärken, einen SPD-Präsidenten wählen und Hitler abschieben – und das alles in einem einzigen Spieldurchgang auf mindestens dem Schwierigkeitsgrad „Normal“. ?]
+ 
+[? if achievement_die_rote_fahne: **Die Rote Fahne** - sich der KPD bei ihrem Maiaufmarsch anschließen. ?]
+ 
+[? if achievement_panik_im_mittelstand: **Panik im Mittelstand** - Die Unterstützung der SPD im neuen Mittelstand liegt bei mindestens 50 %. ?]
+ 
+[? if achievement_bauernrevolution: **Bauernrevolution** - Die Unterstützung für die SPD in ländlichen Gebieten liegt bei mindestens 50 %. ?]
+ 
+[? if achievement_katholischer_sozialismus: **Katholischer Sozialismus** - Die Unterstützung für die SPD unter Katholiken liegt bei mindestens 50 %. ?]
+ 
+[? if achievement_grosse_volkspartei: **Große Volkspartei** - Alle Klassen verfügen über mindestens 40 % Unterstützung für die SPD. ?]
+ 
+[? if achievement_klassenkampf: **Klassenkampf** - Die Unterstützung für die SPD unter Arbeitern liegt bei mindestens 80 %, während sie in der Mittelschicht und in ländlichen Gebieten unter 20 % beträgt. ?]
+ 
+[? if achievement_raterepublik: **Räterepublik** - die Umgestaltung zu einer sozialistischen Wirtschaft einleiten. ?]
+ 
+[? if achievement_polykrise: **Polykrise** - einen Kapitalstreik und einen faschistischen Putsch überstehen. ?]
+ 
+[? if achievement_syndikalismus: **Syndikalismus** - die Übernahme von Fabriken durch die Arbeiter unterstützen. ?]
+ 
+[? if achievement_drei_pfeile: **Drei Pfeile** - einen Putsch ohne Bürgerkrieg niederschlagen. ?]
+ 
+[? if achievement_ausnahmezustand: **Ausnahmezustand** - Notstandsbefugnisse nutzen, um Wahlen abzusagen. ?]
+ 
+[? if achievement_eu: **Vereinigte Staaten von Europa** - eine „Europäische Union“ bilden. ?]
+ 
+[? if achievement_heidelberger_programm: **Heidelberger Programm** - die Ziele des Heidelberger Programms der SPD verwirklichen: soziale Wohlfahrt, Justizreform, Frauenrechte am Arbeitsplatz und in der Familie, progressive Besteuerung, Betriebsräte sowie die Bildung einer Europäischen Union. ?]
+ 
+[? if achievement_verfassungsreform: **Verfassungsreform** - eine Verfassungsänderung verabschieden. ?]
+ 
+[? if achievement_zeppelin_kapitan : **Zeppelinkapitän** - Hugo Eckener wurde zum Präsidenten gewählt. ?]
+ 
+[? if achievement_wahlrechts : **Wahlrechts für Frauen** - Marie Juchacz wurde zur Präsidentin gewählt. ?]
+ 
+[? if achievement_bundesrepublik : **Bundesrepublik** - Konrad Adenauer oder Kurt Schumacher wurde zum Präsidenten gewählt und Verfassungsreformen haben die Macht des Präsidenten beschnitten. ?]
+ 
+[? if achievement_republik_der_wissenschaft : **Republik der Wissenschaft** - Albert Einstein wurde zum Präsidenten gewählt. ?]
+ 
+[? if achievement_arbeiter_von_wien : **Arbeiter von Wien** - Sieg der SPÖ in Österreich. ?]
+ 
+[? if achievement_stolperstein: **Stolperstein** - Wir haben verloren, aber die Geschichte könnte uns ein Denkmal setzen... ?]
+ 
+ 
+= Unvollendete Errungenschaften
+ 
+[? if not achievement_eiserne_front : **Eiserne Front** - die Eiserne Front bilden. ?]
+ 
+[? if not achievement_civil_war : **Bürgerkrieg** - in einen langen Bürgerkrieg eintreten. ?]
+ 
+[? if not achievement_einigkeit : **Einigkeit** - Erreiche das Spielende ohne Bürgerkrieg im einfachen Modus. ?]
+ 
+[? if not achievement_einigkeit_und_recht : **Einigkeit und Recht** - Das Spielende auf dem Schwierigkeitsgrad „Normal“ ohne einen Bürgerkrieg erreichen. ?]
+ 
+[? if not achievement_einigkeit_und_recht_und_freiheit : **Einigkeit und Recht und Freiheit** - Erreiche das Ende des Spiels ohne Bürgerkrieg auf dem Schwierigkeitsgrad „Schwer“. ?]
+ 
+[? if not achievement_schwarz_rot_gold : **Schwarz-Rot-Gold** - Das Spielende im historischen Modus ohne einen Bürgerkrieg erreichen. ?]
+ 
+[? if not achievement_victory_for_the_republic: **Sieg für die Republik** - den Bürgerkrieg gewinnen. ?]
+ 
+[? if not achievement_bollwerk_der_demokratie: **Bollwerk der Demokratie** - Leiste Widerstand gegen den preußischen Putsch und siege. ?]
+ 
+[? if not achievement_red_tzar_of_prussia : **Roter Zar von Preußen** - Otto Braun ist Präsident, Kanzler und Ministerpräsident. ?]
+ 
+[? if not achievement_einheitsfront: **Einheitsfront** - Bilde eine Regierung aus SPD und KPD. ?]
+ 
+[? if not achievement_einheitsfront_2: **Sieg für die Einheitsfront** - Bilde eine Linke Front, die den Forderungen der KPD standhält. ?]
+ 
+[? if not achievement_volksfront: **Volksfront** - Bilde eine Regierung aus SPD, KPD, Z und DDP. ?]
+ 
+[? if not achievement_grosse_volksfront: **Große Volksfront** - Bilde unter der Führung von Joos für die Zentrumspartei und der Führung der Versöhner in der KPD eine Regierung aus SPD, KPD, Zentrum und DDP. ?]
+ 
+[? if not achievement_volksfront_2: **Sieg für die Volksfront** - Bilde eine Volksfront, die die Forderungen der KPD übersteht. ?]
+ 
+[? if not achievement_constitutional_coalition: **Verfassungskoalition** - eine „Verfassungskoalition“ bilden. ?]
+ 
+[? if not achievement_weimar_coalition: **Weimarer Koalition** - eine Weimarer Koalition bilden. ?]
+ 
+[? if not achievement_majority_party: **Mehrheitspartei** - eine Mehrheitsregierung aus allein der SPD bilden. ?]
+ 
+[? if not achievement_minderheitsregierung: **Minderheitsregierung** - eine SPD-Minderheitsregierung bilden. ?]
+ 
+[? if not achievement_volkspartei: **Volkspartei** - Die SPD ist eine Volkspartei. ?]
+ 
+[? if not achievement_sohn_seiner_klasse: **Sohn seiner Klasse** - Ernst Thälmann ist entweder Präsident oder Kanzler. ?]
+ 
+[? if not achievement_rote_millionar: **Der rote Millionär** - Willi Münzenberg ist Präsident. ?]
+ 
+[? if not achievement_versohnler: **Versöhnler** - Die Versöhner führen die KPD. ?]
+ 
+[? if not achievement_deport_hitler : **Der österreichische Gefreite** - Hitler abgeschoben. ?]
+ 
+[? if not achievement_wirtschaftspolitik: **Wirtschaftspolitik** - einen Wirtschaftsplan verabschieden. ?]
+ 
+[? if not achievement_wirtschaftswunder: **Wirtschaftswunder** - Nach 1932 eine geringere Arbeitslosigkeit als 1928, eine Inflation von unter 5 % und einen Haushaltsüberschuss aufweisen. ?]
+ 
+[? if not achievement_wirtschaftsexperiment: **Wirtschaftsexperiment** - zwei verschiedene Wirtschaftspläne umsetzen. ?]
+ 
+[? if not achievement_freie_marktwirtschaft: **Freie Marktwirtschaft** - Überlebe bis zum Ende des Spiels, ohne einen Wirtschaftsplan zu übernehmen. ?]
+ 
+[? if not achievement_equality: **Gleichheit** - Reformen für Frauenrechte verabschieden. ?]
+ 
+[? if not achievement_hirschfeld: **Hirschfeld** - Reformen für die Rechte von Homosexuellen verabschieden. ?]
+ 
+[? if not achievement_women_reichsbanner: **Mädchen in Uniform** - Der Platz der Frau ist im Reichsbanner. ?]
+ 
+[? if not achievement_anders_als_die_andern: **Anders als die Andern** - Sexuelle Minderheiten werden die Republik verteidigen. ?]
+ 
+[? if not achievement_bruder_zur_sonne: **Brüder, zur Sonne, zur Freiheit** - Die Arbeitslosigkeit senken, Reparationszahlungen aussetzen, Frauenrechte stärken, einen SPD-Präsidenten wählen und Hitler abschieben – und das alles in einem einzigen Spieldurchgang auf mindestens dem Schwierigkeitsgrad „Normal“. ?]
+ 
+[? if not achievement_die_rote_fahne: **Die Rote Fahne** - sich der KPD bei ihrem Maiaufmarsch anschließen. ?]
+ 
+[? if not achievement_panik_im_mittelstand: **Panik im Mittelstand** - Die Unterstützung der SPD im neuen Mittelstand liegt bei mindestens 50 %. ?]
+ 
+[? if not achievement_bauernrevolution: **Bauernrevolution** - Die Unterstützung für die SPD in ländlichen Gebieten liegt bei mindestens 50 %. ?]
+ 
+[? if not achievement_katholischer_sozialismus: **Katholischer Sozialismus** - Die Unterstützung für die SPD unter Katholiken liegt bei mindestens 50 %. ?]
+ 
+[? if not achievement_grosse_volkspartei: **Große Volkspartei** - Alle Klassen verfügen über mindestens 40 % Unterstützung für die SPD. ?]
+ 
+[? if not achievement_klassenkampf: **Klassenkampf** - Die Unterstützung für die SPD unter Arbeitern liegt bei mindestens 80 %, während sie in der Mittelschicht und in ländlichen Gebieten unter 20 % beträgt. ?]
+ 
+[? if not achievement_raterepublik: **Räterepublik** - die Umgestaltung zu einer sozialistischen Wirtschaft einleiten. ?]
+ 
+[? if not achievement_polykrise: **Polykrise** - einen Kapitalstreik und einen faschistischen Putsch überstehen. ?]
+ 
+[? if not achievement_syndikalismus: **Syndikalismus** - die Übernahme von Fabriken durch die Arbeiter unterstützen. ?]
+ 
+[? if not achievement_drei_pfeile: **Drei Pfeile** - einen Putsch ohne Bürgerkrieg niederschlagen. ?]
+ 
+[? if not achievement_ausnahmezustand: **Ausnahmezustand** - Notstandsbefugnisse nutzen, um Wahlen abzusagen. ?]
+ 
+[? if not achievement_eu: **Vereinigte Staaten von Europa** - eine „Europäische Union“ bilden. ?]
+ 
+[? if not achievement_heidelberger_programm: **Heidelberger Programm** - die Ziele des Heidelberger Programms der SPD verwirklichen: soziale Wohlfahrt, Justizreform, Frauenrechte am Arbeitsplatz und in der Familie, progressive Besteuerung, Betriebsräte sowie die Bildung einer Europäischen Union. ?]
+ 
+[? if not achievement_verfassungsreform: **Verfassungsreform** - eine Verfassungsänderung verabschieden. ?]
+ 
+[? if not achievement_zeppelin_kapitan : **Zeppelinkapitän** - Hugo Eckener wurde zum Präsidenten gewählt. ?]
+ 
+[? if not achievement_wahlrechts : **Wahlrechts für Frauen** - Marie Juchacz wurde zur Präsidentin gewählt. ?]
+ 
+[? if not achievement_bundesrepublik : **Bundesrepublik** - Konrad Adenauer oder Kurt Schumacher wurde zum Präsidenten gewählt und Verfassungsreformen haben die Macht des Präsidenten beschnitten. ?]
+ 
+[? if not achievement_republik_der_wissenschaft : **Republik der Wissenschaft** - Albert Einstein wurde zum Präsidenten gewählt. ?]
+ 
+[? if not achievement_arbeiter_von_wien : **Arbeiter von Wien** - Sieg der SPÖ in Österreich. ?]
+ 
+[? if not achievement_stolperstein: **Stolperstein** - Wir haben verloren, aber die Geschichte könnte uns ein Denkmal setzen... ?]
+
+
+@end_game
+game-over: true

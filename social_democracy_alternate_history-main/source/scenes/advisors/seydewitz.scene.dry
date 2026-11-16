@@ -1,0 +1,46 @@
+title: Max Seydewitz
+is-pinned-card: true
+tags: advisor, left
+card-image: img/portraits/SeydewitzMax.jpg
+view-if: seydewitz_advisor = 1
+new-page: true 
+
+= Max Seydewitz
+
+Max Seydewitz ist ein ehemaliger Vorsitzender der Jugendorganisation und derzeitiger Anhänger des linken Flügels der SPD; er tritt für den Klassenkampf ein.
+
+- @class_struggle
+- @socialist_youth
+- @against_toleration
+- @root: Zurück
+
+@class_struggle
+title: Kundgebung für den Klassenkampf
+subtitle: Der Kern des Sozialismus sollte der Kampf des Proletariats gegen die Bourgeoisie sein.
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+choose-if: advisor_action_timer = 0
+on-arrival: advisor_action_timer = 6; workers_spd += 4*(1-dissent); unemployed_spd += 3*(1-dissent); workers_spd += 4*(1-dissent) if nationalization_progress > 0; unemployed_spd += 3*(1-dissent) if nationalization_progress > 0; left_strength += 5; left_dissent -= 5; old_middle_spd -= 3; new_middle_spd -= 2
+
+Unsere Botschaft vom Klassenkampf spricht den linken Flügel der Arbeiterklasse an, während sie dem Mittelstand möglicherweise vor den Kopf stößt. [? if nationalization_progress > 0 : Unsere Erfolge bei der Nationalisierung haben unsere Botschaft unterstützt. ?]
+
+
+@socialist_youth
+title: Unterstützt die Sozialistische Jugend
+subtitle: Wir müssen unseren Ruf als Partei alter Männer ablegen, indem wir die Mittel für die Jugendorganisationen aufstocken. -1 Ressourcen
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?] [? if resources <= 0 : Nicht genügend Ressourcen. ?]
+choose-if: advisor_action_timer = 0 and resources > 0
+on-arrival: advisor_action_timer = 6; resources -= 1; left_strength += 5; left_dissent -= 3; rb_strength += 50; rb_militancy += 0.025; workers_spd += 2*(1-dissent); new_middle_spd += 1; radicalization += 1;
+
+Seydewitz unterstützt den Aufbau der Sozialistischen Jugend, was der Linken Zulauf verschafft und die Militanz des Reichsbanners steigert.
+
+@against_toleration
+title: Gegen Tolerierung
+subtitle: Beenden Sie unsere derzeitige Tolerierungsvereinbarung und stürzen Sie die Regierung durch ein Misstrauensvotum.
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?] [? if spd_toleration == 0 : Die SPD befindet sich derzeit nicht in einem Tolerierungsverhältnis. ?]
+view-if: not constructive_vonc
+choose-if: advisor_action_timer == 0 and spd_toleration
+on-arrival: advisor_action_timer = 6; next_election_time = time + 3 if next_election_time > time+3; next_election_month = month + 3 if next_election_time >= time + 3; next_election_year = year if next_election_time >= time + 3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; spd_toleration = 0; left_strength += 8; pro_republic -= 4; new_middle_spd -= 3; rural_spd -= 3; old_middle_spd -= 3; catholics_spd -= 3; reformist_dissent += 8
+
+Wir sind der Last der Tolerierung überdrüssig geworden und haben ein Misstrauensvotum gegen die derzeitige Minderheitsregierung beantragt.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].

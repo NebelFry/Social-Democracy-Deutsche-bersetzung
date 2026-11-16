@@ -1,0 +1,13 @@
+title: Wirtschaftssanktionen
+subtitle: Unsere militärische Aufrüstung hat Sanktionen seitens Frankreichs und anderer Länder nach sich gezogen.
+new-page: true
+on-arrival: workers_nsdap += 3; new_middle_nsdap += 3; old_middle_nsdap += 4; rural_nsdap += 3; unemployed += 3; workers_spd -= 4 if spd_in_government; new_middle_spd -= 5 if spd_in_government; old_middle_spd -= 5 if spd_in_government; rural_spd -= 4 if spd_in_government; economic_growth -= 1; nationalism += 5; pacifism -= 1
+tags: event
+view-if: reichswehr_strength > 140
+max-visits: 1
+
+= Wirtschaftssanktionen
+
+Als Reaktion auf unsere militärische Aufrüstung unter Verstoß gegen den Versailler Vertrag haben die Westalliierten Wirtschaftssanktionen gegen Deutschland verhängt. Die Lasten dieser Sanktionen trägt größtenteils das Proletariat; die Bevölkerung sieht sich zunehmender Armut gegenüber.
+
+# options: 

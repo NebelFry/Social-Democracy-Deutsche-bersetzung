@@ -1,0 +1,98 @@
+title: Die KPD überprüft unsere Fortschritte bei der Erreichung der Ziele der Koalition...
+view-if: (in_popular_front or in_left_front) and (kpd_ultimatum_timer = 0 or (welfare_goal_completed and agriculture_goal_completed and economy_goal_completed and finance_goal_completed and labor_goal_completed and reichswehr_goal_completed)) and kpd_goals_seen = 1 and kpd_ultimatum_seen = 0 and spd_in_government
+on-arrival: {!
+Q.kpd_ultimatum_seen = 1;
+Q.kpd_goals_completed = 1;
+Q.kpd_score = 6;
+if (Q.welfare_goal && !Q.welfare_goal_completed) {
+    Q.kpd_goals_completed = 0;
+    Q.kpd_score -= 1;
+}
+if (Q.agriculture_goal && !Q.agriculture_goal_completed) {
+    Q.kpd_goals_completed = 0;
+    Q.kpd_score -= 1;
+}
+if (Q.economy_goal && !Q.economy_goal_completed) {
+    Q.kpd_goals_completed = 0;
+    Q.kpd_score -= 1;
+}
+if (Q.finance_goal && !Q.finance_goal_completed) {
+    Q.kpd_goals_completed = 0;
+    Q.kpd_score -= 1;
+}
+if (Q.labor_goal && !Q.labor_goal_completed) {
+    Q.kpd_goals_completed = 0;
+    Q.kpd_score -= 1;
+}
+if (Q.foreign_goal && !Q.foreign_goal_completed) {
+    Q.kpd_goals_completed = 0;
+    Q.kpd_score -= 1;
+}
+if (Q.interior_goal && !Q.interior_goal_completed) {
+    Q.kpd_goals_completed = 0;
+}
+if (Q.reichswehr_goal && !Q.reichswehr_goal_completed) {
+    Q.kpd_goals_completed = 0;
+    Q.kpd_score -= 1;
+}
+!}
+new-page: true
+tags: event
+go-to: goals_success if kpd_goals_completed; goals_failed if not kpd_goals_completed
+
+= Ziele der KPD
+
+Zu Beginn der Amtszeit dieser Regierung legte die KPD eine Liste von Zielen für die Koalition vor:
+
+[? if welfare_goal = 1 : - Sozialhilfeprogramme ausweiten - [? if welfare_goal_completed : erfolgreich ?][? if not welfare_goal_completed: gescheitert ?] ?]
+
+[? if agriculture_goal = 1 : - Bodenreform durchführen - [? if agriculture_goal_completed : erfolgreich ?][? if not agriculture_goal_completed: gescheitert ?] ?]
+
+[? if economy_goal = 1 : - Einleitung einer umfassenden Verstaatlichung der Wirtschaft - [? if economy_goal_completed : erfolgreich ?][? if not economy_goal_completed: gescheitert ?] ?]
+
+[? if finance_goal = 1 : - Besteuerung progressiver gestalten - [? if finance_goal_completed : erfolgreich ?][? if not finance_goal_completed: gescheitert ?] ?]
+
+[? if labor_goal = 1 : - Arbeiter in Arbeitskämpfen unterstützen - [? if labor_goal_completed : erfolgreich ?][? if not labor_goal_completed: gescheitert ?] ?]
+
+[? if foreign_goal = 1 : - Beziehungen zur Sowjetunion verbessern - [? if foreign_goal_completed : erfolgreich ?][? if not foreign_goal_completed: gescheitert ?] ?]
+
+[? if reichswehr_goal = 1 : - Mittel für die Reichswehr kürzen - [? if reichswehr_goal_completed : erfolgreich ?][? if not reichswehr_goal_completed: gescheitert ?] ?]
+
+@goals_failed
+on-arrival: kpd_relation -= 10; workers_spd -= 8; unemployed_spd -= 8;
+
+Leider ist es uns nicht gelungen, alle von der KPD gesteckten Ziele zu erreichen. Sie planen, ein Misstrauensvotum gegen unsere Regierung zu beantragen und haben bereits eine Propagandakampagne gestartet, um unsere Regierung in den Augen der Arbeiter zu delegitimieren.
+
+- @appeal: Appell an die Kommunisten, Geduld zu haben – wir bemühen uns!
+- @kpd_vote_of_no_confidence.support_center: Könnten wir eine neue Regierung unter Beteiligung der Zentrumspartei und [+ ddp_name +] (und möglicherweise der DVP) bilden?
+- @kpd_vote_of_no_confidence.let_it_happen: Lassen wir die Abstimmung stattfinden.
+- @no_vonc: Aufgrund der Verfassungsreformen können sie kein Misstrauensvotum beantragen, aber sie können unsere Regierung bei jeder Gelegenheit behindern.
+
+@appeal
+choose-if: (kpd_score >= 4 and kpd_relation > 50 and kpd_appeal_seen = 0) or kpd_party_leader = "Conciliators"
+unavailable-subtitle: [? if kpd_score < 4: Sie halten uns nicht für ernsthaft in unserem Bestreben, die Ziele der Koalition zu erreichen. ?] [? if kpd_relation < 50: Unsere Beziehungen sind zu schlecht. ?] [? if kpd_appeal_seen = 1: Wir haben keine Zeit mehr. ?]
+on-arrival: kpd_ultimatum_seen = 0; kpd_ultimatum_timer += 6; kpd_appeal_seen = 1
+
+Wir betonen, dass wir hart an der Verwirklichung der Ziele der Koalition arbeiten und im Namen der proletarischen Solidarität müssen wir dafür sorgen, dass diese Koalition funktioniert. Überraschenderweise zeigt die KPD Verständnis für unsere Bitten und ist bereit, uns weitere sechs Monate Zeit zu geben, bis die Koalitionsziele erreicht sein müssen.
+
+
+@goals_success
+on-arrival: workers_spd += 8; unemployed_spd += 8; kpd_relation += 10; workers_kpd += 5; kpd_coalition_success += 1
+go-to: popular_front_achievement if in_popular_front; united_front_achievement if in_left_front
+
+Entgegen allen Erwartungen wurden die Ziele der KPD vollständig erreicht! Offenbar hatten sich die Kommunisten nicht auf diesen Fall eingestellt, eine Arbeiterregierung, die erfolgreich auf demokratischem Wege gebildet wurde. Sie werden unsere Regierung für den Rest der Amtszeit weiterhin „tolerieren“ und zugleich als Wachhund gegen ein Abgleiten ins Bürgerliche fungieren.
+
+
+@popular_front_achievement
+on-arrival: popular_front_success += 1
+achievement: volksfront_2
+
+@united_front_achievement
+on-arrival: united_front_success += 1
+achievement: einheitsfront_2
+
+@no_vonc
+view-if: constructive_vonc
+on-arrival: in_popular_front = 0; in_left_front = 0; in_minority_government = 1;
+
+Wir sind faktisch zu einer Minderheitsregierung geworden, und die KPD beabsichtigt, unsere Versuche zur Umsetzung politischer Maßnahmen zu blockieren.

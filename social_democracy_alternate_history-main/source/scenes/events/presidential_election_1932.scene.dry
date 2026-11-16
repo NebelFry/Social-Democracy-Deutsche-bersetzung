@@ -1,0 +1,444 @@
+title: Präsidentschaftswahl
+subtitle: Hindenburg runs for re-election...
+view-if: year = 1932 and (month = 4 or month = 5) and presidential_election_seen = 0
+frequency: 1000
+max-visits: 1
+new-page: true
+on-arrival: braun_campaign = 0; hitler_support_hindenburg = 0; presidential_election_seen = 1; nsdap_candidate = "Hitler" if hitler_deported == 0 else nsdap_candidate = "Göring";
+tags: event
+go-to: election_algorithm
+set-jump: pres_election
+face-image: img/hindenburg_election.jpg
+
+@pres_election
+
+Die Präsidentschaftswahl steht bald bevor. [? if spd_in_government = 0 : Obwohl das Amt des Kanzlers üblicherweise von größerer Bedeutung ist, waren jüngste Regierungen auf die Befugnisse des Präsidenten zu Notverordnungen angewiesen, was dieses Amt unverzichtbar macht. ?] [? if hitler_deported==0 : Die Nationalsozialisten werden Hitler ins Rennen schicken, während die KPD Thälmann aufstellt. Ein Sieg Hitlers würde das Ende der parlamentarischen Demokratie und den Beginn einer Ära unsagbaren Schreckens bedeuten. ?][? if hitler_deported==1 : Da Hitler des Landes verwiesen wurde, werden die Nationalsozialisten an seiner Stelle Hermann Göring ins Rennen schicken. Er gilt weithin als Stellvertreter Hitlers, der trotz seiner juristischen Verfolgung weiterhin über eine Anhängerschaft verfügt, die sich seine Rückkehr nach Deutschland wünscht. Unterdessen wird die KPD Ernst Thälmann aufstellen. ?]
+[? if sapd_formed: Die SAPD, unsere ehemaligen Linken, unterstützt Thälmann von der KPD und wird sich voraussichtlich gemeinsam mit den Kommunisten für ihn aussprechen. ?]
+
+# if hitler is deported, who would nsdap run? Duesterberg? or Goering?
+# Goering runs, essentially as a proxy for Hitler, who is now stateless.
+
+Viele fordern uns auf, den Amtsinhaber Hindenburg zu unterstützen, ungeachtet seiner bekannten reaktionären Tendenzen. Ist er tatsächlich das beste Bollwerk gegen Hitlers Aufstieg? Andererseits plädieren viele in unserer Partei für eine erneute Kandidatur Otto Brauns, doch dieser zögert.
+
+[? if kpd_relation >= 50 : Eine weitere eigenartige Möglichkeit ist eine Einheitsfront mit den Kommunisten, sei es zur Unterstützung Thälmanns oder unseres eigenen Kandidaten. ?]
+
+
+- @support_hindenburg: Hindenburg unterstützen.
+- @support_braun: Otto Braun von der SPD als Kandidaten aufstellen.
+- @support_thalmann: Unterstützen wir Ernst Thälmann von der KPD.
+
+@support_hindenburg
+subtitle: Dies ist die Standardoption.
+
+Trotz seiner bekannten reaktionären Gesinnung hat Hindenburg die Nazis zumindest in Schach gehalten. Daher müssen wir ihn unterstützen.
+
+- @final_election: Die endgültige Abstimmung...
+
+@support_braun
+subtitle: Das wird uns 2 Ressourcen kosten.
+choose-if: resources >= 2
+unavailable-subtitle: Nicht genügend Ressourcen.
+on-arrival: resources -= 2; braun_campaign = 1
+go-to: braun_campaign
+
+Es erfordert einigen Aufwand, eine eher unerwartete Kampagne zu führen. Zunächst muss Braun dazu bewegt werden, überhaupt zu kandidieren. Er selbst hatte sich für die Wahl Hindenburgs ausgesprochen und es bedarf ziemlicher Überzeugungsarbeit, um ihm seine Bestimmung vor Augen zu führen.
+
+Die winzigen Überreste der Demokratischen Partei (jetzt Deutsche Staatspartei genannt) werden uns wahrscheinlich unterstützen. Wer sonst? Können wir das Zentrum davon überzeugen, Braun zu unterstützen? Und was ist mit den Kommunisten?
+
+
+@support_thalmann
+choose-if: kpd_relation >= 50 and reformist_strength < left_strength
+unavailable-subtitle: [? if kpd_relation < 50 : Wir unterhalten keine hinreichend guten Beziehungen zu den Kommunisten, sodass sie nicht einmal bereit sind, unsere Unterstützung anzunehmen. ?] [? if reformist_strength >= left_strength : Der reformorientierte Flügel kann die Partei davon abbringen, diese Regelung zu unterstützen. ?]
+
+Thälmann zu unterstützen, ist in unserer Partei ziemlich unbeliebt, auch wenn die Kommunisten unsere Unterstützung annehmen. Sind wir uns sicher?
+
+- @support_thalmann_2: Ja, wir werden Thälmann unterstützen, trotz der Appelle der Reformisten dagegen.
+- @support_braun: Unterstützen wir stattdessen Braun.
+- @support_hindenburg: Unterstützen wir stattdessen Hindenburg.
+
+@support_thalmann_2
+on-arrival: spd_support_thalmann = 1; reformist_dissent += 15; center_dissent += 10; labor_dissent += 5; neorevisionist_dissent += 10; catholics_spd -= 5; workers_spd -= 3; kpd_relation += 10; communist_coalition += 2; z_relation -= 15; dvp_relation -= 15; ddp_relation -= 10
+
+Gut. Wir haben uns hinter den Vorsitzenden Thälmann von der KPD gestellt.
+
+- @final_election: Die endgültige Abstimmung...
+
+@braun_campaign
+
+- @convince_z: Überzeugen wir die Zentrumspartei.
+- @convince_kpd: Überzeugen wir die Kommunisten.
+- @convince_liberals: Überzeugen wir die verbliebenen Liberalen, wo auch immer sie sich befinden.
+- @final_election: Die endgültige Abstimmung...
+
+@convince_z
+choose-if: spd_votes >= z_votes
+unavailable-subtitle: Die Mitte weiß, dass sie beliebter ist als wir, sie sieht keinen Grund, unseren Kandidaten zu unterstützen.
+on-arrival: {!
+Q.z_support_braun = 0;
+if (Q.z_relation >= 55 || (Q.z_relation > 35 && Q.z_party_leader == "Joos")) {
+    Q.z_support_braun = 1;
+} else if (Q.z_relation <= 35) {
+    Q.z_support_braun = 0;
+} else {
+    Q.z_support_braun = 2;
+}
+!}
+go-to: z_failed if z_support_braun = 0 or (z_support_braun == 2 and historical_mode); z_success if z_support_braun = 1; z_partial if z_support_braun = 2 and not historical_mode
+max-visits: 1
+
+Wir erinnern die Führungskräfte der Zentrumspartei an Hindenburgs antikatholische Haltung und versuchen, sie davon zu überzeugen, dass Hindenburgs Weg letztlich zu Hitler führen wird. Zudem erinnern wir sie an die Erfolge, die sie als Teil der Weimarer Koalition in Preußen an der Seite von Otto Braun erzielt haben, sowie an unsere Unterstützung für den Zentrumskandidaten Wilhelm Marx bei der Reichspräsidentenwahl 1925.
+
+@z_success
+go-to: braun_campaign
+
+Das Zentrum ist überzeugt! Es wird Teil der Braun-Koalition sein.
+
+@z_partial
+
+Das Zentrum ist mit unseren Argumenten nicht zufrieden, aber durchaus offen dafür, sich überzeugen zu lassen. Sie sind bereit, eine gemeinsame Kampagne durchzuführen, sofern wir die Ressourcen bereitstellen.
+
+- @pay_z: Geben wir ihnen die Ressourcen, die sie benötigen.
+- @braun_campaign: Vergesst das Zentrum.
+
+@pay_z
+choose-if: resources >= 3
+subtitle: -3 resources
+unavailable-subtitle: Nicht genügend Ressourcen (3 erforderlich).
+on-arrival: resources -= 3; z_support_braun = 1
+go-to: braun_campaign
+
+Angesichts unserer Ressourcen ist die Zentrumspartei davon überzeugt, Braun gegenüber Hindenburg zu unterstützen.
+
+@z_failed
+go-to: braun_campaign
+
+Leider gelingt es uns nicht, sie von Hindenburg abzubringen.
+
+@convince_kpd
+choose-if: spd_votes >= kpd_votes
+unavailable-subtitle: Die KPD weiß, dass sie beliebter ist als wir, sie sieht keinen Grund, unseren Kandidaten zu unterstützen.
+max-visits: 1
+
+Die KPD unterstützt ihren eigenen Kandidaten, Ernst Thälmann. [? if kpd_relation >= 50 : Sie sind jedoch bereit, sich davon überzeugen zu lassen, ihre Kampagne aufzugeben und Braun zu unterstützen, wie überzeugen wir sie? ?][? if kpd_relation < 50 or kpd_party_leader != "Conciliators" : Sie scheinen nicht bereit zu sein, sich überzeugen zu lassen. ?]
+
+- @kpd_resources: Nutzen wir unsere Ressourcen.
+- @kpd_relations: Nutzen wir unsere guten Beziehungen.
+- @braun_campaign: Vergesst die KPD.
+
+@kpd_resources
+view-if: kpd_relation >= 50 and not historical_mode
+choose-if: resources >= 3
+subtitle: -3 Ressourcen
+unavailable-subtitle: Nicht genügend Ressourcen (3 erforderlich).
+on-arrival: resources -= 3; kpd_support_braun = 1
+go-to: braun_campaign
+
+Die KPD unterstützt nun Braun bei der Präsidentschaftswahl! Wir bitten sie, ihre Unterstützung diskret zu halten, um die bürgerlichen Wähler nicht abzuschrecken.
+
+@kpd_relations
+view-if: kpd_relation >= 60 or (kpd_party_leader == "Conciliators" and kpd_relation >= 45)
+unavailable-subtitle: Unsere Beziehungen sind nicht gut genug.
+on-arrival: kpd_support_braun = 1
+go-to: braun_campaign
+
+Die KPD unterstützt nun Braun bei der Präsidentschaftswahl! Wir bitten sie, ihre Unterstützung diskret zu halten, um die bürgerlichen Wähler nicht abzuschrecken.
+
+
+
+@convince_liberals
+max-visits: 1
+go-to: convince_liberals_success if dvp_relation >= 50; convince_liberals_fail if dvp_relation < 50
+
+Der Stimmenanteil der Liberalen ([+ ddp_name +] und DVP) ist im Laufe der Zeit zurückgegangen; sie werden uns also wahrscheinlich kaum eine Hilfe sein. Immerhin ist die [+ ddp_name +] bereits bereit, Braun zu unterstützen.
+
+@convince_liberals_success
+on-arrival: dvp_support_braun = 1
+go-to: braun_campaign
+
+Dank unserer guten Beziehungen hat die DVP zugesagt, Braun im Wahlkampf zu unterstützen.
+
+@convince_liberals_fail
+on-arrival: dvp_support_braun = 0
+go-to: braun_campaign
+
+Es gelang uns nicht, die DVP davon zu überzeugen, Braun zu unterstützen.
+
+
+
+@final_election
+on-arrival: election_round = 0
+go-to: election_algorithm
+set-jump: post_election
+
+
+@post_election
+on-arrival: {!
+Q.braun_votes = 0;
+Q.hindenburg_votes = 0;
+Q.hitler_votes = 0;
+Q.thalmann_votes = 0;
+
+// initial phase:
+Q.hitler_votes += Q.nsdap_normalized;
+Q.hindenburg_votes += Q.other_normalized;
+Q.hindenburg_votes += Q.dnvp_normalized;
+
+if (Q.braun_campaign) {
+    Q.braun_votes += Q.spd_normalized;
+    Q.braun_votes += Q.ddp_normalized;
+    if (Q.z_support_braun && Q.z_support_braun == 1) {
+        Q.braun_votes += Q.z_normalized;
+    } else {
+        Q.hindenburg_votes += Q.z_normalized;
+    }
+    if (Q.kpd_support_braun) {
+        Q.braun_votes += Q.kpd_normalized;
+        if (Q.sapd_formed && Q.sapd_votes) {
+            Q.braun_votes += Q.sapd_normalized;
+        }
+    } else {
+        Q.thalmann_votes += Q.kpd_normalized;
+        if (Q.sapd_formed && Q.sapd_votes) {
+            Q.thalmann_votes += Q.sapd_normalized;
+        }
+    }
+    if (Q.dvp_support_braun) {
+        Q.braun_votes += Q.dvp_normalized;
+    } else {
+        Q.hindenburg_votes += Q.dvp_normalized;
+    }
+} else if (Q.spd_support_thalmann) {
+    Q.thalmann_votes += Q.kpd_normalized;
+    Q.thalmann_votes += Q.spd_normalized;
+    Q.hindenburg_votes += Q.z_normalized;
+    Q.hindenburg_votes += Q.ddp_normalized;
+    Q.hindenburg_votes += Q.dvp_normalized;
+} else {
+    Q.hindenburg_votes += Q.spd_normalized;
+    Q.hindenburg_votes += Q.z_normalized;
+    Q.hindenburg_votes += Q.ddp_normalized;
+    Q.hindenburg_votes += Q.dvp_normalized;
+    Q.thalmann_votes += Q.kpd_normalized;
+}
+if (Q.hitler_support_hindenburg) {
+    Q.hitler_votes -= Q.nsdap_normalized;
+    Q.hindenburg_votes += Q.nsdap_normalized;
+}
+
+if (Q.hindenburg_to_braun_bonus) {
+    Q.hindenburg_votes -= Q.hindenburg_to_braun_bonus;
+    Q.braun_votes += Q.hindenburg_to_braun_bonus;
+}
+if (Q.thalmann_to_braun_bonus) {
+    Q.thalmann_votes -= Q.thalmann_to_braun_bonus;
+    Q.braun_votes += Q.thalmann_to_braun_bonus;
+}
+
+// check for majority
+Q.hindenburg_votes = Math.round(Q.hindenburg_votes*1000)/10;
+Q.braun_votes = Math.round(Q.braun_votes*1000)/10;
+Q.hitler_votes = Math.round(Q.hitler_votes*1000)/10;
+Q.thalmann_votes = Math.round(Q.thalmann_votes*1000)/10;
+
+Q.hindenburg_majority = (Q.hindenburg_votes >= 50);
+Q.thalmann_majority = (Q.thalmann_votes >= 50);
+Q.hitler_majority = (Q.hitler_votes >= 50);
+Q.braun_majority = (Q.braun_votes >= 50);
+Q.any_majority = Q.hindenburg_majority | Q.thalmann_majority | Q.hitler_majority | Q.braun_majority;
+
+// check for plurality
+Q.hindenburg_plurality = (Q.hindenburg_votes >= Q.hitler_votes && Q.hindenburg_votes >= Q.braun_votes && Q.hindenburg_votes >= Q.thalmann_votes);
+Q.thalmann_plurality = (Q.thalmann_votes >= Q.hindenburg_votes && Q.thalmann_votes >= Q.braun_votes && Q.thalmann_votes >= Q.hitler_votes);
+Q.hitler_plurality = (Q.hitler_votes >= Q.hindenburg_votes && Q.hitler_votes >= Q.braun_votes && Q.hitler_votes >= Q.thalmann_votes);
+Q.braun_plurality = (Q.braun_votes >= Q.hindenburg_votes && Q.braun_votes >= Q.hitler_votes && Q.braun_votes >= Q.thalmann_votes);
+// If no candidate gets above 50%, then there's a second round. In the second round, a plurality wins. 
+Q.election_round += 1;
+
+// making the vote numbers nicer for the display
+Q.hindenburg_votes_disp = Q.hindenburg_votes.toFixed(1);
+Q.braun_votes_disp = Q.braun_votes.toFixed(1);
+Q.hitler_votes_disp = Q.hitler_votes.toFixed(1);
+Q.thalmann_votes_disp = Q.thalmann_votes.toFixed(1);
+!}
+go-to: hindenburg_wins if hindenburg_majority == 1; thalmann_wins if thalmann_majority == 1; hitler_wins if hitler_majority == 1; braun_wins if braun_majority == 1; no_majority_round1 if any_majority == 0 and election_round == 1; round2_results if election_round >= 2
+
+Ergebnisse:
+
+Hindenburg - [+ hindenburg_votes_disp +]%
+
+[+ nsdap_candidate +] - [+ hitler_votes_disp +]%
+
+[? if kpd_support_braun == 0 : Thälmann - [+ thalmann_votes_disp +]% ?]
+
+[? if braun_campaign > 0 : Braun - [+ braun_votes_disp +]% ?]
+
+@no_majority_round1
+on-arrival: hitler_support_hindenburg = 1 if (braun_plurality or thalmann_plurality)
+go-to: round2_menu
+
+In dieser Runde gibt es keine Mehrheit. In der zweiten Runde gewinnt derjenige Kandidat, der die meisten Stimmen auf sich vereint. Was sollten wir tun?
+
+[? if braun_plurality or thalmann_plurality : Um die Stimmen des rechten Lagers zu bündeln und zu verhindern, dass ein Sozialist Präsident wird, tritt [+ nsdap_candidate +] im zweiten Wahlgang nicht mehr an und unterstützt nun Hindenburg. ?]
+
+
+@round2_menu
+
+- @round2_convince_z: Überzeugen wir das Zentrum, seine Unterstützung auf uns zu verlagern.
+- @round2_convince_kpd: Überzeugen wir die KPD, ihre Unterstützung auf uns zu verlagern.
+- @round2_hindenburg: Verlagern wir unsere Unterstützung auf Hindenburg.
+- @round2_thalmann: Verlagern wir unsere Unterstützung auf Thälmann von der KPD.
+- @round2_vote: Die Abstimmung der zweiten Runde kann beginnen.
+
+
+@round2_convince_z
+view-if: braun_campaign > 0 and z_support_braun != 1 
+choose-if: spd_votes >= z_votes
+unavailable-subtitle: Die Zentrumspartei weiß, dass sie beliebter ist als wir, sie sieht keinen Grund, unseren Kandidaten zu unterstützen.
+on-arrival: {!
+Q.z_support_braun = 0;
+// if Hindenburg support is greater than Hitler and Braun support, this should be much harder
+
+if ((Q.z_relation >= 55 && Q.braun_votes >= Q.hindenburg_votes) || (Q.z_relation > 35 && Q.z_party_leader == "Joos")) {
+    Q.z_support_braun = 1;
+    if (Q.hitler_support_hindenburg) {
+        Q.hindenburg_to_braun_bonus += Q.other_normalized/2;
+    }
+} else if (Q.z_relation >= 50 && Q.hitler_support_hindenburg) {
+    Q.z_support_braun = 1;
+    Q.hindenburg_to_braun_bonus += Q.other_normalized/2;
+} else if (Q.z_relation <= 35 || (Q.z_relation <= 45 && Q.braun_votes < Q.hindenburg_votes && Q.hindenburg_votes > Q.hitler_votes && Q.difficulty >= 0)) {
+    Q.z_support_braun = 0;
+} else {
+    Q.z_support_braun = 2;
+}
+!}
+go-to: r2_z_failed if z_support_braun = 0 or (z_support_braun = 2 and historical_mode); r2_z_success if z_support_braun = 1; r2_z_partial if z_support_braun = 2 and not historical_mode
+max-visits: 1
+
+@r2_z_success
+go-to: round2_menu
+on-departure: hitler_support_hindenburg = 1 if braun_votes + z_votes > hitler_votes
+
+[? if hitler_support_hindenburg : Die Haltung des Zentrums wird durch die Unterstützung Hindenburgs seitens der Nationalsozialisten beeinflusst und die Partei ist bereit, sich von ihm abzuwenden. ?] Das Zentrum ist überzeugt! Es wird Teil der Braun-Koalition sein. [? if hitler_support_hindenburg : Darüber hinaus werden sie auch einige kleinere Parteien hinzuziehen, die uns unterstützen werden. ?]
+
+[? if not hitler_support_hindenburg and braun_votes + z_votes > hitler_votes: Da die Zentrumspartei Braun unterstützt, ist [+ nsdap_candidate +] aus dem Rennen ausgeschieden und die Nazis unterstützen Hindenburg, um zu verhindern, dass ein Sozialist Präsident wird. ?]
+
+@r2_z_partial
+
+Die Zentrumspartei ist von unseren Argumenten nicht überzeugt, zeigt sich aber offen dafür, sich überzeugen zu lassen[? if hitler_support_hindenburg: , insbesondere angesichts der Unterstützung der Nazis für Hindenburg. ?]. Sie ist zu einer gemeinsamen Kampagne bereit, sofern wir die Mittel bereitstellen.
+
+- @r2_pay_z: Geben wir ihnen die Ressourcen, die sie benötigen.
+- @round2_menu: Vergesst die Zentrumspartei.
+
+@r2_pay_z
+choose-if: resources >= 2
+subtitle: -2 Ressouren
+unavailable-subtitle: Nicht genügend Ressourcen (2 erforderlich)
+on-arrival: resources -= 2; z_support_braun = 1
+on-departure: hitler_support_hindenburg = 1 if braun_votes + z_votes > hitler_votes
+go-to: round2_menu
+
+Angesichts unserer Ressourcen ist die Zentrumspartei davon überzeugt, Braun gegenüber Hindenburg zu unterstützen.
+
+[? if not hitler_support_hindenburg and braun_votes + z_votes > hitler_votes: Da die Zentrumspartei Braun unterstützt, ist [+ nsdap_candidate +] aus dem Rennen ausgeschieden und die Nazis haben Hindenburg unterstützt, um zu verhindern, dass ein Sozialist Präsident wird. ?]
+
+@r2_z_failed
+go-to: round2_menu
+
+Leider gelingt es uns nicht, sie von Hindenburg abzubringen. [? if hindenburg_votes > braun_votes : Angesichts der Tatsache, dass Hindenburg mehr Stimmen erhielt als Braun, sind sie der Ansicht, dass wir uns an Hindenburg wenden sollten und nicht umgekehrt. ?]
+
+
+
+
+@round2_convince_kpd
+choose-if: spd_votes >= kpd_votes
+unavailable-subtitle: Die KPD weiß, dass sie beliebter ist als wir, sie sieht keinen Grund, unseren Kandidaten zu unterstützen.
+view-if: braun_campaign > 0 and kpd_support_braun == 0 
+max-visits: 1
+
+Die KPD setzt sich weiterhin für Ernst Thälmann ein. [? if kpd_relation >= 45 : Die Koalition aus Nazis und Hindenburg bereitet ihnen jedoch solche Sorgen, dass sie sich dazu bewegen lassen, ihre Kampagne aufzugeben und Braun zu unterstützen. ?][? if kpd_relation < 45 : Sie scheinen nicht bereit zu sein, sich überzeugen zu lassen. ?]
+
+- @r2_kpd_resources: Nutzen wir unsere Ressourcen.
+- @r2_kpd_relations: Nutzen wir unsere guten Beziehungen.
+- @round2_menu: Vergesst die KPD.
+
+@r2_kpd_resources
+view-if: kpd_relation >= 45 and not historical_mode
+choose-if: resources >= 3
+subtitle: -3 Ressourcen
+unavailable-subtitle: Nicht genügend Ressourcen (3 erforderlich).
+on-arrival: resources -= 3; kpd_support_braun = 1
+go-to: round2_menu
+
+Die KPD unterstützt nun Braun bei der Präsidentschaftswahl! Wir bitten sie, ihre Unterstützung diskret zu halten, um die bürgerlichen Wähler nicht abzuschrecken.
+
+@r2_kpd_relations
+view-if: kpd_relation >= 60 or (kpd_party_leader == "Conciliators" and kpd_relation >= 45)
+unavailable-subtitle: Unsere Beziehungen sind nicht gut genug.
+on-arrival: kpd_support_braun = 1
+go-to: round2_menu
+
+Die KPD unterstützt nun Braun bei der Präsidentschaftswahl! Wir bitten sie, ihre Unterstützung diskret zu halten, um die bürgerlichen Wähler nicht abzuschrecken.
+
+@round2_thalmann
+view-if: spd_support_thalmann == 0 and kpd_support_braun == 0
+choose-if: kpd_relation >= 50 and left_strength > reformist_strength 
+unavailable-subtitle: [? if kpd_relation < 50 : Wir unterhalten keine hinreichend guten Beziehungen zu den Kommunisten, sodass sie nicht einmal bereit sind, unsere Unterstützung anzunehmen. ?] [? if reformist_strength >= left_strength : Der reformorientierte Flügel ist in der Lage, die Partei davon abzubringen, diese bizarre Regelung zu unterstützen. ?]
+max-visits: 1
+
+Thälmann zu unterstützen, ist in unserer Partei ziemlich unbeliebt, auch wenn die Kommunisten unsere Unterstützung annehmen. Sind wir uns sicher?
+
+- @round2_thalmann_2: Ja, wir werden Thälmann unterstützen, trotz der Appelle der Reformisten dagegen.
+- @round2_menu: Egal.
+
+@round2_thalmann_2
+on-arrival: braun_campaign = 0; spd_support_thalmann = 1; reformist_dissent += 15; center_dissent += 10; labor_dissent += 5; neorevisionist_dissent += 10; catholics_spd -= 5; workers_spd -= 3; kpd_relation += 10; communist_coalition += 2; z_relation -= 15; dvp_relation -= 15
+on-departure: z_support_braun = 0; kpd_support_braun = 0;
+
+Gut. Wir haben uns hinter den Vorsitzenden Thälmann von der KPD gestellt.
+
+[? if z_support_braun : Die Zentrumspartei ist über unser launisches Verhalten irritiert und hat ihre Unterstützung auf Hindenburg verlagert. ?]
+
+- @round2_vote: Die Abstimmung der zweiten Runde kann beginnen.
+
+@round2_hindenburg
+view-if: braun_campaign > 0 or spd_support_thalmann > 0
+on-arrival: braun_campaign = 0; spd_support_thalmann = 0
+
+Wir unterstützen nun Hindenburg.
+
+- @round2_vote: Lasst die zweite Abstimmungsrunde beginnen.
+
+@round2_vote
+go-to: election_algorithm
+set-jump: post_election
+
+@round2_results
+go-to: hindenburg_wins if hindenburg_plurality == 1; thalmann_wins if thalmann_plurality == 1; braun_wins if braun_plurality == 1; hitler_wins if hitler_plurality == 1
+
+
+@hindenburg_wins
+on-arrival: president = "Hindenburg"
+
+Wie erwartet gewinnt der amtierende Präsident Hindenburg die Präsidentschaftswahl. Hoffen wir, dass er die Nazis weiterhin von der Macht fernhält.
+
+@thalmann_wins
+on-arrival: president = "Thälmann"; kpd_relation = 80;
+
+Ernst Thälmann von der KPD hat die Präsidentschaftswahl gewonnen. Umgehend unternimmt die extreme Rechte einen Putschversuch gegen die Regierung. Uns bleibt keine andere Wahl, als uns gemeinsam mit der KPD gegen die Faschisten zu stellen...
+
+- @civil_war: Das ist ein Bürgerkrieg.
+
+@hitler_wins
+on-arrival: president = nsdap_candidate; chancellor = "Hitler"; chancellor_party = "NSDAP"
+
+[? if nsdap_candidate == "Hitler" : Adolf Hitler von der NSDAP hat die Präsidentschaftswahl gewonnen. Er zögert nicht, seine Macht zu festigen. ?]
+[? if nsdap_candidate != "Hitler" : Der NSDAP-Kandidat [+ president +] hat gewonnen. Die erste Amtshandlung von Präsident [+ president +] besteht darin, Hitler nach Deutschland zurückzuholen und ihn zum Reichskanzler zu ernennen. Die Nationalsozialisten zögern nicht lange mit der Festigung ihrer Macht. ?]
+
+- @hitler_takes_power: Was machen wir jetzt?
+
+
+@braun_wins
+on-arrival: president = "Braun"; reformist_dissent -= 15; center_dissent -= 15; labor_dissent -= 15; left_dissent -= 5; workers_spd += 8*(1-dissent); old_middle_spd += 5*(1-dissent); new_middle_spd += 5*(1-dissent); rural_spd += 5*(1-dissent); unemployed_spd += 5*(1-dissent);
+
+Otto Braun von der SPD hat das Amt des Ministerpräsidenten errungen! Dies ist ein Moment des Feierns für unsere Partei und sein Sieg kann unsere Unterstützung stärken.

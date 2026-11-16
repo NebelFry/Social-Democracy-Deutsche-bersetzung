@@ -1,0 +1,14 @@
+title: Kanzler [+ chancellor +] wurde von Franz von Papen ersetzt
+subtitle: Reichspräsident Hindenburg entlässt die Regierung.
+view-if: (chancellor = "Brüning" or chancellor = "Wirth") and ((year = 1932 and month >= 5) or year >= 1933) and president = "Hindenburg" and spd_in_government = 0 and (grand_coalition < 50 or largest_party == "NSDAP" or strife > 6 or (nsdap_votes + dnvp_votes + kpd_votes >= 50) or unemployed >= 30) and not presidential_powers
+on-arrival: old_chancellor = chancellor; spd_toleration = 0; chancellor = "Papen"; chancellor_party = "I"; next_election_time = time+3 if next_election_time >= time+3; next_election_month = month + 3 if next_election_time >= time+3; next_election_year = year if next_election_time >= time+3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; judicial_reform -= 2 if judicial_reform >= 2; finance_minister_party = "I"; interior_minister_party = "I"; economic_minister_party = "I"; labor_minister_party = "I"; foreign_minister_party = "I"; agriculture_minister_party = "I"; reichswehr_minister = "I";
+new-page: true
+tags: event
+max-visits: 1
+face-image: img/portraits/PapenFranz.jpg
+
+Präsident Hindenburgs geheimer Beraterkreis (oft als „Kamarilla“ bezeichnet) hat sich gegen [+ old_chancellor +] gewandt; daraufhin hat Hindenburg den Reichskanzler entlassen und durch den stärker reaktionären Franz von Papen ersetzt – einen Parteilosen, der zuvor der Zentrumspartei angehört hatte. [? if year == 1932 and old_chancellor == "Brüning": Den Ausschlag gegen Brüning gab schließlich seine Politik der „Agrarsiedlung“, bei der Arbeitslose auf unzureichend genutzten Ländereien (die sich zufällig im Besitz von Adligen befanden) angesiedelt werden sollten. ?] [? if strife > 6 : Angesichts des Chaos, das das Land erfasst hat, scheinen Hindenburgs Berater der Ansicht zu sein, dass es einer stärkeren, autoritäreren Führung bedarf - und in Papen sehen sie genau einen solchen Herrscher. ?]
+
+Angesichts seiner Unbeliebtheit sieht sich Papen umgehend einem Misstrauensvotum gegenüber. Ganz gleich, wie die SPD abstimmt – sein Sturz ist gewiss, da ihm alle anderen Parteien einhellig feindselig gegenüberstehen. Unterdessen regiert er gemeinsam mit Hindenburg auf der Grundlage von Notverordnungen. Seine erste politische Maßnahme ist die Legalisierung der nationalsozialistischen SA, doch deren Loyalität kann er damit nicht gewinnen.
+
+Neuwahlen wurden angesetzt für [+ next_election_month : month +] [+ next_election_year +].

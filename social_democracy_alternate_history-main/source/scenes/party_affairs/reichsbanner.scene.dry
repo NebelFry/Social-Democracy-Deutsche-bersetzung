@@ -1,0 +1,74 @@
+title: Reichsbanner
+new-page: true
+is-card: true
+tags: party_affairs
+view-if: reichsbanner_timer <= 0
+card-image: img/reichsbanner.jpg
+on-arrival: month_actions += 1; reichsbanner_timer += 6; rb_militarization_cost = 2 if rb_militancy > 0.1 else rb_militarization_cost = 1; rb_militarization_cost = 3 if rb_militancy > 0.25
+max-visits: 6
+#subtitle: Paramilitärische Organisierung zur Verteidigung der Republik.
+
+= Reichsbanner
+
+Das *Reichsbanner Schwarz-Rot-Gold* ist eine Massenorganisation zur Verteidigung der Republik gegen die sie bedrohenden Extremisten. Manche würden es als paramilitärische Organisation bezeichnen, wenngleich es derzeit kaum militärischen Charakter aufweist. Es ist offiziell mit den demokratischen Parteien – der SPD, dem Zentrum und der [+ ddp_name +]– verbunden, wobei der mit Abstand größte Teil der Mitglieder der SPD angehört.
+
+[? if workers_spd < 46 or workers_spd < workers_nsdap or workers_spd < workers_kpd : Das Reichsbanner hat Schwierigkeiten bei der Mitgliederwerbung, da die SPD nicht mehr die dominierende Partei unter den Arbeitern ist. Viele seiner Mitglieder sind ausgetreten. ?]
+
+- @militant: Finanzieren wir mehr Ausbildung und Ausrüstung nach militärischem Vorbild für das Reichsbanner.
+- @militant_2: Nutzen wir unsere vorhandenen Ressourcen, um weitere Ausbildungsmaßnahmen für das Reichsbanner zu unterstützen.
+- @same: Behaltet das Reichsbanner so bei, wie es ist.
+- @cut_rb: Kürzt die Mittel für das Reichsbanner.
+- @women_rb
+- @easy_discard
+- @cancel_advisor_action
+
+#- Orient reichsbanner towards anti-fascism (only available if we have prioritized anti fascism)
+
+@militant
+choose-if: resources >= rb_militarization_cost
+unavailable-subtitle: Nicht genügnd Ressourcen ([+ rb_militarization_cost +] benötigt).
+subtitle: -[+ rb_militarization_cost +] Ressourcen
+on-arrival: resources -= rb_militarization_cost; rb_investment += 1; rb_strength += 100; rb_militancy += 0.05; left_strength += 2; left_dissent -= 2; reformist_dissent += 5; spd_militancy += 0.05; workers_spd += 2*(1-dissent); unemployed_spd += 2*(1-dissent); z_relation -= 5 if historical_mode 
+
+Manche in unserer Partei kritisieren die zunehmende Militarisierung des Reichsbanners. Sie werfen ihm vor, den Rechtsnationalisten oder den Kommunisten nachzueifern, und warnen davor, dass dies unsere Verbündeten aus den Parteien der Mitte vor den Kopf stoßen könnte. Andererseits gelingt es uns, radikalere Kräfte aus dem linken Spektrum für unsere Organisationen zu gewinnen und sie so von den Kommunisten abzuwerben.
+
+[? if historical_mode : Die Zentrumspartei verurteilt die Militarisierung des Reichsbanners und ihre Mitglieder verlassen die republikanische Organisation.. ?]
+
+
+@militant_2
+view-if: funded_reichsbanner >= 1
+on-arrival: rb_militancy += 0.02; funded_reichsbanner -= 1
+
+Da wir bereits Ressourcen für das Reichsbanner bereitgestellt haben, können wir in den Ausbau seiner Militanz investieren.
+
+
+@same
+
+Das Reichsbanner erfüllt bereits den Zweck, den es erfüllen soll. Es gibt keinen Grund, etwas zu ändern, das bereits funktioniert.
+
+- @return: Weitermachen...
+
+
+@cut_rb
+subtitle: +1 Ressourcen
+on-arrival: resources += 1; rb_strength -= 100; rb_militancy -= 0.05; left_strength -= 2; left_dissent -= 2; spd_militancy -= 0.05; workers_kpd += 2; unemployed_kpd += 2
+
+Die Kürzung der Mittel für das Reichsbanner führt zu einem Rückgang der Mitgliederzahlen und veranlasst einige potenzielle Mitglieder dazu, sich stattdessen den Kommunisten anzuschließen.
+
+
+@women_rb
+title: Gestatten Sie Frauen den Beitritt zum Reichsbanner.
+subtitle: -1 Ressourcen - Dies könnte eine Gegenreaktion der bestehenden Mitglieder hervorrufen.
+choose-if: resources > 0
+view-if: womens_rights >= 4 and sender_advisor == 1 and iron_front_formed == 1
+on-arrival: resources -= 1; rb_militancy *= 0.85; rb_strength += 400; women_in_rb = 1; rb_militancy += 0.05 if repealed_175; rb_militancy += 0.04 if trans_rights; rb_militancy += 0.02 if reformed_183;
+go-to: homosexual if trans_rights or repealed_175 or reformed_183
+max-visits: 1
+achievement: women_reichsbanner
+
+Der Vorschlag, Frauen in das Reichsbanner aufzunehmen, wird von den meisten – mit Ausnahme von Toni Sender – verspottet. Doch es sind außergewöhnliche Zeiten, und wir brauchen jeden, der bereit ist, sich anzuschließen. Daher stellen wir spezielle Einheiten für Frauen auf [? if homosexual_rights > 0: und sogar einige geheime Einheiten für Transsexuelle und Homosexuelle ?].
+
+Nachdem den Frauen der Beitritt gestattet wurde, wird die Zahl der austretenden Genossen durch die Zahl der radikalisierten Frauen und anderer, die beitreten, mehr als ausgeglichen. Viele unserer ausgeschiedenen Mitglieder waren jedoch Veteranen und viele der neuen Mitglieder haben keine Erfahrung mit einer militärischen Ausbildung.
+
+@homosexual
+achievement: anders_als_die_andern

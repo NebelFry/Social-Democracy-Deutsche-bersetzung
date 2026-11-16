@@ -1,0 +1,55 @@
+title: Aussetzung des österreichischen Parlaments
+new-page: true
+subtitle: Unser südlicher Nachbar gleitet in die Diktatur ab.
+view-if: year = 1933 and (month = 3 or month = 4) and ((spd_in_government and foreign_minister_party = "SPD") or (austria_relation >= 1))
+max-visits: 1
+on-arrival: austrian_parliament_seen = 1
+face-image: img/Dollfuss.jpg
+tags: event
+
+# Must control foreign ministry or have made contact with Austrian socialists.
+
+= Aussetzung des österreichischen Parlaments
+
+Aufgrund eines umstrittenen Antrags im österreichischen Nationalrat, der einen Eisenbahnerstreik betraf, traten alle drei Nationalratspräsidenten zurück, sodass das Gremium ohne Vorsitzende dastand. Dies stellt eine Verfassungskrise dar. Der österreichische Bundeskanzler Engelbert Dollfuß nutzte diese Krise aus, indem er das Parlament ausschaltete, per Notverordnung regierte und eine „austrofaschistische“ Regierung bildete. Dollfuß festigt seine Macht durch die Verfolgung seiner politischen Gegner, insbesondere unserer sozialdemokratischen Parteifreunde in der SDAPÖ (Sozialdemokratische Arbeiterpartei Österreichs).
+
+Gibt es irgendetwas, das wir tun könnten?
+
+# - use EU to sanction Austria (will prevent civil war and restore democracy)
+# - apply diplomatic pressure to Austria (without EU)
+# - fund the Schutzbund
+# after this, supporting Austrians will raise sdapo_strength; if sdapo_strength >= 2, they'll enter a long civil war; if sdapo_strength >= 5, they'll win.
+
+- @eu_sanctions: Fordern wir die Europäische Union auf, Sanktionen gegen Österreich zu verhängen, sofern der Nationalrat nicht wiederhergestellt wird.
+- @diplomatic_pressure: Üben wir diplomatischen Druck auf Österreich aus, um den Nationalrat wiederherzustellen.
+- @fund_schutzbund: Unterstützen wir die Untergrundorganisation der SDAPÖ.
+- @nothing: Es lässt sich nichts machen..
+
+@eu_sanctions
+view-if: eu = 1
+on-arrival: sdapo_strength += 3; sdapo_strength += 1 if customs_union; eu_austria = 1
+
+Die Europäische Union ist ein weitgehend unerprobtes Gebilde, dem von Anfang an Mitglieder angehörten, die bestenfalls als quasi-demokratisch zu bezeichnen sind. Den meisten Mitgliedern geht es mehr um Machtpolitik als um demokratische Werte. Als Gründungsmitglied übt Deutschland jedoch einen besonderen Einfluss auf die EU aus und es gelingt uns, die anderen Mitglieder dazu zu bewegen, sich dem Druck auf den Austrofaschismus anzuschließen.
+
+Das Dollfuß-Regime gibt nicht nach, ist aber geschwächt und isoliert.
+
+@diplomatic_pressure
+view-if: foreign_minister_party = "SPD"
+on-arrival: sdapo_strength += 1; sdapo_strength += 2 if customs_union
+
+Wir verfügen in Österreich nach wie vor über großen wirtschaftlichen Einfluss sowie über die Drohung mit Sanktionen.
+
+Das Dollfuß-Regime gibt nicht nach, ist aber etwas geschwächt.
+
+@fund_schutzbund
+on-arrival: resources -= 1; sdapo_strength += 1; sdapo_strength += 1 if customs_union
+subtitle: -1 Ressource
+choose-if: resources >= 1
+
+Es stellt einen gewissen Verstoß gegen das diplomatische Protokoll dar, dass sich die SPD so direkt in die Angelegenheiten eines anderen Landes einmischt und die österreichischen Sozialdemokraten unterstützt.
+
+Das Dollfuß-Regime gibt nicht nach, doch seine Gegner verfügen über einen zusätzlichen Vorteil. Das mag jedoch nicht ausreichen, wenn man der geballten Macht des faschistischen Staates gegenübersteht.
+
+@nothing
+
+Leider können wir für unsere österreichischen Genossen nichts tun.

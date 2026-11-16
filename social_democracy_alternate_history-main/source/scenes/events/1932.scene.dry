@@ -1,0 +1,26 @@
+title: 1932
+subtitle: Ein neues Jahr 
+on-arrival: {!
+// increase NSDAP vote share 
+// TODO: if a public works program has started, unemployment is not so bad.
+if (Q.works_program && Q.works_program >= 2) {
+    Q.unemployed -= 1;
+    Q.inflation += 1;
+    Q.economic_growth += 1;
+}
+if (!Q.works_program) {
+    Q.unemployed += 5; 
+    Q.inflation -= 2;
+    Q.economic_growth -= 1;
+}
+// historical growth: -7.5%
+// moved demographic changes to post_event
+!}
+tags: event
+view-if: year = 1932 and month = 1 
+priority: 2
+max-visits: 1
+
+Ein neues Jahr beginnt. [? if works_program = 0 : Es gibt kaum oder gar keine guten Nachrichten in Deutschland. Die wirtschaftliche Depression hat ihren Tiefpunkt noch immer nicht erreicht. ?][? if works_program >= 1 and unemployment >= 20 : Wir haben mit der Einführung eines Arbeitsbeschaffungsprogramms begonnen, doch die Arbeitslosigkeit ist nach wie vor hartnäckig hoch. Die Menschen beginnen jedoch, endlich optimistisch zu sein. ?][? if works_program >= 1 and unemployment < 20 : Wir haben damit begonnen, ein Arbeitsbeschaffungsprogramm zu starten und die Arbeitslosigkeit beginnt endlich zu sinken. Die Menschen fassen endlich wieder Optimismus. ?]
+
+Die Präsidentschaftswahl findet im April dieses Jahres statt.

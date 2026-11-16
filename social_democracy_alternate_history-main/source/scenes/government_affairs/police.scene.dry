@@ -1,0 +1,61 @@
+title: Innere Sicherheit
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: police_timer += 6; month_actions += 1
+view-if: spd_in_government = 1 and interior_minister_party = "SPD" and police_timer <= 0
+card-image: img/portraits/SeveringCarl.jpg
+
+= Innere Sicherheit
+
+Das Innenministerium ist für die innere Sicherheit in der gesamten Deutschen Republik zuständig. Während der Großteil der Polizeiarbeit den Bundesländern obliegt, kann die nationale Sicherheitsbehörde Sonderermittlungen durchführen.
+
+Wie bei den Einheiten der Reichswehr neigt auch die Polizei zu reaktionären Haltungen und weist erhebliche Defizite in der Loyalität gegenüber der gewählten Regierung der Republik auf.
+
+- @loyalty: Die Loyalität der Streitkräfte des Innenministeriums stärken.
+- @investigate_corruption: Untersuchung von Korruption bei Großunternehmen.
+- @investigate_far_right: Illegale Aktivitäten im rechtsextremen Spektrum untersuchen.
+- @domestic_enemies: Unsere inneren Feinde untersuchen oder sie verbieten.
+- @deport_hitler
+- @root: Vorerst keine Schritte unternehmen.
+- @easy_discard
+- @cancel_advisor_action
+
+@loyalty
+on-arrival: interior_police_loyalty += 0.1
+
+Wie bei der preußischen Staatspolizei gibt es auch hier Maßnahmen, mit denen wir reaktionäre und antidemokratische Gesinnungen innerhalb der Polizei ausmerzen können. Wir können die Ausbildungs- und Einstellungsverfahren verbessern sowie bekannte Faschisten und Personen ähnlicher Couleur identifizieren und aus dem Dienst entfernen.
+
+Aktuelle Loyalität der Polizei: [+ interior_police_loyalty : loyalty +]
+
+
+@investigate_corruption
+go-to: investigate_corruption_success if interior_police_loyalty >= 0.5; investigate_corruption_failure if interior_police_loyalty < 0.5
+
+@investigate_corruption_success
+on-arrival: investigate_corruption += 1; workers_spd += 5*(1-dissent); inflation -= 0.1 if inflation > 3; inflation -= 0.2 if inflation >= 8
+
+Natürlich ist die Korruption in der Großwirtschaft weit verbreitet. Wir haben eine Reihe von Skandalen aufgedeckt, und deren öffentliche Bekanntmachung lenkt neue Aufmerksamkeit auf die Arbeit von Innenminister [+ interior_minister +], was sowohl seine Beliebtheit als auch die der SPD steigert.
+
+
+@investigate_corruption_failure
+
+Leider haben unsere Ermittlungen zu keinem Ergebnis geführt. Gerüchten zufolge wurden die Zielpersonen unserer Ermittlungen von Maulwürfen innerhalb der Polizei gewarnt.
+
+@investigate_far_right
+go-to: investigate_far_right_success if interior_police_loyalty >= 0.55; investigate_far_right_failure if interior_police_loyalty < 0.55
+
+@investigate_far_right_success
+on-arrival: investigate_far_right += 1; sa_strength -= 20; workers_nsdap -= 3; new_middle_nsdap -= 3; nazi_urgency += 1 if investigate_far_right == 2; nazi_urgency += 2 if investigate_far_right == 3; workers_nsdap -= 3 if investigate_far_right == 3; new_middle_nsdap -= 3 if investigate_far_right == 3; old_middle_nsdap -= 3 if investigate_far_right == 3; unemployed_spd -= 3 if investigate_far_right == 3; coup_progress -= 1 if coup_progress >= 7
+
+[? if investigate_far_right == 1 : Wir haben eine geheime Absprache zwischen Hjalmar Schacht, dem Präsidenten der Reichsbank, und den Nazis aufgedeckt. Das ist eine sehr nützliche Information. ?]
+[? if investigate_far_right == 2 : Wir haben illegalen Waffenschmuggel durch die SA, die paramilitärische Organisation der Nazis, aufgedeckt. ?]
+[? if investigate_far_right == 3 : Wir haben ein geheimes Dokumentenlager der NSDAP entdeckt, das deren Plan zur gewaltsamen Machtübernahme im Falle eines Regierungsantritts offenlegt. Es handelt sich hierbei um ein verfassungsfeindliches Komplott; der Sachverhalt wird öffentlich gemacht und strafrechtlich verfolgt. ?]
+[? if investigate_far_right > 3 : Natürlich begehen die Nazis Verbrechen; das weiß jeder. Jetzt haben wir endlich den Beweis. ?]
+
+[? if coup_progress >= 6: Es gibt Berichte über einen unmittelbar bevorstehenden Putsch durch Rechtsextreme. Wir haben versucht, einige dieser Pläne zu vereiteln, doch die Bedrohung besteht weiterhin. ?]
+
+
+@investigate_far_right_failure
+
+Leider haben unsere Ermittlungen zu keinem Ergebnis geführt. Gerüchten zufolge wurden die Zielpersonen unserer Ermittlungen von Maulwürfen innerhalb der Polizei gewarnt.

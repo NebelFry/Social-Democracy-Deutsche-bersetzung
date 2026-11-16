@@ -1,0 +1,54 @@
+title: Panzerkreuzer B
+subtitle: Eine politische Frage
+tags: event
+on-arrival: panzerkreuzer_b_seen = 1
+new-page: true
+face-image: img/panzerkreuzer.jpg
+view-if: panzerkreuzer_b_seen = 0 and year = 1931 and month >= 2 and (spd_in_government = 1 or spd_toleration = 1)
+
+= Panzerkreuzer B
+
+Die Marine fordert den Bau eines weiteren neuen Schlachtkreuzers. [? if panzerkreuzer_funded: Der vorangegangene Schlachtkreuzer wurde finanziert und ist bereits vom Stapel gelaufen. Ein weiteres Schiff würde Deutschlands Aufrüstung weiter vorantreiben. ?][? if not panzerkreuzer_funded: Der zuvor von der Marine geforderte Schlachtkreuzer wurde – dank uns – nicht finanziert. Das Militär ist zwar verärgert, verfolgt aber dennoch seine Aufrüstungspläne weiter und muss nun versuchen, die Finanzierung durch den Reichstag zu erwirken. ?]
+
+Ein großer Teil unserer Partei lehnt die Wiederaufrüstung entschieden ab, während die Parteien der Mitte und der Rechten sie geschlossen befürworten. Was werden wir tun?
+
+- @vote_yes: Stimmen wir mit Ja für den Bau des Schlachtkreuzers.
+- @vote_no: Stimmen wir mit Nein gegen den Bau des Schlachtkreuzers.
+- @abstain: Enthalten wir uns der Stimme.
+- @ministry: Setzen wir das Reichswehrministerium ein, um den Bau zu verhindern.
+
+@vote_yes
+on-arrival: left_dissent += 10; labor_dissent += 5; center_dissent += 5; reformist_dissent += 5 if not panzerkreuzer_funded; neorevisionist_dissent += 5 if not panzerkreuzer_funded; panzerkreuzer_b_funded = 1; kpd_coalition_dissent += 1; kpd_relation -= 6; workers_spd -= 4
+
+Unsere Parteibasis steht unserer Entscheidung äußerst kritisch gegenüber. Zahlreiche Ortsverbände haben ihre Agitation gegen unsere Fraktion verstärkt. [? if panzerkreuzer_funded : Angesichts der Bauweise des vorangegangenen Schlachtkreuzers war dies jedoch abzusehen, und die Reaktion fällt verhalten aus. ?]
+
+Die Abstimmung zugunsten des Schlachtkreuzers geht problemlos durch; Widerstand kommt lediglich von der KPD. Das Schiff wird gebaut.
+
+@vote_no
+on-arrival: dvp_relation -= 8; z_relation -= 5; pacifism += 1; nationalism -= 5*(1-dissent); coalition_dissent += 1; workers_spd += 4*(1-dissent) if nationalism < 49;
+go-to: built if spd_r + kpd_r + ddp_r < 50; not_built if spd_r + kpd_r + ddp_r >= 50
+
+Unsere Ablehnung des Schlachtkreuzers stößt bei den rechten Parteien auf Missfallen[? if in_grand_coalition or in_weimar_coalition: , einschließlich unserer Koalitionspartner ?][? if spd_toleration: , einschließlich der Minderheitsregierung, die wir derzeit unterstützen ?].
+
+@abstain
+on-arrival: dvp_relation -= 5; z_relation -= 3; left_dissent += 5; labor_dissent += 5 if not panzerkreuzer_funded; panzerkreuzer_b_funded = 1; kpd_relation -= 3
+
+Die bürgerlichen Parteien stehen unserer Entscheidung zur Stimmenthaltung kritisch gegenüber, und auch der Druck von unserem linken Flügel ist nicht gänzlich ausgeräumt. Trotz unserer Enthaltung wird die Abstimmung im Reichstag angenommen; mit Ausnahme von SPD und KPD stimmen alle Parteien dafür. Das Schiff wird gebaut.
+
+[? if panzerkreuzer_funded : Angesichts der Bauweise des vorangegangenen Schlachtkreuzers schien dies bereits ausgemachte Sache zu sein und die Reaktion fällt verhalten aus. ?]
+
+@built
+on-arrival: panzerkreuzer_b_funded = 1
+
+Der Reichskanzler [+ chancellor +] bringt die Angelegenheit zur Abstimmung im Reichstag; der Beschluss wird mit den Stimmen aller Parteien außer SPD und KPD angenommen. Das Schiff wird gebaut.
+
+@not_built
+on-arrival: panzerkreuzer_b_funded = 0; budget += 1 if panzerkreuzer_funded = 0
+
+Unsere Abstimmung gegen den Schlachtkreuzer ist erfolgreich – dank der Unterstützung der KPD und kriegsgegnerischer Teile der [+ ddp_name +]. Das Schiff wird nicht gebaut! [? if panzerkreuzer_funded == 0 : Wir haben Budget eingespart, indem wir die beiden Schiffe nicht finanziert haben. ?]
+
+@ministry
+on-arrival: panzerkreuzer_b_funded = 0; budget += 1 if panzerkreuzer_funded = 0
+view-if: reichswehr_minister_party == "SPD"
+
+Durch unsere Kontrolle über das Reichswehrministerium haben wir die Marine dazu gedrängt, ihre Aufrüstungspläne aufzugeben. Das Schiff wird nicht gebaut werden. [? if panzerkreuzer_funded == 0 : Wir haben Budget eingespart, indem wir die beiden Schiffe nicht finanziert haben. ?]

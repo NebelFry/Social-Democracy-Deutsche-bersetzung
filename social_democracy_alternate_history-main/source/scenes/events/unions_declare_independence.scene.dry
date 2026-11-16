@@ -1,0 +1,15 @@
+title: Gewerkschaften erklären ihre Unabhängigkeit
+new-page: true 
+subtitle: Die Differenzen mit den Gewerkschaften mit unserer Politik sind zu gravierend geworden.
+tags: event
+view-if: labor_dissent >= 60
+on-arrival: unions_independent = 1; labor_strength = labor_strength/2; workers_spd -= 20; unemployed_spd -= 10; workers_other += 5 if not sapd_formed; workers_kpd += 5; workers_nsdap += 5; n_advisors -= 1 if woytinsky_advisor == 1; n_advisors -= 1 if leipart_advisor == 1; woytinsky_advisor = 0; leipart_advisor = 0; rb_strength -= 600; workers_sapd += 10 if sapd_formed; unemployed_sapd += 6 if sapd_formed;
+max-visits: 1
+
+= Gewerkschaften erklären ihre Unabhängigkeit
+
+Unsere politischen Entscheidungen haben die Arbeiterbewegung tief verärgert. Gewerkschaftsführer haben erklärt, sie seien unabhängig von jeglicher politischen Partei, und einige haben sich um eine Verständigung mit der KPD und sogar der NSDAP bemüht.
+
+Die meisten Arbeiter bleiben der SPD treu, wenngleich ihre Bindung weniger fest ist.. Viele Arbeiter rücken nach links [? if sapd_formed: an die KPD oder die entstehende SAPD?]. Andere bewegen sich in eine eher nationalistische Richtung, während der ADGB seine Bereitschaft signalisiert, zur Bewältigung der Wirtschaftskrise mit der Rechten zusammenzuarbeiten.
+
+Ein Großteil unserer Wählerbasis aus der Arbeiterklasse ist abgewandert und der Einfluss der Arbeiter in unserer Partei hat stark abgenommen.

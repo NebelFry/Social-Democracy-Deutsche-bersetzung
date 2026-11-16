@@ -1,0 +1,15 @@
+title: Konferenz von Lausanne
+subtitle: Was die Frage der Reparationen betrifft ...
+view-if: year = 1932 and month >= 6 and hoover_moratorium_seen = 1 and reparations > -2 and unemployed >= 15
+on-arrival: reparations = -2; budget += 1; workers_dvp += 3 if foreign_minister_party == "DVP"; new_middle_dvp += 3 if foreign_minister_party == "DVP"; old_middle_dvp += 3 if foreign_minister_party == "DVP"; rural_dvp += 3 if foreign_minister_party == "DVP"; workers_z += 3 if foreign_minister_party == "Z"; new_middle_z += 3 if foreign_minister_party == "Z"; old_middle_z += 3 if foreign_minister_party == "Z"; rural_z += 3 if foreign_minister_party == "Z"; workers_spd += 3 if foreign_minister_party == "SPD"; new_middle_spd += 3 if foreign_minister_party == "SPD"; old_middle_spd += 3 if foreign_minister_party == "SPD"; rural_spd += 3 if foreign_minister_party == "SPD";
+new-page: true
+max-visits: 1
+tags: event
+
+= Konferenz von Lausanne
+
+Auf der Konferenz von Lausanne sind die Alliierten mit Vertretern Deutschlands zusammengekommen, um die Frage der Kriegsreparationen ein für alle Mal zu regeln. Angesichts der gegenwärtigen Wirtschaftskrise sind die Alliierten der Ansicht, dass Deutschland nicht in der Lage ist, die Reparationszahlungen zu leisten.
+
+Daher wurden unsere Reparationszahlungen auf unbestimmte Zeit ausgesetzt! Dies dürfte die Belastung unseres Haushalts verringern. [? if spd_in_government and foreign_minister_party == "SPD": Auch wenn dies nicht unser Verdienst ist, ist unser Außenministerium bestrebt, sich diesen Erfolg zuzuschreiben. ?][? if not spd_in_government and foreign_minister_party != "SPD": Auch wenn dies nicht das Werk des Außenministeriums ist, ist es bestrebt, sich die Lorbeeren für diese Leistung zu sichern. ?]
+
+

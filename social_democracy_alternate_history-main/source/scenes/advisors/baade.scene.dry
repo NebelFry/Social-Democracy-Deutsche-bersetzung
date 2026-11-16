@@ -1,0 +1,43 @@
+title: Fritz Baade
+is-pinned-card: true
+tags: advisor, reformist
+card-image: img/portraits/BaadeFritz.jpg
+view-if: baade_advisor = 1
+new-page: true 
+
+= Fritz Baade
+
+Baade ist einer der wenigen Agrarexperten der SPD und ein unorthodoxer Ökonom.
+
+- @agriculture
+- @rural_campaign
+- @depression
+- @root: Zurück
+
+@agriculture
+title: Agrarpolitik
+subtitle: Baade ist der Landwirtschaftsminister.
+choose-if: advisor_action_timer <= 0 and spd_in_government and agriculture_minister_party == "SPD"
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government : Die SPD ist nicht in der Regierung. ?][? if agriculture_minister_party != "SPD": Die SPD hat nicht das Landwirtschaftsministerium. ?]
+on-arrival: advisor_action_timer = 6; agricultural_policy_timer -= 6; last_advisor_action = 1
+go-to: agricultural_policy
+
+
+@rural_campaign
+title: Wahlkampf im ländlichen Raum
+subtitle: Wahlkampf unter der Landbevölkerung führen.
+choose-if: advisor_action_timer == 0 and rural_policy > 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if rural_policy == 0 : Wir haben keine ländlichen politischen Maßnahmen erlassen. ?]
+on-arrival: advisor_action_timer = 6; rural_spd += 5*(1-dissent); peoples_party_support += 1
+
+Wir haben unseren Wahlkampf unter Landwirten und der Landbevölkerung intensiviert.
+
+@depression
+title: Bewältigung der Wirtschaftskrise
+subtitle: Entwickeln wir einen Plan, um uns aus der Wirtschaftskrise zu retten.
+choose-if: advisor_action_timer <= 0 and wtb_adopted = 0 and black_thursday_seen
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if black_thursday_seen == 0 : Wir befinden uns derzeit nicht in einer Wirtschaftskrise. ?][? if wtb_adopted > 0 : Wir haben den WTB-Plan bereits verabschiedet. ?]
+on-arrival: advisor_action_timer = 6; wtb_support += 2; center_dissent += 10; labor_strength += 1
+
+Der WTB-Plan – benannt nach seinen Hauptinitiatoren Woytinsky, Tarnow und Baade – wurde von den Gewerkschaften als Strategie zur Überwindung der Depression übernommen. Baade wirbt innerhalb der gesamten Partei für diesen Plan.
+

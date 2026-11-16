@@ -1,0 +1,7 @@
+title: SA wieder erlaubt
+subtitle: Die Richter haben die SA wieder legalisiert.
+view-if: sa_banned == 1 and sa_ban_timer == 0 and judicial_reform < 2
+on-arrival: sa_banned = 0; sa_strength += 100; sa_militancy += 0.04
+tags: event
+
+Gerichte haben die Wiederzulassung der Nazi-SA angeordnet. Umgehend nehmen diese die massenhafte Rekrutierung und Bewaffnung wieder auf.

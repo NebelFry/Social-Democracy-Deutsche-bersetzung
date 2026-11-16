@@ -1,0 +1,15 @@
+title: Ein neuer Tag in Deutschland
+subtitle: Hat die Demokratie endlich gesiegt?
+tags: event
+priority: 3
+view-if: hindenburg_dead = 1 and president != "Hitler" and president != "Göring" and president != "Seldte"
+max-visits: 1
+on-arrival: {!
+!}
+new-page: true
+go-to: game_over_1934
+
+= Ein neuer Tag in Deutschland
+
+Nach dem Tod Hindenburgs und der Präsidentschaftswahl von 1934 scheint eine historische Ära zu Ende zu gehen. Die schlimmsten Jahre der politischen und wirtschaftlichen Krise sind vorüber, und die Tage des Nationalsozialismus sind gezählt. Vielleicht tritt Deutschland nun endlich in eine neue Ära echten Friedens ein...
+

@@ -1,0 +1,1407 @@
+title: Reichstags Wahlen
+new-page: true
+tags: event
+priority: -1
+view-if: (year = next_election_year and month >= next_election_month) or (year > next_election_year)
+on-departure: month_actions += 1; in_election = 0; next_election_year = next_election_year + 4; n_elections += 1; next_election_time = time + 48; papen_chancellor_timer = 4; hindenburg_dismissal_timer = 6;
+set-jump: post_election_1928
+face-image: img/Rothe_Wahlen_1903.jpg
+
+# TODO: should there be an image?
+
+# the low priority means that this event is only seen after all other events are resolved for the month.
+
+= Wahlen, [+ month : month +] [+ year +]
+
+Die Reichstagswahlen werden jetzt abgehalten.
+
+- @election_algorithm: Mögen wir unser Bestes geben...
+- @cancel_elections
+
+@cancel_elections
+title: Wir können die Wahlen jetzt nicht abhalten. Die Wahlen müssen abgesagt werden..
+subtitle: Dies ist ein antidemokratischer Schritt, der nach hinten losgehen könnte..
+view-if: in_emergency_government == 1 and president == "Braun" and not presidential_powers
+
+Da wir derzeit als Teil einer Notstandsregierung regieren, könnten wir quasi-verfassungsrechtliche Tricks anwenden, um diese Wahlen erheblich zu verzögern und die Regierungsführung gemäß Artikel 48 fortzusetzen. Dies dürfte sowohl bei unserer Wählerschaft als auch bei den anderen Parteien äußerst unpopulär sein. Es könnte jedoch notwendig sein, um zu verhindern, dass die Extremisten an die Macht gelangen.
+
+- @cancel_elections_2: Ja, mach das.
+- @election_algorithm: Nein, lassen wir die Wahlen stattfinden.
+
+@cancel_elections_2
+on-departure: next_election_year = next_election_year + 1; next_election_time = time + 12; pro_republic -= 10; dvp_relation -= 8; z_relation -= 8; ddp_relation -= 10; kpd_relation -= 8; coup_progress += 2; workers_spd -= 4; new_middle_spd -= 5; old_middle_spd -= 5; rural_spd -= 5; catholics_spd -= 5; unemployed_spd -= 5; coup_progress += 2 if nsdap_normalized >= 0.3; coup_progress += 2 if nsdap_normalized + dnvp_normalized >= 0.5; sa_strength += 100 if coup_progress >= 7; sh_strength += 100 if coup_progress >= 7
+achievement: ausnahmezustand
+
+Gut. Präsident [+ president +] hat den bisher beispiellosen Schritt unternommen diese Wahlen abzusagen. Wahlen sind geplant für den [+ next_election_month : month +] [+ next_election_year +].
+
+Hoffen wir, dass das nicht nach hinten losgeht.
+
+@post_election_1928
+on-arrival: {!
+// set old results
+// election threshold constitutional reform
+// banning parties
+var new_party_sum = 0;
+for (var party of Q.parties) {
+    Q['old_' + party + '_r'] = Q[party + '_r'];
+    if (Q.constitutional_reform > 0) {
+        if (Q[party + '_votes'] < Q.electoral_threshold || (Q.electoral_threshold > 1 && party == 'other') || Q[party + '_banned']) {
+            Q[party + '_r'] = 0;
+        } else {
+            Q[party + '_r'] = Q[party + '_votes'];
+        }
+        new_party_sum += Q[party + '_r'];
+    } else {
+        Q[party + '_r'] = Q[party + '_votes'];
+    }
+    // if we use decimals, then we might want to truncate the numbers
+    if (Q.use_decimals) {
+        Q[party + '_r_disp'] = Q[party+'_r'].toFixed(1);
+    }  else {
+            Q[party + '_r_disp'] = Q[party+'_r'];
+    }
+    Q['change_' + party + '_r'] = Q[party + '_r'] - Q['old_' + party + '_r'];
+    var sign = Q['change_' + party + '_r'] > 0 ? '+'  : '';
+    Q['str_change_' + party] = sign + Q['change_' + party + '_r'];//.toFixed(1);
+}
+// calculate new party sum if electoral reform
+if (Q.electoral_threshold && Q.electoral_threshold > 0) {
+    for (var party of Q.parties) {
+        if (Q[party + '_r'] > 0) {
+            if (Q.use_decimals) {
+                Q[party + '_r'] = Math.round(Q[party + '_r']*1000/new_party_sum)/10;
+            } else {
+                Q[party + '_r'] = Math.round(Q[party + '_r']*100/new_party_sum);
+            }
+        }
+        if (Q.use_decimals) {
+            Q[party + '_r_disp'] = Q[party+'_r'].toFixed(1);
+        } else {
+            Q[party + '_r_disp'] = Q[party+'_r'];
+        }
+        Q['change_' + party + '_r'] = Q[party + '_r'] - Q['old_' + party + '_r'];
+        var sign = Q['change_' + party + '_r'] > 0 ? '+'  : '';
+        Q['str_change_' + party] = sign + Q['change_' + party + '_r'];//.toFixed(1);
+    }
+}
+
+// get change arrows and signs
+
+
+// The largest party can only be the NSDAP or the SPD.
+Q.largest_party = 'SPD';
+if (Q.nsdap_r >= Q.spd_r && Q.nsdap_r >= Q.kpd_r) {
+    Q.largest_party = 'NSDAP';
+}
+
+if (Q.kpd_r >= Q.spd_r && Q.kpd_r >= Q.nsdap_r) {
+    Q.largest_party = 'KPD';
+}
+
+// coalitions
+Q.weimar_coalition = Q.spd_r + Q.ddp_r + Q.z_r - 3;
+Q.grand_coalition = Q.spd_r + Q.ddp_r + Q.z_r + Q.dvp_r;
+Q.bourgeois_coalition = Q.ddp_r + Q.z_r + Q.dvp_r + Q.other_r;
+Q.center_right_coalition = Q.z_r + Q.ddp_r + Q.dvp_r + Q.other_r + Q.dnvp_r;
+Q.right_coalition = Q.z_r + Q.dvp_r + Q.other_r + Q.dnvp_r;
+Q.far_right_coalition = Q.dnvp_r + Q.nsdap_r;
+Q.left_coalition = Q.spd_r + Q.kpd_r + Q.sapd_r;
+// this is an absurd concept lol
+Q.popular_front_coalition = Q.spd_r + Q.kpd_r + Q.z_r + Q.ddp_r - 3 + Q.sapd_r;
+Q.anti_democratic_coalition = Q.kpd_r + Q.nsdap_r + Q.dnvp_r;
+// aka everyone except nazi, kpd, dnvp
+Q.neo_weimar_coalition = Q.spd_r + Q.ddp_r + Q.z_r + Q.dvp_r + Q.other_r;
+// Hitler + Right-wing parties (only comes into effect if you've alienated Z too badly)
+Q.hitler_right_coalition = Q.z_r + Q.dnvp_r + Q.nsdap_r;
+// Progressive coalition isn't going to be implemented as a distinct coalition but it's the coalition that lets you pass improved women's rights/gay rights
+Q.progressive_coalition = Q.spd_r + Q.kpd_r + Q.ddp_r + Q.sapd_r;
+
+if (Q.kpd_relation >= 30) {
+    Q.weimar_coalition += Q.sapd_r;
+}
+
+Q.leverage = Q.spd_r;
+
+Q.grand_coalition_failed = 0;
+// Reset government and ministers... Based on Brüning's 1930 govt
+Q.coalition_dissent = 0;
+Q.kpd_coalition_dissent = 0;
+Q.spd_in_government = 0;
+Q.in_weimar_coalition = 0;
+Q.in_grand_coalition = 0;
+Q.in_left_front = 0;
+Q.in_popular_front = 0;
+Q.in_emergency_government = 0;
+Q.in_minority_government = 0;
+Q.in_unity_government = 0;
+Q.spd_toleration = 0;
+Q.spd_caretaker = 0;
+Q.foreign_minister_party = 'DVP';
+Q.interior_minister_party = 'Z';
+Q.justice_minister_party = 'I';
+Q.labor_minister_party = 'Z';
+Q.reichswehr_minister_party = 'I';
+Q.economic_minister_party = Q.ddp_name;
+Q.finance_minister_party = 'DVP';
+Q.agriculture_minister_party = 'Z';
+
+// reset KPD goals
+Q.kpd_goals_seen = 0;
+Q.kpd_ultimatum_seen = 0;
+Q.welfare_goal = 0;
+Q.agriculture_goal = 0;
+Q.economy_goal = 0;
+Q.finance_goal = 0;
+Q.labor_goal = 0;
+Q.foreign_goal = 0;
+Q.interior_goal = 0;
+Q.reichswehr_goal = 0;
+
+Q.welfare_goal_completed = 0;
+Q.agriculture_goal_completed = 0;
+Q.economy_goal_completed = 0;
+Q.finance_goal_completed = 0;
+Q.labor_goal_completed = 0;
+Q.foreign_goal_completed = 0;
+Q.interior_goal_completed = 0;
+Q.reichswehr_goal_completed = 0;
+
+Q.strike_term_seen = 0;
+
+Q.z_minus_bvp_r = Q.z_r - 3;
+
+// understanding the enemy
+if (Q.nsdap_r >= 15) {
+    Q.understanding_enemy_timer = 2;
+}
+
+var election_result = {'date': new Date(Q.year, Q.month - 1)};
+for (var party of Q.parties) {
+    election_result[party] = Q[party + '_r'];
+}
+Q.election_records.push(election_result);
+!}
+on-departure: nazi_urgency = 1 if (nazi_urgency == 0 and nsdap_r >= 15)
+on-display: {!
+data = [
+    {
+        "id": "kpd",
+        "legend": "KPD",
+        "name": "KPD",
+        "seats": Math.round(Q.kpd_r*5),
+    }
+];
+if (Q.sapd_formed && Q.sapd_r) {
+    data.push({
+            "id": "sapd",
+            "legend": "SAPD",
+            "name": "SAPD",
+            "seats": Math.round(Q.sapd_r*5),
+            });
+}
+data = data.concat([
+    {
+        "id": "spd",
+        "legend": "SPD",
+        "name": "SPD",
+        "seats": Math.round(Q.spd_r*5),
+    },
+    {
+        "id": "ddp",
+        "legend": Q.ddp_name,
+        "name": Q.ddp_name,
+        "seats": Math.round(Q.ddp_r*5),
+    },
+    {
+        "id": "z",
+        "legend": "Center",
+        "name": "Center",
+        "seats": Math.round((Q.z_r - 3)*5),
+    },
+    {
+        "id": "bvp",
+        "legend": "BVP",
+        "name": "BVP",
+        "seats": Math.round(3*5),
+    },
+    {
+        "id": "dvp",
+        "legend": "DVP",
+        "name": "DVP",
+        "seats": Math.round(Q.dvp_r*5),
+    },
+    {
+        "id": "other",
+        "legend": "Other",
+        "name": "Other",
+        "seats": Math.round(Q.other_r*5),
+    },
+    {
+        "id": "dnvp",
+        "legend": "DNVP",
+        "name": "DNVP",
+        "seats": Math.round(Q.dnvp_r*5),
+    },
+    {
+        "id": "nsdap",
+        "legend": "NSDAP",
+        "name": "NSDAP",
+        "seats": Math.round(Q.nsdap_r*5),
+    },
+]);
+
+if (window && d3) {
+    var width = 500; 
+    var height = 500;
+    var screenWidth = document.getElementById('content').offsetWidth;
+    if (screenWidth < width - 50) {
+        width = screenWidth - 50; 
+        height = width;
+        document.getElementById("reichstag").style.height = screenWidth/2 + "px";
+    } 
+
+    var parliament = d3.parliament();
+    parliament.width(width).height(height).innerRadiusCoef(0.4);
+    parliament.enter.fromCenter(true).smallToBig(true);
+    parliament.exit.toCenter(false).bigToSmall(true);
+    d3.select("#reichstag").datum(data).call(parliament);
+}
+!}
+go-to: coalition_menu
+
+= Wahlergebnisse
+
+{!<svg id="reichstag" style="width: 500px; height: 250px;"> </svg>!}
+
+{!<table>!} 
+{!<tr><td>Party</td><td>Vote share</td><td>% Change</td></tr>!}
+{!<tr><td><div class="box" style='background-color:#E3000F; outline: 2px; outline-style: solid;'> </div> !} **SPD:** {!</td><td>!} **[+ spd_r +]%** {!</td><td>!} **[+ str_change_spd +]** {!</td></tr>!}
+
+[? if sapd_formed : {!<tr><td><div class="box" style='background-color:#C40000'> </div> !}SAPD: {!</td><td>!} [+ sapd_r +]% {!</td><td>!} [+ str_change_sapd +] {!</td></tr>!} ?]
+
+{!<tr><td><div class="box" style='background-color:#8B0000'> </div> !}KPD: {!</td><td>!} [+ kpd_r +]% {!</td><td>!} [+ str_change_kpd +] {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#DCCA4A'> </div> !} [+ ddp_name +]: {!</td><td>!} [+ ddp_r +]% {!</td><td>!} [+ str_change_ddp +] {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#000'> </div> !} Z: {!</td><td>!} [+ z_minus_bvp_r +]% {!</td><td>!} [+ str_change_z +] {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#69A2BE'> </div> !} BVP: {!</td><td>!} 3% {!</td><td>!} 0 {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#D5AC27'> </div> !} DVP: {!</td><td>!} [+ dvp_r +]% {!</td><td>!} [+ str_change_dvp +] {!</td></tr>!}
+ 
+{!<tr><td><div class="box" style='background-color:#a0a0a0'> </div> !} Others: {!</td><td>!} [+ other_r +] % {!</td><td>!} [+ str_change_other +] {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#3f7bc1'> </div> !} DNVP: {!</td><td>!} [+ dnvp_r +]% {!</td><td>!} [+ str_change_dnvp +] {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#954B00'> </div> !} NSDAP: {!</td><td>!} [+ nsdap_r +]% {!</td><td>!} [+ str_change_nsdap +] {!</td></tr>!}
+{!</table>!}
+
+**Mögliche Koalitionen:**
+
+Weimar Koalition (SPD + Z + [+ ddp_name +]): [+ weimar_coalition +]%
+
+Große Koalition (SPD + Z + BVP + [+ ddp_name +] + DVP): [+ grand_coalition +]%
+
+Bourgeoisie Koalition (Z + BVP + [+ ddp_name +] + DVP + Sonstige): [+ bourgeois_coalition +]%
+
+Rechte Coalition (Z + BVP + DVP + Sonstige + DNVP): [+ right_coalition +]%
+
+[? if nazi_urgency <= 1 and nsdap_r >= 15 : Der rasante Anstieg der Stimmen für die NSDAP ist äußerst besorgniserregend. Viele hatten geglaubt, die Partei sei am Ende; nun betrachten einige von uns sie als die größte Bedrohung für die Demokratie in Deutschland. ?]
+
+[? if anti_democratic_coalition >= 50 : Zusammen verfügen die antidemokratischen Parteien KPD, DNVP und NSDAP über eine Mehrheit im Reichstag. Eine stabile Regierungsmehrheit wird nahezu unmöglich sein. ?]
+
+Es gibt einige mögliche Koalitionskonstellationen.
+
+@coalition_menu
+
+- @spd_majority
+- @weimar_coalition
+- @grand_coalition
+- @new_grand_coalition
+- @unity_government
+- @far_right_coalition
+- @no_majority
+- @brauns_dilemma
+- @left_coalition
+- @popular_front_coalition
+- @right_coalition
+
+# TODO: black-brown coalition
+
+
+@popular_front_coalition
+title: Eine neue Koalition namens „Volksfront“?
+subtitle: SPD + KPD + Z + [+ ddp_name +]  [? if sapd_formed: + SAPD ?]([+ popular_front_coalition +]%)
+unavailable-subtitle: SPD + KPD + Z + [+ ddp_name +] [? if sapd_formed: + SAPD ?]([+ popular_front_coalition +]%) - [? if ((kpd_relation < 65 and kpd_party_leader == "Thälmann") or (kpd_relation < 45 and kpd_party_leader == "Conciliators")): Wir haben keine ausreichend guten Beziehungen zur KPD. ?][? if (z_relation < 45 and z_party_leader == "Joos") or (z_relation < 65 and z_party_leader != "Joos" and kpd_party_leader != "Conciliators") or (z_relation < 55 and z_party_leader != "Joos" and kpd_party_leader == "Conciliators"): Wir haben keine ausreichend guten Beziehungen zur Zentrumspartei. ?][? if communist_coalition < 3 : Die Kommunisten sind nicht kompromissbereit. ?]
+view-if: popular_front_coalition >= 50
+choose-if: (((kpd_relation >= 65 and kpd_party_leader == "Thälmann") or (kpd_relation >= 45 and kpd_party_leader == "Conciliators")) and ((z_relation >= 45 and z_party_leader == "Joos") or (z_relation >= 65 and z_party_leader != "Joos" and kpd_party_leader != "Conciliators") or (z_relation >= 55 and z_party_leader != "Joos" and kpd_party_leader == "Conciliators")) and ddp_relation >= 50 and communist_coalition >= 3) or (z_party_leader == "Joos" and kpd_party_leader == "Conciliators" and z_relation >= 30 and kpd_relation >= 30)
+
+Könnten wir wirklich eine Koalition bilden, der sowohl die Zentrumspartei als auch die Kommunisten angehören? Das klingt zwar nach einer absurden Vorstellung, aber angesichts unserer guten Beziehungen zu beiden Seiten ist es nicht ausgeschlossen.
+
+Die extreme Rechte könnte einen Putschversuch unternehmen, sollte eine solche Koalition gebildet werden.
+
+- @popular_front_2: Bildet die Volksfront!
+- @great_popular_front: Bildet die Volksfront!
+
+@popular_front_2
+view-if: z_party_leader != "Joos" or kpd_party_leader != "Conciliators"
+
+Irgendwie sind sowohl die Kommunisten als auch die Zentrumspartei zumindest bereit, Verhandlungen in Betracht zu ziehen. Natürlich bringen die Radikalen der KPD und die Konservativen der Zentrumspartei die Verhandlungen fast sofort zum Scheitern. Die KPD fordert die Führung der Koalition für sich selbst und ihren Vorsitzenden Ernst Thälmann, [? if spd_r > kpd_r : trotz unseres höheren Stimmenanteils, ?]während die Zentrumspartei sich durch die Aussicht, den Bolschewiken zum Regierungszugang zu verhelfen gekränkt fühlt. Es muss *etwas* getan werden, um das Gleichgewicht wiederherzustellen.
+
+- @popular_front_resources
+- @popular_front_democracy
+- @popular_front_braun
+- @coalition_menu: Das ist unmöglich. Versuchen Sie es mit einer anderen Regierungsvereinbarung.
+
+@popular_front_resources
+title: Nutzen Sie unsere Ressourcen, um die Situation zu entschärfen.
+unavailable-subtitle: Erforderlich: 4 Ressourcen
+subtitle: -4 Ressourcen
+choose-if: resources >= 4
+on-arrival: resources -= 4
+go-to: popular_front_success
+
+@popular_front_democracy
+title: Die KPD davon überzeugen, die Demokratie zu akzeptieren.
+subtitle: [? if kpd_party_leader == "Conciliators" :  Die gemäßigte Führung der KPD gibt zumindest vor, die Volksfront zu unterstützen. ?]
+unavailable-subtitle: Unsere Beziehung zur KPD ist nicht gut genug.
+choose-if: (kpd_relation >= 60 and communist_coalition >= 3) or kpd_party_leader == "Conciliators"
+go-to: popular_front_success
+
+@popular_front_braun
+title: Den Druck von Präsident Braun nutzen, um die Parteien zur Zusammenarbeit zu zwingen.
+view-if: president == "Braun"
+go-to: popular_front_success
+
+@great_popular_front
+view-if: z_party_leader == "Joos" and kpd_party_leader == "Conciliators"
+on-arrival: spd_in_government = 1; in_popular_front = 1; chancellor = "Breitscheid"; chancellor_party = "SPD"; kpd_relation += 10; coup_progress += 2; in_left_front = 0; in_weimar_coalition = 0; in_grand_coalition = 0; coalition_dissent = 0;
+achievement: grosse_volksfront
+go-to: popular_front_civil_war if coup_progress >= 10; popular_front_no_civil_war if coup_progress < 10
+
+Irgendwie ist es gelungen, die Koalition zu bilden! Die versöhnliche Haltung der Führung der Zentrumspartei und der KPD trug dazu bei, die Verhandlungen zu ermöglichen. Wir brauchen noch einen Kanzler; die einzige akzeptable Wahl unter den Parteien war Rudolf Breitscheid von der SPD, der sowohl für die Zentrumspartei als auch für die KPD akzeptabel war [? if president == "Hindenburg" :, ebenso wie Präsident Hindenburg, wenn auch äußerst widerwillig ?].
+
+@popular_front_success
+on-arrival: spd_in_government = 1; in_popular_front = 1; chancellor = "Breitscheid"; chancellor_party = "SPD"; kpd_relation += 10; coup_progress += 2; in_left_front = 0; in_weimar_coalition = 0; in_grand_coalition = 0; coalition_dissent = 0;
+go-to: popular_front_civil_war if coup_progress >= 10; popular_front_no_civil_war if coup_progress < 10
+achievement: volksfront
+
+Irgendwie ist es überraschenderweise gelungen, eine Koalition zu bilden! Wir brauchen noch einen Kanzler; die einzige akzeptable Wahl unter den Parteien war Rudolf Breitscheid von der SPD, der für die Zentrumspartei und die KPD akzeptabel war [? if president == "Hindenburg" :, ebenso wie für Präsident Hindenburg, wenn auch äußerst widerwillig ?].
+
+@popular_front_no_civil_war
+on-arrival: kpd_goals_seen = 0; finance_minister_party = "Z"; interior_minister_party = "Z"; economic_minister_party = "Z"; labor_minister_party = "Z"; foreign_minister_party = "Z"; agriculture_minister_party = "Z"; reichswehr_minister = "I"; leverage = spd_r + kpd_r;
+achievement: volksfront
+
+Als Reaktion auf den Einzug der KPD in die Regierung nimmt die Rechte vorerst eine abwartende Haltung ein. Sie geht davon aus, dass die Volksfrontregierung instabil und handlungsunfähig sein wird, von selbst zusammenbrechen wird, wodurch die Linke und die Mitte in Verruf geraten und schließlich der Untergang der Weimarer Republik ermöglicht wird. Unsere Aufgabe ist es, ihnen das Gegenteil zu beweisen.
+
+Die KPD hat in Bezug auf Ministerposten eine ablehnende Haltung eingenommen. Sie behauptet, als „loyale Opposition“ innerhalb der Volksfrontregierung mitzuwirken, uns von außen zu unterstützen und gleichzeitig eigene Propagandakampagnen zu führen, um die Arbeiter auf ihre Seite zu ziehen. Sie scheint davon auszugehen, dass die Volksfront unweigerlich scheitern wird und dass unser Scheitern ihr zugutekommen würde.
+
+- @ministries: Zunächst müssen wir unsere Ministerien auswählen.
+
+
+@popular_front_civil_war
+on-arrival: kpd_relation = 80; reichswehr_loyalty += 0.25;
+
+Als Reaktion auf den Einzug der KPD in die Regierung startet die Rechte sofort einen Putschversuch. Truppen des Stahlhelms und der nationalsozialistischen SA marschieren in Berlin ein und geraten sofort in Zusammenstöße mit unseren Anhängern! Reaktionäre Offiziere innerhalb der Reichswehr haben ihre Truppen aus den Kasernen geführt und sich mit dem Stahlhelm verbündet, um uns an der Machtübernahme zu hindern.
+
+Dem Zentrum gelingt es zwar, einen Teil der Feindseligkeiten seitens der Reichswehr und des Stahlhelms zu entschärfen, doch den Ausbruch der Kämpfe kann es nicht verhindern. Wir sind gezwungen, an der Seite der KPD zu kämpfen, ob wir wollen oder nicht.
+
+- @civil_war: Ein Bürgerkrieg also.
+
+
+
+@far_right_coalition
+title: Rechtsextreme Koalition
+subtitle: NSDAP + DNVP ([+ far_right_coalition +]%)
+view-if: far_right_coalition >= 50
+go-to: far_right_win if (year >= 1932 or nsdap_r >= 44) and president != "Braun"; far_right_fail if (year < 1932 and nsdap_r < 44) and president != "Braun"; far_right_braun if president == "Braun"
+priority: 2
+
+Es gibt genügend Stimmen, damit die Nazis und die DNVP eine Koalition bilden können. [+ nsdap_leader +] hat seine Beteiligung an der Regierung davon abhängig gemacht, dass er zum Reichskanzler ernannt wird. Die Entscheidung liegt nun bei Präsident [+ president +].
+
+@far_right_win
+on-arrival: chancellor = nsdap_leader; chancellor_party = "NSDAP"
+
+[? if president == "Hindenburg" : Präsident Hindenburgs Schattenkabinett ?][? if president == "Braun" : Präsident Braun hat irgendwie ?] beschlossen, dass [+ nsdap_leader +] Kanzler werden muss [? if president == "Hindenburg": und der in die Jahre gekommene Präsident nimmt ihre Empfehlungen an. ?][? if president == "Braun" : denn so würde es die Verfassung vorschreiben. ?]
+
+- @hitler_takes_power: Was machen wir jetzt?
+
+
+@far_right_fail
+on-arrival: chancellor = "Schleicher"; chancellor_party = "I"; pro_republic -= 10; next_election_time = time+5; next_election_month = month + 5; next_election_year = year; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12;
+
+Das reaktionäre Establishment steht den Nationalsozialisten nach wie vor sehr skeptisch gegenüber, weshalb [+ president +] stattdessen den ehemaligen General Kurt von Schleicher zum Reichskanzler ernennt, um zu versuchen, die Nationalsozialisten „zu zähmen“.
+
+Schleichers Regierung ist bei allen Parteien im Reichstag äußerst unbeliebt. Trotz seiner Bereitschaft zu einer Koalition mit der NSDAP wollen die Nationalsozialisten die Macht ganz für sich allein, ohne Schleicher.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+@far_right_braun
+on-arrival: coup_progress += 2
+
+Präsident Braun steht vor einem Dilemma. Ist es „demokratisch“, die Demokratie zerstören zu lassen, wenn die Mehrheit der Wähler dies so beschlossen hat? Einige, sogar aus dem linken Lager, vertreten die Ansicht, dass die Nazis *wirklich* nicht so schrecklich wären, wie ihr Wahlprogramm vermuten lässt, und dass man sie durch die Machtübernahme in den Augen der Öffentlichkeit selbst diskreditieren könnte.
+
+Alternativ könnte Braun die Notstandsbefugnisse des Präsidentenamtes nutzen. Artikel 48 wurde von Hindenburg dazu genutzt, antidemokratische und arbeiterfeindliche Maßnahmen zu erlassen; kann Artikel 48 sowohl zum Guten als auch zum Bösen eingesetzt werden?
+
+- @emergency_braun: Wir werden mit Brauns Unterstützung eine Notstandsregierung bilden.
+- @new_elections: Es wird Neuwahlen geben.
+- @far_right_win: Lasst die Nazis ihre Regierung bilden.
+
+
+@left_coalition
+title: Ist eine Koalition der Vereinigten Linken möglich?
+subtitle: SPD + KPD [? if sapd_formed: + SAPD ?] ([+ left_coalition +]%)
+unavailable-subtitle: SPD + KPD [? if sapd_formed: + SAPD ?] ([+ left_coalition +]%). [? if kpd_relation < 50 : Unsere Beziehung zur KPD ist nicht gut genug. ?][? if communist_coalition < 3 : Die Kommunisten sind zu sehr ihren radikalen Prinzipien verpflichtet, um sich an der Regierung zu beteiligen. ?]
+view-if: left_coalition >= 50
+choose-if: (kpd_relation >= 50 or (kpd_party_leader == "Conciliators" and kpd_relation >= 40)) and communist_coalition >= 3
+
+Es gäbe genügend Stimmen für eine Koalitionsregierung aus SPD und KPD, falls so etwas tatsächlich möglich wäre.
+
+Die extreme Rechte könnte einen Putschversuch unternehmen, sollte eine solche Koalition zustande kommen.
+
+- @left_coalition_impossible: Das ist unmöglich.
+- @left_coalition_possible: Das könnte möglich sein.
+
+@left_coalition_impossible
+go-to: coalition_menu
+
+Eine Koalition mit der extremen Linken ist unmöglich.
+
+
+@left_coalition_possible
+
+Die KPD zögert nach wie vor sehr, einer Koalition beizutreten, obwohl unsere Mitglieder auf der Basis gut miteinander auskommen. Die stalinistische Führung lehnt so etwas vehement ab. Als Gegenleistung für eine Koalition fordern sie die Ernennung von Ernst Thälmann zum Reichskanzler. [? if president == "Hindenburg" : Es besteht absolut keine Chance, dass Präsident Hindenburg die Ernennung eines eingefleischten Kommunisten zum Reichskanzler billigen würde. ?] Alternativ könnten wir sie, sofern unsere Beziehungen zu ihnen gut genug sind, davon überzeugen, die Ernennung eines unserer zentristischen oder linksgerichteten Mitglieder zum Reichskanzler zu unterstützen.
+
+- @thalmann_chancellor: Ernennen Sie Thälmann zum Kanzler.
+- @left_coalition_resources
+- @left_coalition_relations
+- @coalition_menu: Probieren Sie eine andere Regierungskonstellation aus.
+
+@thalmann_chancellor
+choose-if: president == "Braun" and reformist_strength + neorevisionist_strength < left_strength
+unavailable-subtitle: [? if president != "Braun": President [+ president +] would never allow such a thing. ?] [? if reformist_strength >= left_strength : Most in the parliamentary party would not support Thälmann as chancellor. ?]
+on-arrival: chancellor = "Thälmann"; chancellor_party = "KPD"; kpd_relation = 80; in_left_front = 1; spd_in_government = 1 
+
+Mit großem Widerwillen ernennt der Präsident [+ president +] [+ chancellor +] zum Kanzler.
+
+Immediately, [+ chancellor +] goes to work building a "Soviet Germany": consolidating as much power as possible in the KPD, purging state institutions of anti-communists, and sending street fighters against the "enemies of the people".
+
+In response to [+ chancellor +] being appointed Chancellor, the right-wing forces launches almost immediately launch an attempted coup. Troops of the Stahlhelm and Nazi SA enter Berlin and immediately begin clashing with our supporters! Reactionary officers within the Reichswehr have taken their troops out of the barracks and joined them with the Stahlhelm to stop the KPD from taking power. We are forced to be on the same side as the KPD, whether we want to or not.
+
+- @civil_war
+
+
+@left_coalition_resources
+title: Nutzen wir unsere Ressourcen, um die Situation zu klären.
+unavailable-subtitle: Erforderlich: 3 Ressourcen
+subtitle: -3 resources
+choose-if: resources >= 3
+on-arrival: resources -= 3
+go-to: left_coalition_success
+
+@left_coalition_relations
+title: Die KPD davon überzeugen, die Demokratie zu akzeptieren.
+unavailable-subtitle: Unsere Beziehungen zur KPD sind nicht gut genug.
+choose-if: kpd_relation >= 60 or kpd_party_leader == "Conciliators"
+go-to: left_coalition_success
+
+
+@left_coalition_success
+on-arrival: spd_in_government = 1; in_left_front = 1; chancellor = "Breitscheid"; chancellor_party = "SPD"; coup_progress += 3; capital_strike_progress += 2; in_popular_front = 0; in_grand_coalition = 0; in_weimar_coalition = 0; kpd_relation += 10
+go-to: left_coalition_civil_war if coup_progress >= 10; left_coalition_no_civil_war if coup_progress < 10
+achievement: einheitsfront
+
+Überraschenderweise gelingt es irgendwie, die linke Koalition zu bilden, ohne Thälmann zum Reichskanzler zu ernennen. Die von SPD, KPD und dem Präsidenten [+ president +] akzeptierte Konsenswahl für das Amt des Reichskanzlers ist Rudolf Breitscheid, der zwar der zentristischen Fraktion der SPD angehört, für die Linke jedoch aufgrund seiner früheren Mitgliedschaft in der linken, kriegsgegnerischen USPD akzeptabel war.
+
+# just raise the coup limit, don't immediately go to civil war
+
+@left_coalition_no_civil_war
+on-arrival: kpd_goals_seen = 0; foreign_minister_party = "SPD"; interior_minister_party = "SPD"; justice_minister_party = "SPD"; labor_minister_party = "SPD"; reichswehr_minister_party = "SPD"; economic_minister_party = "SPD"; finance_minister_party = "SPD"; agriculture_minister_party = "SPD"; reichswehr_loyalty -= 0.05
+
+Als Reaktion auf den Einzug der KPD in die Regierung nimmt die Rechte vorerst eine abwartende Haltung ein. Sie geht davon aus, dass unsere Regierung instabil und unfähig sein wird, von selbst zusammenbrechen wird, wodurch die Linke in Verruf gerät und letztendlich der Untergang der Weimarer Republik ermöglicht wird. Unsere Aufgabe ist es, ihnen das Gegenteil zu beweisen.
+
+Die KPD hat in Bezug auf Ministerposten eine ablehnende Haltung eingenommen. Sie behauptet, als „loyale Opposition“ an der Arbeiterregierung teilzunehmen, uns von außen zu unterstützen und gleichzeitig eigene Propagandakampagnen zu führen, um die Arbeiter auf ihre Seite zu ziehen. Sie scheint davon auszugehen, dass wir unweigerlich scheitern werden und dass unser Scheitern ihr zugutekommen würde. 
+
+Was auch immer ihre Beweggründe sein mögen, die SPD hat die Kontrolle über die Ministerien der Regierung.
+
+@left_coalition_civil_war
+on-arrival: reichswehr_loyalty += 0.1
+
+Als Reaktion auf den Einzug der KPD in die Regierung startet die Rechte sofort einen Putschversuch. Truppen des Stahlhelms und der nationalsozialistischen SA marschieren in Berlin ein und geraten mit unseren Anhängern aneinander. Reaktionäre Offiziere innerhalb der Reichswehr haben ihre Truppen aus den Kasernen geführt und sich mit dem Stahlhelm verbündet, um uns an der Machtübernahme zu hindern.
+
+- @civil_war: Ein Bürgerkrieg also.
+
+
+
+@right_coalition
+title: Weigern Sie sich, eine Regierung zu bilden, damit eine rechtsgerichtete Koalition gebildet werden kann.
+subtitle: Z + BVP + DVP + DNVP + Sonstige ([+ right_coalition +]%)
+unavailable-subtitle: Die DNVP ist nicht an einer Koalition mit der Zentrumspartei interessiert.
+view-if: right_coalition >= 50
+choose-if: year < 1929
+
+Es gibt genügend Stimmen für eine rechtsgerichtete Koalition aus der Zentrumspartei (+ BVP), der DVP, der DNVP und kleineren konservativen Parteien. [? if largest_party == "SPD": Dies wird jedoch als Verzicht auf die Regierungsverantwortung gewertet werden, da wir die größte Partei sind. ?]
+
+- @right_coalition_sure: Ja, wir werden unsere Verantwortung für die Regierungsbildung abgeben und einer rechten Koalition die Macht überlassen.
+- @grand_coalition: Eigentlich möchten wir doch eine große Koalition bilden.
+
+@no_right_coalition
+go-to: no_majority
+
+Die DNVP und ihr Vorsitzender Hugenberg weigern sich jedoch, eine Koalition mit den „Novemberverbrechern“ der Zentrumspartei einzugehen. Somit gibt es keinen klaren Weg zu einer Reichstagsmehrheit.
+
+@right_coalition_sure
+subtitle: Das wird innerhalb unserer Partei äußerst unpopulär sein.
+on-arrival: pro_republic -= 5; center_dissent += 15; left_dissent += 10; labor_dissent += 25; reformist_dissent += 25; neorevisionist_dissent += 15; z_relation -= 5; ddp_relation -= 5; dvp_relation -= 5
+go-to: right_coalition_2
+
+
+@right_coalition_2
+unavailable-subtitle: Die DNVP ist nicht an einer Koalition mit der Zentrumspartei interessiert.
+view-if: right_coalition >= 50
+choose-if: year < 1929
+on-arrival: spd_in_government = 0; spd_toleration = 0; chancellor = "Brüning"; chancellor_party = "Z"; foreign_minister_party = "DVP"; interior_minister_party = "DNVP"; justice_minister_party = "DNVP"; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = "DVP"; finance_minister_party = "Z"; agriculture_minister_party = "DNVP"; in_right_coalition = 1;
+
+Auch wenn die DNVP einer solchen Koalition sehr zögerlich gegenübersteht, kommt sie dennoch den Wünschen von Präsident Hindenburg nach. So entsteht eine Mitte-Rechts-Koalition mit Brüning als Reichskanzler.
+
+
+
+@no_majority
+title: Es gibt keine klare Regierungsmehrheit
+view-if: weimar_coalition < 50 and (grand_coalition < 50 or grand_coalition_failed == 1) and president = "Hindenburg" and far_right_coalition < 50
+on-arrival: no_majority_elections += 1
+go-to: no_majority_bruning if chancellor = "Brüning" or chancellor = "Wirth"; no_majority_papen if chancellor = "Papen" and no_majority_papen_elections == 0; no_majority_papen_2 if chancellor == "Papen" and no_majority_papen_elections > 0; no_majority_schleicher if chancellor = "Schleicher"; no_majority_spd if chancellor_party = "SPD" or chancellor == "Marx"
+
+# TODO: if there is an anti-democratic coalition majority, you should appoint Papen.
+
+# either new elections, or Hindenburg appoints either Brüning, Papen, Schleicher, or Hitler.
+
+@no_majority_spd
+on-arrival: chancellor = "Brüning"; chancellor_party = "Z"
+
+Es gibt keinen Weg zu einer offensichtlich tragfähigen Mehrheit. Da Präsident Hindenburg nicht bereit ist, mit einer Minderheits- oder Übergangsregierung der SPD zusammenzuarbeiten, ist sein bevorzugter Reichskanzler Heinrich Brüning von der Zentrumspartei, der eine „präsidiale“ Regierung führen könnte.
+
+- @toleration_bruning: Wir werden Brüning tolerieren.
+- @new_grand_coalition: Wir werden versuchen, eine neue große Koalition zu bilden.
+- @new_elections: Es wird Neuwahlen geben.
+
+# - if NSDAP is the largest party and the 
+
+@no_majority_bruning
+go-to: no_majority_bruning_toleration if (no_majority_elections <= 3 and anti_democratic_coalition <= 50); hindenburg_appoints_papen if no_majority_elections > 3 or anti_democratic_coalition > 50
+
+
+@hindenburg_appoints_papen
+on-arrival: chancellor = "Papen"; chancellor_party = "I"; next_election_time = time+3; next_election_month = month + 3; next_election_year = year; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; sa_banned = 0; pro_republic -= 8; finance_minister_party = "I"; interior_minister_party = "I"; economic_minister_party = "I"; labor_minister_party = "I"; foreign_minister_party = "I"; agriculture_minister_party = "I"; reichswehr_minister = "I";
+
+Es gibt keinen Weg zu einer Mehrheitsregierung. Präsident Hindenburg hat das Chaos satt und ernennt Franz von Papen anstelle von Brüning zum Reichskanzler. Papen ist ein unabhängiger Politiker, der früher der Zentrumspartei angehörte und steht deutlich rechts von der Mehrheit der Zentrumspartei.
+
+Angesichts seiner Unbeliebtheit sieht sich Papen sofort mit einem Misstrauensvotum konfrontiert. Wie auch immer die SPD abstimmt, sein Sturz ist garantiert, da alle anderen Parteien ihn einstimmig ablehnen.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+@no_majority_bruning_toleration
+on-arrival: no_majority_bruning_elections += 1
+
+Es gibt keinen Weg zu einer Mehrheitsregierung. Eine Möglichkeit wäre die Fortführung der derzeitigen Brüning-Regierung; wenn wir dies dulden, würde sie weiterhin über eine Mehrheit gegen einen Misstraeunsvotum verfügen.
+
+Alternativ könnten wir versuchen, eine „neue große Koalition“ aus allen verfassungskonformen Parteien mit Ausnahme der NSDAP, der KPD und der DNVP zu bilden. Das Hindernis sind die kleineren konservativen Parteien wie die „Reichspartei des deutschen Mittelstandes“, die jeden Anflug von Sozialismus verabscheuen und lieber das Land ruinieren würden, als mit Marxisten zusammenzuarbeiten.
+
+Die dritte Möglichkeit besteht darin, Neuwahlen abzuhalten.
+
+- @toleration_bruning: Wir werden Brüning tolerieren.
+- @new_grand_coalition: Wir werden versuchen, eine neue große Koalition zu bilden.
+- @new_elections: Es wird Neuwahlen geben.
+- @unity_government
+
+
+@new_grand_coalition
+title: Eine „neue große Koalition“ aller verfassungskonformen Parteien?
+subtitle: SPD + Z + BVP + [+ ddp_name +] + DVP + Sonstige ([+ neo_weimar_coalition +]%)
+view-if: neo_weimar_coalition >= 50 and grand_coalition < 50
+choose-if: z_relation >= 50 and dvp_relation >= 30
+unavailable-subtitle: SPD + Z + BVP + [+ ddp_name +] + DVP + Sonstige ([+ neo_weimar_coalition +]%) - [? if z_relation < 50 : Unsere Beziehung zur Zentrumspartei ist zu schlecht. ?][? if dvp_relation < 30 : Unsere Beziehung zur DVP ist zu schlecht. ?]
+
+Wie können wir vehement antisozialistische Parteien davon überzeugen, uns die Bildung einer Mehrheitskoalition zu ermöglichen? Unsere weitgehend freundschaftlichen Beziehungen zur Zentrumspartei und zur DVP könnten uns dabei einen gewissen Einfluss verschaffen.
+
+- @use_resources
+- @toleration_bruning: Nein. Wir werden eine Minderheitsregierung akzeptieren.
+- @new_elections: Nein. Es wird Neuwahlen geben.
+- @unity_government
+
+@use_resources
+title: Nutzen Sie unsere Ressourcen, um die Bildung einer Koalition zu erleichtern.
+subtitle: -2 Ressourcen
+unavailable-subtitle: Nicht genügend Ressourcen (benötigt werden 2).
+choose-if: resources >= 2
+on-arrival: resources -= 2; spd_in_government = 1; in_grand_coalition = 1; left_dissent += 4;
+achievement: constitutional_coalition
+
+Wir leiten einen Teil unserer Wahlkampfgelder an unsere mutmaßlichen Koalitionspartner weiter. Manche würden dies als Korruption bezeichnen, aber vielleicht ist es notwendig, um unsere Demokratie zu retten.
+
+Nun haben wir eine neue große Koalition, eine „Verfassungskoalition“ aller nicht-faschistischen und nicht-kommunistischen Parteien. Die Linken in unserer Partei stehen dieser Konstellation etwas skeptisch gegenüber.
+
+
+Wer sollte Kanzler werden?
+
+- @join_bruning: Ob gut oder schlecht – es muss Heinrich Brüning von der Zentrumspartei sein.
+- @braun_chancellor_new: Otto Braun als Kanzler?
+
+@braun_chancellor_new
+subtitle: Dadurch wird unser Einfluss in der Ministerienwahl geschwächt.
+view-if: not historical_mode or not spd_prussia
+on-arrival: leverage -= 10; chancellor = "Braun"; chancellor_party = "SPD"
+go-to: ministries
+
+Wir haben unter der Führung von Otto Braun eine neue Koalition gebildet.
+
+
+@unity_government
+title: Die Zentrumspartei schlägt eine „Regierung der nationalen Einheit“ unter Kanzler Joseph Wirth vor.
+subtitle: SPD + Z + BVP + [+ ddp_name +] + DVP + Sonstige ([+ neo_weimar_coalition +]%)
+view-if: z_party_leader == "Joos" and neo_weimar_coalition >= 50 and weimar_coalition < 50 and z_relation >= 10
+
+Der Vorsitzende der Zentrumspartei, Joseph Joos, erkennt die Gefahr, die vom Aufstieg der antidemokratischen extremistischen Parteien ausgeht, ganz klar und versucht daher, eine „Regierung der nationalen Einheit“ auszuhandeln, um die Republik zu retten. Diese Koalition würde von Joseph Wirth, einem linksgerichteten Mitglied der Zentrumspartei und ehemaligen Kanzler, geführt und alle verfassungskonformen Parteien umfassen. Unsere Rolle in dieser Regierung könnte jedoch begrenzt sein.
+
+- @unity_government_2
+- @reject_unity_government: Nein, wir werden dieses Angebot nicht annehmen.
+
+@unity_government_2
+title: Das Angebot annehmen!
+on-arrival: chancellor = "Wirth"; chancellor_party = "Z"; spd_in_government = 1; in_grand_coalition = 1; in_unity_government = 1; leverage = 15; z_relation += 5; dvp_relation += 4
+achievement: constitutional_coalition
+go-to: ministries
+
+Wir haben eine neue Einheitsregierung aus allen verfassungsmäßigen Parteien gebildet! Bei der Besetzung der Ministerposten für diese Regierung haben wir nur eine begrenzte Auswahl.
+
+
+@reject_unity_government
+on-arrival: z_relation -= 8; ddp_relation -= 5; dvp_relation -= 5
+
+Unsere Ablehnung der Einheitsregierung hat unsere Beziehungen zur Bourgeoisie und Mitte-Rechts-Parteien beeinträchtigt.
+
+- @brauns_dilemma
+- @toleration_bruning: Wir werden eine von Brüning geführte Minderheitsregierung tolerieren.
+- @toleration_wirth: Wir werden eine Minderheitsregierung unter der Führung von Joseph Wirth tolerieren.
+- @new_elections: Es wird Neuwahlen geben.
+
+
+@toleration_wirth
+view-if: z_party_leader = "Joos"
+choose-if: president == "Braun"
+unavailable-subtitle: Präsident Hindenburg wird eine von Joseph Wirth geführte Minderheitsregierung nicht unterstützen.
+on-arrival: chancellor = "Wirth"; chancellor_party = "Z"; spd_in_government = 0; spd_toleration = 1; z_relation += 5; foreign_minister_party = "DVP"; interior_minister_party = "Z"; justice_minister_party = "I"; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = ddp_name; finance_minister_party = "DVP"; agriculture_minister_party = "Z"; pro_republic -= 2;
+
+Wir haben eine Minderheitsregierung unter der Führung der Zentrumspartei und unter Kanzler Joseph Wirth unterstützt.
+
+
+
+@no_majority_papen
+on-arrival: pro_republic -= 10; next_election_time = time+3; next_election_month = month + 3; next_election_year = year; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; workers_nsdap += 6; unemployed_nsdap += 6; old_middle_nsdap += 5; new_middle_nsdap += 5; rural_nsdap += 5; no_majority_papen_elections += 1; workers_spd -= 8 if pro_republic < 45; workers_spd *= 0.85 if pro_republic < 40; workers_nsdap += 5 if pro_republic < 40;
+
+Nach den Wahlen ist Papen nach wie vor äußerst unbeliebt, es gibt keinerlei Anzeichen für eine Koalitionsunterstützung und fast umgehend wird ein Misstrauensvotum gegen ihn gestellt. Ganz gleich, wie wir abstimmen, der Antrag würde angenommen werden. Der Reichstag wird erneut aufgelöst.
+
+Neue Wahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+
+@no_majority_papen_2
+on-arrival: chancellor = "Schleicher"; pro_republic -= 10; next_election_time = time+5; next_election_month = month + 5; next_election_year = year; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; workers_nsdap += 5; unemployed_nsdap += 10; old_middle_nsdap += 5; new_middle_nsdap += 5; rural_nsdap += 10; workers_spd -= 8 if pro_republic < 45; workers_spd *= 0.85 if pro_republic < 40; workers_nsdap += 5 if pro_republic < 40; finance_minister_party = "I"; interior_minister_party = "I"; economic_minister_party = "I"; labor_minister_party = "I"; foreign_minister_party = "I"; agriculture_minister_party = "I"; reichswehr_minister = "I";
+
+Es gibt keinen Weg zu einer Mehrheitsregierung. Hindenburg ist mit Papen unzufrieden und fordert ihn zum Rücktritt auf. Nun wurde der ehemalige General Kurt von Schleicher zum Reichskanzler ernannt, erneut im Rahmen einer Präsidialregierung.
+
+Schleichers Regierung ist bei allen Parteien im Reichstag äußerst unbeliebt. Trotz seiner Bereitschaft zu einer Koalition mit der NSDAP wollen die Nationalsozialisten die Macht ganz für sich allein, ohne Schleicher.
+
+Neue Wahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+
+@no_majority_schleicher
+go-to: hitler_chancellor
+
+# TODO: there should be a second Schleicher option if the NSDAP isn't the strongest
+
+
+@hitler_chancellor
+on-arrival: chancellor = "Hitler"; chancellor_party = "NSDAP"
+
+Derzeit gibt es keinen Weg zu einer Mehrheitsregierung. Die Intrigen um Präsident Hindenburg führen nur in eine Richtung – nämlich zu Reichskanzler Adolf Hitler. [? if largest_party == "NSDAP" : Da es sich um die größte Partei handelt, verstößt dies nicht wirklich gegen die parlamentarischen Verfahren, sodass es schwierig ist, Einwände allein aus verfahrensrechtlichen Gründen zu erheben. ?] [? if hitler_deported: Trotz seiner früheren Ausweisung haben sich die Nazi-Führer und ihre reaktionären Verbündeten darauf verständigt, dass der Präsident ihm doch die deutsche Staatsbürgerschaft verleiht. ?]
+
+- @hitler_takes_power: Was nun?
+
+# if NSDAP is largest party and Hindenburg is president, then Hindenburg appoints Hitler chancellor.
+
+@spd_majority
+title: SPD-Mehrheit allein
+subtitle: SPD: [+ spd_r +]%
+view-if: spd_r >= 50
+on-arrival: chancellor = "Empty"; chancellor_party = "SPD"; spd_in_government = 1; in_spd_majority = 1; pro_republic += 5; foreign_minister_party = "SPD"; foreign_minister = "Breitscheid"; interior_minister_party = "SPD"; interior_minister = "Severing"; justice_minister_party = "SPD"; justice_minister = "Radbruch"; labor_minister_party = "SPD"; labor_minister = "Wissell"; reichswehr_minister_party = "SPD"; reichswehr_minister = "Leber"; economic_minister_party = "SPD"; economic_minister = "Schmidt"; finance_minister_party = "SPD"; finance_minister = "Hilferding"; agriculture_minister_party = "SPD"; agriculture_minister = "Baade"; reichswehr_loyalty -= 0.05; 
+achievement: majority_party
+
+Endlich kann die SPD allein regieren! Unser langwieriger Wahlkampf hat sich ausgezahlt. Wir müssen uns keine Gedanken mehr über eine Koalitionsregierung machen; alles ist möglich.
+
+Wer sollte Reichskanzler werden?
+
+- @braun_majority_chancellor: Otto Braun als Kanzler.
+- @breitscheid_majority_chancellor: Rudolf Breitscheid als Kanzler.
+- @muller_majority_chancellor: Hermann Müller als Kanzler.
+- @wels_majority_chancellor: Otto Wels als Kanzler.
+
+@braun_majority_chancellor
+view-if: not historical_mode or not spd_prussia
+on-arrival: chancellor = "Braun"
+
+[? if president == "Braun": Unsere Experten haben die Verfassung geprüft und festgestellt, dass es kein ausdrückliches Verbot gibt, wonach der Reichskanzler nicht gleichzeitig Reichspräsident sein darf (der Reichspräsident darf kein Mitglied des Reichstags sein; es gibt kein Gesetz, das vorschreibt, dass der Reichskanzler Mitglied des Reichstags sein muss). Somit haben wir den Reichskanzler und Reichspräsidenten Otto Braun. ?]
+[? if president != "Braun": Otto Braun ist zum Kanzler der SPD-Mehrheit ernannt worden. ?]
+
+@breitscheid_majority_chancellor
+on-arrival: chancellor = "Breitscheid"
+
+Rudolf Breitscheid ist zum Kanzler der SPD-Mehrheit gewählt worden.
+
+@muller_majority_chancellor
+view-if: muller_dead = 0
+on-arrival: chancellor = "Müller"
+
+Hermann Müller ist zum Kanzler der SPD-Mehrheit gewählt worden.
+
+@wels_majority_chancellor
+view-if: muller_dead = 1
+on-arrival: chancellor = "Wels"
+
+Otto Wels ist zum Kanzler der SPD-Mehrheit ernannt worden.
+
+# TODO: Otto Wels should be able to be chancellor of a Grand Coalition, Weimar Coalition, or SPD majority after Müller dies.
+
+
+@brauns_dilemma
+title: Es gibt keine klare Regierungsmehrheit.
+subtitle: Präsident Braun steht vor einem Dilemma.
+view-if: president == "Braun" and (grand_coalition < 50 or grand_coalition_failed == 1)
+
+Präsident Braun steht vor einem Dilemma. Er sehnt sich verzweifelt nach einer sozialistischen oder zumindest demokratischen Regierung, doch die Wahlergebnisse sprechen dagegen. Artikel 48 wurde von Hindenburg genutzt, um antidemokratische und arbeiterfeindliche Maßnahmen zu erlassen; kann Artikel 48 sowohl zum Guten als auch zum Bösen eingesetzt werden?
+
+- @emergency_braun: Wir werden mit Brauns Unterstützung eine Notstandsregierung bilden.
+- @new_elections: Es wird Neuwahlen geben.
+- @new_grand_coalition
+- @left_coalition
+- @popular_front_coalition
+- @far_right_coalition
+
+
+
+@emergency_braun
+title: Wir werden mit Brauns Unterstützung eine Notstandsregierung bilden.
+subtitle: Dies könnte dazu führen, dass sich die öffentliche Meinung gegen uns wendet und die Reaktionäre werden uns auf jedem Schritt unseres Weges bekämpfen.
+on-arrival: sa_strength += 100; sh_strength += 100; in_emergency_government = 1
+
+Ja, eine Not-Minderheitsregierung mit Unterstützung der SPD. Wer sollte diese Not-Minderheitsregierung führen?
+
+- @braun_emergency_chancellor: Otto Braun als Kanzler UND Präsident!
+- @breitscheid_emergency_chancellor: Rudolf Breitscheid als Notkanzler.
+- @bruning_emergency_chancellor: Brüning von der Zentrumspartei, als Geste des guten Willens gegenüber der Bourgeoisie.
+- @wirth_emergency_chancellor: Joseph Wirth von der Zentrumspartei als Geste der republikanischen Einheit.
+
+@braun_emergency_chancellor
+subtitle: So etwas hat es noch nie gegeben.
+view-if: not historical_mode or not spd_prussia
+on-arrival: chancellor = "Braun"; chancellor_party = "SPD"; spd_in_government = 1; pro_republic -= 5; foreign_minister_party = "SPD"; interior_minister_party = "SPD"; justice_minister_party = "SPD"; labor_minister_party = "SPD"; reichswehr_minister_party = "SPD"; economic_minister_party = "SPD"; finance_minister_party = "SPD"; agriculture_minister_party = "SPD"; reichswehr_loyalty -= 0.1; 
+
+Unsere Experten haben die Verfassung geprüft und festgestellt, dass es kein ausdrückliches Verbot gibt, wonach der Reichskanzler nicht gleichzeitig Reichspräsident sein darf (der Reichspräsident darf kein Mitglied des Reichstags sein; es gibt kein Gesetz, das vorschreibt, dass der Reichskanzler *zwingend* Mitglied des Reichstags sein muss).
+
+So haben wir also Kanzler -Präsidenten Otto Braun. Er behauptet, er werde zurücktreten, sobald die wirtschaftspolitische Krise überwunden sei. Die rechten Parteien, die einst lautstark forderten, die parlamentarische Ordnung durch eine Diktatur oder Monarchie zu ersetzen, fordern nun lautstark die Wiederherstellung der Demokratie.
+
+- @far_right_coup
+- @emergency_no_confidence: Die Nazis stellen sofort ein Misstrauensvotum gegen uns…
+
+@breitscheid_emergency_chancellor
+subtitle: Die Kommunisten fangen an, ihn zu mögen...
+on-arrival: chancellor = "Breitscheid"; chancellor_party = "SPD"; spd_in_government = 1; kpd_relation += 5; foreign_minister_party = "SPD"; interior_minister_party = "SPD"; justice_minister_party = "SPD"; labor_minister_party = "SPD"; reichswehr_minister_party = "SPD"; economic_minister_party = "SPD"; finance_minister_party = "SPD"; agriculture_minister_party = "SPD"; reichswehr_loyalty -= 0.1;
+
+Wir haben Rudolf Breitscheid zum Notkanzler ernannt. Die Kommunisten halten ihn für weniger bedenklich als die Alternativen, obwohl unklar ist, ob sie diese Regierung tolerieren werden.
+
+- @far_right_coup
+- @emergency_no_confidence
+
+
+@bruning_emergency_chancellor
+on-arrival: chancellor = "Brüning"; chancellor_party = "Z"; spd_in_government = 1; z_relation += 10; foreign_minister_party = "SPD"; interior_minister_party = "SPD"; justice_minister_party = "SPD"; labor_minister_party = "SPD"; reichswehr_minister_party = "SPD"; economic_minister_party = "SPD"; finance_minister_party = "SPD"; agriculture_minister_party = "SPD" 
+
+Die Zentrumspartei ist erfreut und zugleich etwas überrascht, dass wir [+ chancellor +] zum Kanzler ernannt haben.
+
+- @far_right_coup
+- @emergency_no_confidence
+
+@wirth_emergency_chancellor
+view-if: z_party_leader == "Joos"
+on-arrival: chancellor = "Wirth"; chancellor_party = "Z"; spd_in_government = 1; z_relation += 10; foreign_minister_party = "SPD"; interior_minister_party = "SPD"; justice_minister_party = "SPD"; labor_minister_party = "SPD"; reichswehr_minister_party = "SPD"; economic_minister_party = "SPD"; finance_minister_party = "SPD"; agriculture_minister_party = "SPD" 
+
+Die Zentrumspartei freut sich, dass wir [+ chancellor +] zum Kanzler ernannt haben.
+
+- @far_right_coup
+- @emergency_no_confidence
+
+
+
+@far_right_coup
+title: Die rechtsextremen Parteien starten sofort einen Militärputsch gegen uns...
+view-if: far_right_coalition >= 45
+on-arrival: sh_strength += 150; sa_strength += 150; sh_militancy += 0.05; sa_militancy += 0.05
+
+Die rechtsextremen Parteien haben erkannt, dass wir bereit sind, ihnen mit fragwürdigen demokratischen Mitteln den Zugang zur Regierung zu verwehren und sind zu dem Schluss gekommen, dass sie die Macht nur mit undemokratischen Mitteln ergreifen können; daher sind sie mit aller Kraft gegen die amtierende Regierung aufgestanden.
+
+Ihre Reihen werden durch die vielen Staatsbediensteten verstärkt, die gegen die Aussicht auf eine einheitliche sozialistische Regierung sind. Polizisten und Soldaten laufen zur SA und zum Stahlhelm über.
+
+- @civil_war: Es ist Krieg.
+
+
+@emergency_no_confidence
+title: Die Nazis stellen sofort ein Misstrauensvotum gegen uns...
+view-if: far_right_coalition < 45
+on-arrival: z_no_confidence = 1 if z_relation < 45; kpd_no_confidence = 1 if kpd_relation < 45; other_no_confidence = 1 if (z_relation + dvp_relation)/2 < 45; dvp_no_confidence = 1 if dvp_relation < 45; sa_strength += 200; sh_strength += 200; no_confidence_votes = nsdap_r + dnvp_r; no_confidence_votes += z_r if z_no_confidence; no_confidence_votes += dvp_r if dvp_no_confidence; no_confidence_votes += kpd_r if kpd_no_confidence; no_confidence_votes += other_r if other_no_confidence; no_confidence_succeeds = 1 if no_confidence_votes > 50
+
+Die NSDAP und die DNVP werden natürlich gegen uns stimmen. Die anderen Parteien stimmen nach ihrem Gewissen ab. [? if z_no_confidence: Die Zentrumspartei stimmt gegen uns. ?] [? if kpd_no_confidence: Die KPD stimmt gegen uns. ?] [? if other_no_confidence: Die verschiedenen Kleinstparteien stimmen gegen uns. ?]
+
+Insgesamt sind [+ no_confidence_votes +]% des Reichstags gegen uns. [? if no_confidence_succeeds : Wir haben das Misstrauensvotum verloren. ?]
+
+- @no_confidence_elections_new: Es wird Neuwahlen geben, die wir versuchen zu verzögern.
+- @no_confidence_win: Wir haben gewonnen – vorerst.
+
+
+@no_confidence_elections_new
+on-arrival: {!
+Q.in_emergency_government = 1;
+Q.no_majority_elections += 1;
+Q.next_election_month = Q.month + 6;
+Q.next_election_time = Q.time + 6;
+if (Q.next_election_month > 12) {
+    Q.next_election_month -= 12;
+    Q.next_election_year = Q.year + 1;
+} else {
+    Q.next_election_year = Q.year;
+}
+Q.pro_republic -= 5;
+Q.workers_spd -= 3;
+Q.new_middle_spd -= 3;
+Q.old_middle_spd -= 3;
+Q.rural_spd -= 3;
+Q.catholics_spd -= 3;
+Q.workers_nsdap += 5;
+Q.old_middle_nsdap += 3;
+Q.new_middle_nsdap += 3;
+Q.rural_nsdap += 3;
+Q.unemployed_nsdap += 5;
+if (Q.pro_republic < 45 && Q.pro_republic >= 38) {
+    Q.workers_spd -= 6;
+}
+if (Q.pro_republic < 38) {
+    Q.workers_spd *= 0.85;
+    Q.new_middle_spd -= 5;
+    Q.old_middle_spd -= 5;
+    Q.rural_spd -= 5;
+    Q.catholics_spd -= 3;
+    Q.workers_nsdap += 5;
+    Q.old_middle_nsdap += 5;
+    Q.new_middle_nsdap += 5;
+    Q.rural_nsdap += 5;
+    Q.unemployed_nsdap += 5;   
+}
+!}
+view-if: no_confidence_votes > 50
+
+Die nächsten Wahlen sind für den [+ next_election_month : month +] [+ next_election_year +] angesetzt.
+
+
+@no_confidence_win
+view-if: no_confidence_votes <= 50
+on-arrival: in_minority_government = 1; in_emergency_government = 0;
+achievement: minderheitsregierung
+
+Wir haben das Misstrauensvotum überstanden und regieren derzeit in einer SPD-Minderheitsregierung. Nun ist es unsere Aufgabe, das Land wieder auf Kurs zu bringen.
+
+
+@weimar_coalition
+title: Wir können eine Weimar Koalition bilden.
+subtitle: SPD + Z + [+ ddp_name +] [? if sapd_formed and kpd_relation >= 30 : + SAPD Toleranz ?] ([+ weimar_coalition +]%)
+view-if: weimar_coalition >= 50
+on-arrival: leverage += 5; leverage += 5 if z_party_leader == "Joos"; in_weimar_coalition = 1; spd_in_government = 1; in_popular_front = 0; in_left_front = 0; foreign_minister_party = "Z"; interior_minister_party = "Z"; justice_minister_party = ddp_name; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = ddp_name; finance_minister_party = "Z"; agriculture_minister_party = "Z"; foreign_minister = "Wirth"; interior_minister = "Wirth"; justice_minister = "Koch-Weser"; labor_minister = "Stegerwald"; reichswehr_minister = "Groener"; economic_minister = "Dietrich"; finance_minister = "Köhler"; agriculture_minister = "Hermes";
+achievement: weimar_coalition
+
+Wir verfügen über genügend Stimmen, um eine „Weimar-Koalition“ zu bilden, bestehend aus SPD, Zentrum and [+ ddp_name +]! Dies ist seit 1919 unsere bevorzugte Regierungskoalition.
+
+Wer sollte Kanzler werden?
+
+- @muller
+- @braun
+- @breitscheid_coalition_chancellor
+- @wels
+- @z_chancellor
+- @z_chancellor_wirth
+
+@breitscheid_coalition_chancellor
+title: Rudolf Breitscheid als Kanzler
+subtitle: Breitscheid gilt als eher linksorientiert innerhalb der SPD.
+view-if: year >= 1930
+on-arrival: chancellor = "Breitscheid"; chancellor_party = "SPD";
+go-to: ministries
+
+Rudolf Breitscheid wurde zum Kanzler ernannt.
+
+
+@grand_coalition
+title: Wir können eine große Koalition bilden.
+view-if: grand_coalition >= 50 and grand_coalition_failed == 0
+subtitle: SPD + Z + BVP + [+ ddp_name +] + DVP ([+ grand_coalition +]%)
+on-arrival: in_grand_coalition = 1; in_popular_front = 0; in_left_front = 0
+go-to: grand_coalition_spd_lead if (n_elections <= 1 and largest_party == "SPD") or (largest_party == "SPD" and spd_r >= 30) or president = "Braun"; grand_coalition_z_lead if president != "Braun" and ((n_elections > 1 and spd_r < 30) or (n_elections <= 1 and largest_party != "SPD"))
+
+# TODO: if there are enough votes to form a grand coalition, who leads? Does the SPD lead or does Brüning (Z) lead? In reality this depended on Hindenburg's will, basically, which in turn depended on what his camarilla supported.
+# In the first election, SPD always leads. In subsequent elections, if spd_r >= 29 then SPD leads, otherwise Z leads?
+
+@grand_coalition_z_lead
+go-to: grand_coalition_z_lead_2 if dvp_relation >= 30; grand_coalition_fail if dvp_relation < 30
+
+Es gibt genügend Stimmen, um eine Mehrheitskoalition aus SPD, Zentrum, BVP, [+ ddp_name +] und DVP zu bilden. Angesichts unseres eher schwachen Wahlergebnisses [? if spd_no_confidence = 1 : und unseres früheren Misstrauensvotums gegen die Regierung, ?][? if no_confidence_against_spd = 1 : sowie des Misstrauensvotums gegen uns, ?] hat Präsident Hindenburg die Zentrumspartei gebeten, die Führung bei der Regierungsbildung zu übernehmen.
+
+# TODO: if the SPD participated in bringing down the previous government via a vote-of-no-confidence, or if we were essentially removed from government by our coalition partners, we should be more reluctant to participate in a new government.
+
+@grand_coalition_z_lead_2
+
+Der Reichskanzler der Zentrumspartei wird voraussichtlich Heinrich Brüning sein [? if chancellor = "Brüning" : , erneut. ?][? if chancellor != "Brüning": . ?] Er ist bekannt für seinen Konservatismus und seine Sympathie für den Monarchismus und gehört zum rechten Flügel der Zentrumspartei. [? if austerity >= 2 : Aufgrund der Sparpolitik der Regierung zögern viele unserer Mitglieder, erneut an dieser Koalition teilzunehmen. Einige befürworten eine „Tolerierungsvereinbarung“, bei der wir von außen Unterstützung leisten, um zu verhindern, dass die extreme Rechte entweder in die Regierung eintritt oder ein erfolgreiches Misstrauensvotum stellt. Andere befürworten den Eintritt in die reine Opposition und lassen die Rechte tun, was sie will. ?]
+
+Brüning ist nicht gegen eine Koalition mit uns. Alternativ könnten wir eine „Toleranzvereinbarung“ schließen.
+
+- @join_bruning: Schließen wir uns der Brüning-Koalition an.
+- @bruning_oppo: Schließen wir uns der Opposition an.
+- @toleration_bruning: Wir werden eine Brüning-Minderheitsregierung „tolerieren“.
+- @unity_government
+
+@join_bruning
+view-if: grand_coalition >= 50 or neo_weimar_coalition >= 50
+on-arrival: spd_in_government = 1; spd_toleration = 0; in_grand_coalition = 1; chancellor = "Brüning"; chancellor_party = "Z"; foreign_minister_party = "DVP"; interior_minister_party = "Z"; justice_minister_party = "Z"; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = "Z"; finance_minister_party = "Z"; agriculture_minister_party = "Z"; leverage = 25 if leverage >= 25;
+go-to: ministries
+
+Heinrich Brüning heißt uns in seinem neuen Kabinett willkommen. Nun können wir uns die Ministerposten aussuchen.
+
+@bruning_oppo
+on-arrival: spd_in_government = 0; spd_toleration = 0; chancellor = "Brüning"; chancellor_party = "Z"; foreign_minister_party = "DVP"; interior_minister_party = "Z"; justice_minister_party = "Z"; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = "Z"; finance_minister_party = "Z"; agriculture_minister_party = "Z"; grand_coalition_failed = 1
+
+Indem wir uns weigern, der großen Koalition beizutreten oder sie zu dulden, verschieben wir das Machtgleichgewicht im Parlament im Wesentlichen nach rechts. [? if right_coalition >= 50 : Es gibt genügend Stimmen, um eine rechte Koalition zu bilden, an der die DNVP beteiligt ist. Der DNVP-Vorsitzende Hugenberg lehnt jedoch eine Koalition mit den „Novemberverbrechern“ der Zentrumspartei ab. Und natürlich ist die NSDAP nicht an einer Koalitionsregierung interessiert. Das bedeutet, dass es nicht genügend Stimmen für die Bildung einer Mehrheitskoalition geben wird. ?][? if right_coalition < 50 : Es gibt nicht genügend Stimmen für die Bildung einer rechtsgerichteten Koalition, an der die DNVP beteiligt ist, und diese ist ohnehin nicht daran interessiert, eine Koalition mit den „Novemberverbrechern“ der Zentrumspartei einzugehen. Und natürlich ist die NSDAP nicht an einer Koalitionsregierung interessiert. Das bedeutet, dass es keinen Weg zu einer Mehrheitskoalition gibt. ?]
+
+Wenn wir die Regierung nicht zumindest „tolerieren“, wird es in wenigen Monaten Neuwahlen geben. In der Zwischenzeit könnten der Präsident und der Bundeskanzler die in Artikel 48 der Verfassung vorgesehenen Notstandsbefugnisse nutzen, um im Grunde per Dekret zu regieren. Und es ist keineswegs klar, dass wir bei der nächsten Wahl besser abschneiden werden.
+
+- @join_bruning: Schließen wir uns der Brüning-Koalition an.
+- @toleration_bruning: Wir werden Brüning tolerieren.
+- @brauns_dilemma
+- @new_elections: Neuwahlen!
+
+
+@new_elections
+on-arrival: {!
+Q.next_election_month = Q.month + 3;
+Q.next_election_time = Q.time + 3;
+if (Q.next_election_month > 12) {
+    Q.next_election_month -= 12;
+    Q.next_election_year = Q.year + 1;
+} else {
+    Q.next_election_year = Q.year;
+}
+if (Q.chancellor == "Brüning") {
+    Q.z_relation -= 5;
+    Q.dvp_relation -= 5;
+}
+Q.pro_republic -= 8;
+Q.workers_spd -= 5;
+Q.new_middle_spd -= 5;
+Q.old_middle_spd -= 5;
+Q.rural_spd -= 5;
+Q.catholics_spd -= 3;
+Q.new_middle_dvp -= 8;
+Q.old_middle_dvp -= 8;
+Q.new_middle_ddp -= 5;
+Q.old_middle_ddp -= 10;
+Q.rural_dnvp -= 5;
+Q.workers_nsdap += 5;
+Q.old_middle_nsdap += 6;
+Q.new_middle_nsdap += 6;
+Q.rural_nsdap += 6;
+Q.unemployed_nsdap += 5;
+// Thresholds are kind of arbitrary - adjusted because of negative economic effects on pro_republic
+if (Q.pro_republic < 45 && Q.pro_republic >= 36) {
+    Q.workers_spd -= 6;
+}
+if (Q.pro_republic < 36) {
+    // TODO: if you pursue a consistently revolutionary course, you might avoid this? But you might also cause a coalition between Hitler and the Center.
+    Q.z_relation -= 5;
+    Q.dvp_relation -= 5;
+    Q.workers_spd *= 0.85;
+    Q.unemployed_spd -= 2;
+    Q.new_middle_spd -= 5;
+    Q.old_middle_spd -= 5;
+    Q.rural_spd -= 5;
+    Q.catholics_spd -= 3;
+    Q.workers_nsdap += 8;
+    Q.old_middle_nsdap += 8;
+    Q.new_middle_nsdap += 8;
+    Q.rural_nsdap += 8;
+    Q.unemployed_nsdap += 8;   
+}
+if (Q.far_right_coalition >= 50) {
+    Q.sa_strength += 100;
+    Q.sh_strength += 100;
+    Q.coup_progress += 3;
+}
+!}
+
+Es gibt keinen Weg zu einer tragfähigen Reichstagsmehrheit oder einer Minderheitsregierung. Die nächsten Wahlen sind für [+ next_election_month : month +] [+ next_election_year +] angesetzt.
+
+Das Vertrauen der Menschen in die Demokratie ist durch diese schwere Zeit erschüttert. Natürlich nutzen die Nazis diese Instabilität aus, um zu behaupten, die Demokratie sei nicht funktionsfähig und Deutschland brauche einen starken Führer.
+
+
+@toleration_bruning
+choose-if: neo_weimar_coalition >= 50
+unavailable-subtitle: Die Parteien die Brüning unterstützen, verfügen nicht über eine Mehrheit.
+on-arrival: spd_in_government = 0; spd_toleration = 1; minority_government = 1; chancellor = "Brüning"; chancellor_party = "Z"; foreign_minister_party = "DVP"; interior_minister_party = "Z"; justice_minister_party = "I"; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = ddp_name; finance_minister_party = "DVP"; agriculture_minister_party = "Z"; pro_republic -= 4; new_middle_dvp -= 5; new_middle_ddp -= 5; old_middle_dvp -= 5; old_middle_ddp -= 5; old_middle_nsdap += 5; new_middle_nsdap += 5; rural_dnvp -= 5;
+
+Wir haben beschlossen, die Regierung Brüning zu tolerieren. Das bedeutet, dass wir gegen Misstrauensanträge stimmen werden, um sicherzustellen, dass diese scheitern, aber auch, dass wir nicht direkt als Minister in der Regierung mitwirken werden. Auf diese Weise können wir Neuwahlen verhindern und den Einzug der extremen Rechten in die Regierung verhindern.
+
+@grand_coalition_fail
+on-arrival: grand_coalition_failed = 1
+
+Leider sind die DVP und die BVP nicht bereit, erneut eine Koalition mit der SPD einzugehen, sodass die große Koalition nicht zustande kommen kann.
+
+- @no_majority: Es gibt also keine klare Mehrheit.
+- @brauns_dilemma
+- @right_coalition_2: Vielleicht bildet sich eine rechtsgerichtete Koalition.
+- @beg_dvp: Vielleicht könnten wir die DVP bitten ihre Meinung zu ändern?
+- @unity_government
+- @coalition_menu: Welche weiteren Regierungsmöglichkeiten gibt es?
+
+
+@beg_dvp
+view-if: dvp_relation >= 15
+go-to: dvp_conservative if stresemann_dead == 1; dvp_majority if stresemann_dead == 0
+
+@dvp_majority
+go-to: join_bruning
+
+Auf Betreiben von Gustav Stresemann stimmt die DVP zu, uns in die Koalition aufzunehmen, ebenso wie die BVP.
+
+
+@dvp_conservative
+
+Die DVP fordert von uns, dass wir uns an ihre konservative Wirtschaftspolitik (das heißt extreme Sparmaßnahmen und Arbeitsdisziplin) halten, als Gegenleistung für unseren Beitritt zur Koalition.
+
+- @beg_dvp_2: Aber ohne die SPD hätten sie keine Mehrheit! Die DNVP und die NSDAP haben kein Interesse daran, an der Regierung teilzunehmen.
+- @no_majority: Es ist völlig ausgeschlossen, dass wir dem zustimmen würden.
+- @brauns_dilemma
+- @coalition_menu: Welche weiteren Regierungsmöglichkeiten gibt es?
+
+
+@beg_dvp_2
+go-to: beg_dvp_succeed; beg_dvp_fail
+
+Wir vertreten die Auffassung, dass es ohne die SPD keine parlamentarische Mehrheit gibt, da die DNVP und die NSDAP der verfassungsmäßigen Regierung feindlich gegenüberstehen.
+
+@beg_dvp_succeed
+go-to: join_bruning
+
+Irgendwie gelingt es uns, sie zu überzeugen! Wir sind nun Teil einer Koalition.
+
+
+@beg_dvp_fail
+go-to: no_majority
+
+Wie zu erwarten war, hält die DVP zu sehr an ihren antidemokratischen Praktiken fest.
+
+
+
+@grand_coalition_spd_lead
+on-arrival: leverage -= 15 if dvp_relation < 20
+
+Wie erwartet ist die SPD die stärkste Partei und diesmal wird von uns erwartet, dass wir bei der Bildung der nächsten Regierung die Führungsrolle übernehmen, einschließlich der Wahl des Kanzlers. Präsident [+ president +] hat uns gebeten, eine Mehrheitskoalition mit der Zentrumspartei (Z), der Bayerischen Volkspartei (BVP), der Demokratischen Partei ([+ ddp_name +]) und der Volkspartei (DVP) zu bilden.
+
+[? if dvp_relation < 20 : Da unsere Beziehungen zur DVP schlecht sind, fordert diese mehr Ministerposten, um weiterhin Teil der Koalition zu bleiben.. ?]
+
+Wer sollte Kanzler werden?
+
+- @muller
+- @braun
+- @wels
+- @z_chancellor
+- @z_chancellor_wirth
+- @no_govt
+
+
+@muller
+title: Hermann Müller als Kanzler
+view-if: muller_dead = 0
+subtitle: Müller ist innerhalb der Partei beliebt und der bevorzugte Kandidat der Zentrumspartei und anderer Parteien.
+on-arrival: spd_in_government = 1; chancellor = "Müller"; chancellor_party = "SPD"; in_grand_coalition = 1 if in_weimar_coalition == 0
+go-to: ministries
+
+Müllers Ernennung zum Kanzler wird von all unseren potenziellen Verbündeten befürwortet.
+
+@wels
+title: Otto Wels als Kanzler
+view-if: muller_dead = 1
+subtitle: Otto Wels ist Parteivorsitzender, aber kann er auch Kanzler werden?
+on-arrival: spd_in_government = 1; chancellor = "Wels"; chancellor_party = "SPD"; in_grand_coalition = 1 if in_weimar_coalition == 0
+go-to: ministries
+
+Die Ernennung von Otto Wels zum Kanzler wird von unseren potenziellen Verbündeten gebilligt.
+
+@braun
+title: Otto Braun als Kanzler
+view-if: not historical_mode or not spd_prussia
+subtitle: Braun ist derzeit Ministerpräsident von Preußen und gehört zu unseren beliebtesten Politikern. Andere Parteien könnten jedoch Bedenken haben, dass zu viel Macht in den Händen einer einzigen Person konzentriert ist.
+
+Die Zentrumspartei hat erhebliche Bedenken, Braun zum Kanzler zu ernennen, da er bereits Ministerpräsident von Preußen ist. Sie fordert entweder mehr Ministerposten oder dass Braun sein Amt in der Landesregierung niederlegt. Letzteres ist völlig inakzeptabel.
+
+- @muller
+- @wels
+- @braun_2: Gebt dem Zentrum ihre Ministerposten.
+
+@braun_2
+subtitle: Otto Braun wird Kanzler.
+view-if: not historical_mode
+on-arrival: spd_in_government = 1; chancellor = "Braun"; chancellor_party = "SPD"; leverage -= 10; in_grand_coalition = 1 if in_weimar_coalition == 0
+go-to: ministries
+
+Wir haben versprochen, dem Zentrum als Reaktion auf die Ernennung von Braun zum Kanzler mehr Einfluss in der Regierung einzuräumen.
+
+
+@z_chancellor
+title: Die Zentrumspartei soll einen Kanzler ernennen.
+subtitle: Heinrich Brüning wird Kanzler werden. Das kommt unerwartet und wird zu internen Meinungsverschiedenheiten führen, könnte uns aber eine bessere Verhandlungsposition bei der Besetzung anderer Ministerposten verschaffen.
+on-arrival: left_dissent += 5; center_dissent += 5; labor_dissent += 5; z_relation += 10; dvp_relation += 5; kpd_relation -= 5; in_grand_coalition = 1 if in_weimar_coalition == 0; chancellor = "Brüning"; chancellor_party = "Z"; spd_in_government = 1; leverage += 5
+go-to: ministries
+
+Das kommt völlig unerwartet und viele Vertreter der linken und der Mitte unserer Partei kritisieren diese Entscheidung.
+
+[? if year == 1928 : Seit dem Rücktritt von Wilhelm Marx wurde Heinrich Brüning zum Reichskanzler ernannt. ?]
+[? if year > 1928: Heinrich Brüning von der Zentrumspartei wurde zum Reichskanzler ernannt. ?]
+
+@z_chancellor_wirth
+title: Joseph Wirth von der Zentrumspartei soll Kanzler werden.
+view-if: z_party_leader == "Joos"
+subtitle: Wirth gehört zum linken Flügel der Zentrumspartei. Das könnte uns eine bessere Verhandlungsposition bei den Verhandlungen um andere Ministerposten verschaffen.
+on-arrival: left_dissent += 2; z_relation += 6; ddp_relation += 3; kpd_relation -= 5; in_grand_coalition = 1 if in_weimar_coalition == 0; chancellor = "Wirth"; chancellor_party = "Z"; spd_in_government = 1; leverage += 5
+go-to: ministries
+
+
+
+
+@no_govt
+title: Wir bilden nicht die Regierung.
+subtitle: Dies wird erhebliche interne Meinungsverschiedenheiten hervorrufen und zu einem zunehmenden Misstrauen seitens der bürgerlichen Parteien führen.
+on-arrival: reformist_dissent += 5; center_dissent += 5; labor_dissent += 5; neorevisionist_dissent += 5
+
+Sind wir uns sicher, dass wir nicht an der Regierung teilnehmen wollen? Dies wird erhebliche interne Meinungsverschiedenheiten hervorrufen und zu verstärktem Misstrauen seitens der bürgerlichen Parteien führen. Schon allein die Diskussion dieser Option löst interne Gegenreaktionen aus. Zudem ist es möglich, dass auch die bürgerlichen und rechten Parteien keine Koalitionsregierung bilden können, was zu einer vom Präsidenten [+ president +] eingesetzten Regierung führen würde..
+
+- @muller
+- @braun
+- @z_chancellor
+- @no_govt_goals: Ja, wir sind uns sicher.
+
+@no_govt_goals
+
+Was genau sind unsere Ziele?
+
+- @majority: Wir hoffen, bei den nächsten Wahlen eine sozialistische Mehrheit zu erreichen.
+- @trap: Es wäre ein Fehler, jetzt eine Regierung zu bilden. Wir wären nicht in der Lage, unsere Ziele zu erreichen.
+- @socialism: Der revolutionäre Sozialismus ist unser Ziel.
+
+@majority
+go-to: no_govt_2
+
+@trap
+on-arrival: radicalization += 1
+go-to: no_govt_2
+
+@socialism
+go-to: no_govt_2
+
+
+@no_govt_2
+on-arrival: reformist_dissent += 25; center_dissent += 10; labor_dissent += 25; neorevisionist_dissent += 25; in_weimar_coalition = 0; in_grand_coalition = 0; chancellor = "Brüning" if chancellor == "Marx"; spd_in_government = 0; grand_coalition_failed = 1
+go-to: right_coalition_post_spd if right_coalition >= 50 and president != "Braun" and year < 1929; new_elections_spd if (right_coalition < 50 or year >= 1929) and president != "Braun"; brauns_dilemma if president == "Braun"
+
+
+@right_coalition_post_spd
+go-to: right_coalition_2
+
+@new_elections_spd
+on-arrival: next_election_time = time+3; next_election_month = month + 3; next_election_year = year; next_election_year = year + 1 if next_election_month > 12; next_election_month = next_election_month - 12 if next_election_month > 12; new_middle_spd -= 5; old_middle_spd -= 5; workers_spd -= 3; catholics_spd -= 3; in_election = 1
+
+Da die verbleibenden bürgerlichen und rechten Parteien keine tragfähige Regierungsvereinbarung schließen können, wurden Neuwahlen für [+ next_election_month : month +] [+ next_election_year +] angesetzt. Der bisherige Reichskanzler ist zurückgetreten und wurde durch Heinrich Brüning ersetzt, der ebenfalls der Zentrumspartei angehört und als Teil eines Präsidialkabinetts regiert. 
+
+Man macht uns für das Scheitern der Regierungsbildung verantwortlich, und viele unserer Anhänger aus der Mittelschicht und sogar einige aus der Arbeiterklasse haben der Partei den Rücken gekehrt.
+
+
+@ministries
+
+Wir können aus einer Vielzahl von Ministerien wählen. Die Leitung eines Ministeriums ermöglicht es uns, die Politik in diesem Bereich direkt zu beeinflussen.. [? if in_left_front : Jedes Ministerium, das wir nicht übernehmen, wird der KPD übertragen. ?] [? if in_left_front and reichswehr_minister_party == "KPD" : Sollte die KPD das Reichswehrministerium kontrollieren, wird die Armee höchstwahrscheinlich meutern. ?]
+
+- #mins_1928
+- #drop_mins_1928
+
+@labor
+title: Arbeitsministerium
+subtitle: Von uns wird erwartet, dass wir das Arbeitsministerium übernehmen.
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+tags: mins_1928
+choose-if: leverage >= 5
+view-if: labor_minister_party != "SPD"
+on-arrival: leverage -= 5; labor_minister_party = "SPD"; labor_minister = "Wissell"
+go-to: ministries
+
+Rudolf Wissell von der SPD wurde zum Arbeitsminister ernannt.
+
+@interior
+title: Innenministerium
+subtitle: Von uns wird erwartet, dass wir das Innenministerium übernehmen. Das Innenministerium ist für die innere Sicherheit zuständig..
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+tags: mins_1928
+choose-if: leverage >= 5
+view-if: interior_minister_party != "SPD"
+on-arrival: leverage -= 5; interior_minister_party = "SPD"; interior_minister = "Severing"
+go-to: ministries
+
+Carl Severing von der SPD wurde zum Innenminister ernannt.
+
+@finance
+title: Finanzministerium
+subtitle: Das Finanzministerium ist für den Staatshaushalt und die Steuern zuständig.
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+tags: mins_1928
+choose-if: leverage >= 10 
+view-if: finance_minister_party != "SPD"
+on-arrival: leverage -= 10; finance_minister_party = "SPD"; finance_minister = "Hilferding"
+go-to: ministries
+
+Rudolf Hilferding von der SPD wurde zum Finanzminister ernannt.
+
+@economic
+title: Wirtschaftsministerium
+subtitle: Das Wirtschaftsministerium ist für die allgemeine Wirtschaftspolitik zuständig.
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+tags: mins_1928
+choose-if: leverage >= 10 
+view-if: economic_minister_party != "SPD"
+on-arrival: leverage -= 10; economic_minister_party = "SPD"; economic_minister = "Schmidt"
+go-to: ministries
+
+Robert Schmidt von der SPD wurde zum Wirtschaftsminister ernannt.
+
+@justice
+title: Justizministerium
+subtitle: Das Justizministerium kontrolliert die Gerichte.
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+tags: mins_1928
+choose-if: leverage >= 10 
+view-if: justice_minister_party != "SPD"
+on-arrival: leverage -= 10; justice_minister_party = "SPD"; justice_minister = "Radbruch"
+go-to: ministries
+
+Gustav Radbruch von der SPD wurde zum Justizminister ernannt.
+
+@foreign
+title: Auswärtiges Amt
+subtitle: Dies ist in der Regel die Aufgabe von Gustav Stresemann von der DVP.
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+tags: mins_1928
+choose-if: leverage >= 10 
+view-if: foreign_minister_party != "SPD"
+on-arrival: leverage -= 10; foreign_minister_party = "SPD"; foreign_minister = "Breitscheid"
+go-to: ministries
+
+Rudolf Breitscheid von der SPD wurde zum Außenminister ernannt.
+
+
+@agriculture
+title: Landwirtschaftsministerium
+subtitle: Das ist nicht unser übliches Gebiet.
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+choose-if: leverage >= 10 
+view-if: agriculture_minister_party != "SPD"
+on-arrival: leverage -= 10; agriculture_minister_party = "SPD"; agriculture_minister = "Baade"
+go-to: ministries
+tags: mins_1928
+
+Fritz Baade von der SPD wurde zum Landwirtschaftsminister ernannt.
+
+@reichswehr
+title: Reichswehrministerium
+subtitle: Das für die Streitkräfte zuständige Ministerium fällt normalerweise nicht in unseren Zuständigkeitsbereich; General Groener und die bürgerlich-Konservativen werden darüber unzufrieden sein.
+unavailable-subtitle: Wir haben nicht genügend Einfluss.
+tags: mins_1928
+choose-if: leverage >= 15 
+view-if: reichswehr_minister_party != "SPD"
+on-arrival: leverage -= 15; reichswehr_minister_party = "SPD"; reichswehr_minister = "Leber"
+go-to: ministries
+
+Julius Leber von der SPD wurde zum Reichswehrminister ernannt.
+
+
+
+@no_more
+title: Keine weiteren Ministerien.
+subtitle: [? if leverage >= 10 : Wir haben noch etwas Spielraum, um weitere Ministerien für uns zu gewinnen.. ?][? if leverage < 10 : Wir haben nicht genug Einfluss. ?]
+tags: mins_1928
+
+Diese Koalitionsvereinbarung ist für alle akzeptabel.
+
+@drop_labor
+title: Das Arbeitsministerium fallen lassen.
+view-if: labor_minister_party = "SPD"
+on-arrival: labor_minister_party = "Z"; labor_minister = "Stegerwald"; leverage += 5;
+tags: drop_mins_1928
+go-to: ministries
+
+@drop_interior
+title: Das Innenministerium fallen lassen.
+view-if: interior_minister_party = "SPD"
+on-arrival: interior_minister_party = "Z"; interior_minister = "Wirth"; leverage += 5;
+tags: drop_mins_1928
+go-to: ministries
+
+@drop_finance
+title: Das Finanzministerium fallen lassen.
+view-if: finance_minister_party = "SPD"
+on-arrival: finance_minister_party = "DVP"; finance_minister = "Moldenhauer"; leverage += 10; finance_minister_party = "Z" if in_weimar_coalition or in_popular_front; finance_minister = "Köhler" if in_weimar_coalition or in_popular_front
+tags: drop_mins_1928
+go-to: ministries
+
+@drop_economic
+title: Das Wirtschaftsministerium fallen lassen.
+view-if: economic_minister_party = "SPD"
+on-arrival: economic_minister_party = "DVP"; economic_minister = "Curtius"; leverage += 10; economic_minister_party = ddp_name if in_weimar_coalition or in_popular_front; economic_minister = "Dietrich" if in_weimar_coalition or in_popular_front;
+tags: drop_mins_1928
+go-to: ministries
+
+@drop_justice
+title: Das Justizministerium fallen lassen.
+view-if: justice_minister_party = "SPD"
+on-arrival: justice_minister_party = ddp_name; justice_minister = "Koch-Weser"; leverage += 10;
+tags: drop_mins_1928
+go-to: ministries
+
+@drop_foreign
+title: Das Auswärtige Amt fallen lassen.
+view-if: foreign_minister_party = "SPD"
+on-arrival: foreign_minister_party = "DVP"; foreign_minister = "Stresemann"; foreign_minister = "Curtius" if streseman_dead; leverage += 10; foreign_minister_party = "Z" if in_weimar_coalition or in_popular_front; foreign_minister = "Wirth" if in_weimar_coalition or in_popular_front;
+tags: drop_mins_1928
+go-to: ministries
+
+@drop_agriculture
+title: Das Landwirtschaftsministerium fallen lassen.
+view-if: agriculture_minister_party = "SPD"
+on-arrival: agriculture_minister_party = ddp_name; agriculture_minister = "Dietrich"; leverage += 10; agriculture_minister_party = "Z" if in_weimar_coalition; agriculture_minister = "Hermes" if in_weimar_coalition
+tags: drop_mins_1928
+go-to: ministries
+
+@drop_reichswehr
+title: Das Reichswehrministerium fallen lassen.
+view-if: reichswehr_minister_party = "SPD"
+on-arrival: reichswehr_minister_party = "I"; reichswehr_minister = "Groener"; leverage += 15;
+tags: drop_mins_1928
+go-to: ministries

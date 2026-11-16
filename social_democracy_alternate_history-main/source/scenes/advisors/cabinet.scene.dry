@@ -1,0 +1,18 @@
+title: Kabinett
+is-pinned-card: true
+tags: advisor
+card-image: img/muller_cabinet.jpg
+view-if: difficulty < 0 and spd_in_government and chancellor_party = "SPD"
+on-arrival: last_cabinet_action = 1
+new-page: true 
+
+= Kabinett
+
+Mit einem SPD-Kanzler und SPD-Kabinettsmitgliedern können wir die Politik der Regierung mitbestimmen.
+
+- #cabinet
+- @back: Zurück
+
+@back
+on-arrival: last_cabinet_action = 0
+go-to: root

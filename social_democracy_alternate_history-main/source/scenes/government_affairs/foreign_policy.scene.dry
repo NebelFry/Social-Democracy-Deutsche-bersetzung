@@ -1,0 +1,202 @@
+title: Außenpolitik
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: month_actions += 1; foreign_policy_timer += 8
+view-if: spd_in_government = 1 and foreign_minister_party = "SPD" and  foreign_policy_timer <= 0
+card-image: img/portraits/BreitscheidRudolf.jpg
+go-to: fp_menu
+#subtitle: Internationale Beziehungen und der Umgang mit Versailles.
+
+= Außenpolitik
+
+Was sollte unsere außenpolitische Priorität sein?
+
+@fp_menu
+
+- @improve_west
+- @improve_east
+- @improve_soviet
+- @customs_union
+- @negotiate
+- @reduce_reparations
+- @expose
+- @european_union
+- @european_union_2
+- @concordat_negotiate
+- @concordat
+- @support_austria
+- @support_austria_2
+- @root: Vorerst keine Richtlinien einführen.
+- @easy_discard
+- @cancel_advisor_action
+
+@improve_west
+title: Beziehungen zu den Westallierten verbessern.
+on-arrival: west_relation += 2; reparations_negotiation += 1
+
+Der Schlüssel zum Frieden in Europa ist eine Annäherung zwischen Frankreich und Deutschland. Wir unternehmen Schritte hin zu dieser Annäherung. [? if young_plan_seen == 0 : Das ist schwierig umzusetzen, solange Frankreich einen Großteil des deutschen Territoriums besetzt hält, aber wir arbeiten an diesem Punkt. ?]
+
+@improve_east
+title: Beziehungen zu unseren östlichen Nachbarn verbessern.
+on-arrival: east_relation += 2;
+
+Wir streben zudem eine Verbesserung der Beziehungen zu unseren östlichen Nachbarn, Polen und der Tschechoslowakei, an, die zu Recht Angst vor deutscher Aggression haben. Hoffentlich können wir sie von unseren friedlichen Absichten überzeugen.
+
+@improve_soviet
+title: Unsere Beziehungen zur Sowjetunion verbessern.
+subtitle: Wir könnten auch die Frage der KPD ansprechen...
+
+Auch die Sowjetunion litt unter der durch den Versailler Vertrag geschaffenen internationalen Ordnung; sie beteiligte sich an unserem geheimen Aufrüstungsprogramm. Der Vertrag von Rapallo aus dem Jahr 1922 bekräftigte unsere freundschaftlichen Beziehungen.
+
+Die Sowjets bitten um Wirtschafts- und Entwicklungshilfe. Sie sind insgesamt nach wie vor ein armes Land und versuchen verzweifelt, zu den Westmächten aufzuschließen. Es besteht zwar die Gefahr, dass unsere antikommunistischen Koalitionspartner verärgert reagieren könnten, doch ließe sich dies beschwichtigen, indem wir die Sowjets um geheime Unterstützung bei der Ausbildung und Ausrüstung der Reichswehr bitten.
+
+- @soviet_economic_aid_yes_mil: Hilfe anbieten, im Gegenzug für Untersützung der Reichswehr.
+- @soviet_economic_aid_yes: Hilfe anbieten, im Gegenzug für gute Beziehungen.
+- @soviet_economic_aid_no: Keine hilfe leisten.
+
+@soviet_economic_aid_yes_mil
+choose-if: budget >= 1
+subtitle: -1 Budget
+on-arrival: budget -= 1; soviet_relation += 1; reichswehr_militancy += 0.2; reichswehr_loyalty += 0.05; foreign_goal_completed += 1
+
+Die Sowjets sind erfreut darüber, dass wir ihnen Hilfe geschickt haben und haben sich bereit erklärt, bei der Ausbildung unseres Militärs zu helfen. Die Reichswehr weiß unsere Unterstützung zu schätzen.
+
+@soviet_economic_aid_yes
+choose-if: budget >= 1
+subtitle: -1 budget
+on-arrival: budget -= 1; soviet_relation += 2; coalition_dissent += 1; foreign_goal_completed += 1
+
+Die Sowjets sind erfreut darüber, dass wir ihnen Hilfe geschickt haben, ohne eine konkrete Gegenleistung zu verlangen. Unsere Koalitionspartner sind weniger erfreut.
+
+- @kpd: Moskau fragen, ob sie uns dabei helfen könnten unsere Beziehungen zur KPD verbessern.
+- @wittorf: Wissen die Sowjets von der Wittorf-Affäre? Wissen sie, dass wir es wissen?
+- @root: Die KPD nicht erwähnen.
+
+@soviet_economic_aid_no
+
+Die Sowjets sind etwas verärgert, aber sie schienen diese Antwort erwartet zu haben.
+
+
+@kpd
+on-arrival: kpd_relation += 8*(1-dissent); communist_coalition += 1 if kpd_foreign_seen == 0; kpd_foreign_seen = 1
+
+Wir sprechen in unseren Gesprächen mit dem sowjetischen Botschafter auch die KPD an. Man behauptet dort, die KPD sei völlig unabhängig von der sowjetischen Regierung und der Konflikt gehe auf Thälmann zurück. Doch schon kurz nach unserem Gespräch bemerken wir eine leichte Besserung in der Haltung der KPD.
+
+@wittorf
+view-if: wittorf_secret = 1 and ((year = 1929 and month < 6) or year = 1928) and wittorf_soviet_union = 0
+unavailable-subtitle: Es ist unmöglich, Stalin und die Komintern von ihrer Politik abzubringen.
+on-arrival: wittorf_soviet_union = 1; kpd_relation += 6*(1-dissent); kpd_foreign_seen = 1
+max-visits: 1
+
+Natürlich wissen Stalin und die verschiedenen Führungskräfte der Komintern von der Wittorf-Affäre, doch sie scheinen nicht zu wissen, dass auch wir davon wissen. Die Komintern hatte geplant, um die Affäre herum ein Narrativ zu konstruieren, das Thälmann entlastet; doch womöglich sind sie nun weniger geneigt, ihn zu verteidigen.
+
+
+@customs_union
+title: Eine Zollunion mit Österreich bilden?
+subtitle: Dies wird wahrscheinlich den Zorn Frankreichs auf uns ziehen.
+unavailable-subtitle: Dies wird durch die Europäische Union abgelöst.
+choose-if: eu = 0
+view-if: black_thursday_seen = 1 and customs_union = 0
+
+Das politische Lager der Rechten strebt seit Langem engere Beziehungen zu Österreich an, mit dem langfristigen Ziel einer Vereinigung der beiden deutschsprachigen Länder. Eine Zollunion mit Österreich ist der erste Schritt auf diesem Weg. Zudem sind viele der Ansicht, dass eine Union mit Österreich unsere derzeitige wirtschaftliche Lage verbessern würde.
+
+Die Alliierten, insbesondere Frankreich, dürften jedoch Einwände erheben. Dieses Abkommen würde gegen die Bestimmungen des Versailler Vertrags verstoßen und könnte zu Wirtschaftssanktionen führen, die unserer Wirtschaft weiter schaden würden.
+
+- @customs_union_2: Ja, macht es!
+- @fp_menu: Nein, wir sollten etwas anderes tun.
+
+@customs_union_2
+on-arrival: banking_crisis_timer = 2; customs_union = 1; west_relation -= 2; east_relation -= 2; z_relation += 6; dvp_relation += 6; coalition_dissent -= 1 if coalition_dissent > 0; coup_progress -= 1
+max-visits: 1
+
+Wir haben eine Zollunion mit Österreich gebildet! ​​Die rechten Parteien loben uns für diese unerwartete Wendung.
+
+Umgehend legen Frankreich und andere Nachbarländer Protest ein. Die längerfristige Reaktion bleibt abzuwarten.
+
+@negotiate
+title: Verhandlungen über unsere verbleibenden Verpflichtungen aus dem Vertrag von Versailles.
+subtitle: [? if young_plan_seen == 1 : Nach der Verabschiedung des Young-Plans hat sich Frankreich verpflichtet, aus dem Rheinland abzuziehen. Nun bleibt abzuwarten, ob unsere Reparationszahlungen angesichts der Wirtschaftskrise weiter gesenkt werden können. ?]
+view-if: reparations > -2 and reparations_negotiation < 3
+on-arrival: west_relation += 1; reparations_negotiation += 1; reparations_negotiation += 1 if pacifism >= 3; reparations_negotiations += 1 if nationalism <= 50; reparations_negotiation += 1 if west_relation >= 3
+
+Die Verhandlungen verlaufen weitgehend reibungslos. Die Westmächte sind von Deutschlands Aufrichtigkeit und gutem Willen überzeugt. [? if nationalism <= 50 or pacifism >= 3 : Sie freuen sich, dass wir dem Militarismus abschwören. ?]
+
+
+@reduce_reparations
+title: Die Westalliierten sind endlich bereit, unsere Reparationszahlungen auszusetzen!
+subtitle: Unsere Verhandlungen waren erfolgreich.
+view-if: reparations_negotiation >= 3 and black_thursday_seen == 1 and reparations > -2
+on-arrival: west_relation += 1; reparations = -2; budget += 2 if hoover_memorandum_seen == 0; budget += 1 if hoover_memorandum_seen == 1; coalition_dissent -= 1 if coalition_dissent > 0; workers_spd += 8*(1-dissent); old_middle_spd += 5*(1-dissent); new_middle_spd += 5*(1-dissent); rural_spd += 5*(1-dissent); coup_progress -= 2 if coup_progress > 2; economic_growth += 0.7; economic_growth += 0.5 if economic_growth < 0
+max-visits: 1
+
+Angesichts der wirtschaftlichen Lage und unserer laufenden Verhandlungen sind die Westalliierten endlich bereit, unsere Reparationszahlungen auszusetzen! Ein Großteil des Verdienstes gebührt dem amerikanischen Präsidenten Hoover, der uns gegenüber wohlwollender eingestellt war als die Europäer.
+
+Dies hat die Spannungen innerhalb unserer Regierung verringert und unsere Partei wurde für diesen Erfolg gewürdigt.
+
+@expose
+title: Enthüllen wir die geheimen Aufrüstungspläne des früheren Außenministeriums!
+view-if: rearmament_exposed == 0
+on-arrival: west_relation += 2; east_relation += 1; nationalism -= 5*(1-dissent); pro_republic += 5*(1-dissent); coalition_dissent += 1; rearmament_exposed += 1; reparations_negotiation += 3; coup_progress += 2
+
+Das vorangegangene Außenministerium unterstützte – ungeachtet seines wohlwollenden und friedfertigen Auftretens – im Geheimen die Reichswehr beim Ausbau ihrer Streitkräfte, was einen Verstoß gegen den Versailler Vertrag darstellte.
+
+Die Alliierten sind dankbar dafür, dass wir den Militarismus bloßstellen und ablehnen. Unsere Koalitionspartner zeigen sich weniger unterstützend.
+
+
+@concordat_negotiate
+title: Ein Konkordat zwischen Deutschland und dem Vatikan aushandeln.
+view-if: prussian_concordat = 1 and reichskonkordat = 0 and reichskonkordat_progress < 4
+on-arrival: reichskonkordat_progress += 2; reichskonkordat_progress -= 1 if abortion_rights; reichskonkordat_progress -= 1 if family_law; z_relation += 3*(1-dissent)
+
+Die römisch-katholische Kirche ist daran interessiert, die Beziehungen zur Deutschen Republik zu vertiefen, da sie diese der alten, antikatholischen Politik des Kaiserreichs vorzieht. Wir arbeiten auf den Abschluss eines Konkordats hin – einer Vereinbarung zwischen dem Vatikan und der Republik, die die Rechte und Interessen der Kirche im Land förmlich anerkennt. Insbesondere die Zentrumspartei setzt sich nachdrücklich für den Abschluss dieses Abkommens ein.
+
+[? if family_law : Unsere liberalisierten Scheidungsgesetze erschweren den Aufbau von Beziehungen zum Vatikan. Die Legalisierung von Abtreibungen erschwert die Annäherung an die Kirche. ?]
+
+@concordat
+title: Wir können ein Konkordat mit dem Vatikan unterzeichnen!
+view-if: reichskonkordat_progress >= 4 and reichskonkordat = 0
+on-arrival: reichskonkordat = 1; z_relation += 15*(1-dissent); catholics_spd += 8*(1-dissent); catholics_z += 5 if in_weimar_coalition or in_grand_coalition or in_popular_front;
+achievement: reichskonkordat
+
+Wir haben erfolgreich ein Konkordat zwischen Deutschland und der römisch-katholischen Kirche unterzeichnet! Dieser Vertrag regelt das formelle Verhältnis zwischen der Kirche und dem deutschen Staat; er garantiert den Katholiken die Freiheit der Religionsausübung sowie der Kirche das Recht, ihre Geistlichen selbst zu ernennen. Die Katholiken in Deutschland begrüßen dies, ebenso wie ihre Vertreter in der Zentrumspartei.
+
+@support_austria
+title: Die österreichische Demokratie diplomatisch gegen die Dollfuß-Diktatur unterstützen.
+view-if: austrian_parliament_seen = 1 and austrian_civil_war_seen = 0
+on-arrival: sdapo_strength += 1; left_dissent -= 3; center_dissent -= 3
+
+Wir unterstützen die österreichische Demokratie verbal, führen einen Wortgefecht gegen den Austrofaschismus und verhängen zusätzliche Handelssanktionen. Die Zeit wird zeigen, ob es ausreicht.
+
+@support_austria_2
+title: Die österreichische Demokratie im Kampf gegen die Dollfuß-Diktatur materiell unterstützen.
+subtitle: -1 Budget
+choose-if: budget >= 1
+view-if: austrian_parliament_seen = 1 and austrian_civil_war_seen = 0
+on-arrival: budget -= 1; sdapo_strength += 3; left_dissent -= 6; center_dissent -= 6
+
+Öffentlich bekunden wir unsere Unterstützung für die österreichische Demokratie, führen einen Wortkrieg gegen den Austrofaschismus und verhängen weitere Handelssanktionen. Im Privaten leisten wir unseren Genossen in Österreich finanzielle und sonstige „Unterstützung“ in ihrem Kampf gegen die Diktatur.
+
+@european_union
+title: Ergreifen wir Schritte zur Bildung einer „Europäischen Union“.
+subtitle: Sind „Vereinigte Staaten von Europa“ möglich?
+unavailable-subtitle: [? if west_relation < 5 : Unsere Beziehungen zum Westen sind nicht gut genug. ?] [? if east_relation < 4 : Unsere Beziehungen zum Osten sind nicht gut genug. ?]
+view-if: reparations <= -2 and eu_progress < 2 and eu = 0
+choose-if: west_relation >= 5 and east_relation >= 4
+on-arrival: eu_progress += 1; west_relation += 1
+
+Die Schaffung „Vereinigter Staaten von Europa“ ist seit Langem Teil des außenpolitischen Programms der Sozialdemokratie. Nun endlich gehen wir Schritte in diese Richtung. Angesichts unserer guten Beziehungen zu den anderen europäischen Ländern können wir multilaterale Verhandlungen über einen stärkeren europäischen Föderalismus aufnehmen. Es wird jedoch Zeit brauchen, die genaue Ausgestaltung dieser künftigen „Europäischen Union“ auszuarbeiten.
+
+
+@european_union_2
+title: Wir können einen Vertrag zur Gründung einer Europäischen Union unterzeichnen!
+view-if: west_relation >= 5 and east_relation >= 4 and eu_progress >= 2 and eu = 0
+on-arrival: eu = 1; unemployed -= 2 if unemployed >= 10; inflation += 2 if inflation <= -2; inflation -= 1 if inflation >= 4.5; workers_spd += 5*(1-dissent); new_middle_spd += 5*(1-dissent); old_middle_spd += 5*(1-dissent); rural_spd += 4*(1-dissent); catholics_spd += 4*(1-dissent); unemployed_spd += 4*(1-dissent); pro_republic += 5; nationalism -= 5; budget += 1; economic_growth += 1; economic_growth += 1 if economic_growth < 3
+max-visits: 1
+achievement: eu
+
+Gemeinsam mit Frankreich, Großbritannien und vielen anderen Staaten West- und Osteuropas haben wir einen Vertrag zur Gründung einer Europäischen Union unterzeichnet! Man hofft, dass Europa aus dem Großen Krieg gelernt hat; nie wieder soll es einen Krieg geben, der den Kontinent zerreißt.
+
+Ein wesentlicher Bestandteil der Union ist der freie Verkehr von Personen und Waren zwischen den europäischen Ländern sowie die Stabilisierung der Wechselkurse. Dies eröffnet neue Märkte für deutsche Produkte und schafft neue Investitionsmöglichkeiten.
+
+Das faschistische Italien bleibt ein Problem, und auch die Sowjetunion steht außerhalb des Systems. Doch vorerst gibt es neue Hoffnung auf Frieden und Wohlstand auf dem gesamten Kontinent.

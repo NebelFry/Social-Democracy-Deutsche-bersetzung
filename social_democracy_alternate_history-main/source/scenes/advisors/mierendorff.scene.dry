@@ -1,0 +1,43 @@
+title: Carlo Mierendorff
+is-pinned-card: true
+tags: advisor
+card-image: img/portraits/MierendorffCarlo.jpg
+view-if: mierendorff_advisor = 1
+new-page: true
+#face-image: img/portraits/MierendorffCarlo.jpg
+
+= Carlo Mierendorff
+
+Carlo Mierendorff ist der Begründer der neorevisionistischen ideologischen Strömung und befürwortet sowohl demokratische Reformen als auch außerparlamentarische Aktionen im Kampf gegen die Nationalsozialisten und autoritäre Parteien. Er stammt aus einem akademischen Mittelstandsmilieu und zählt zu unseren jüngsten Führungspersönlichkeiten.
+
+- @iron_front_buildup
+- @form_iron_front
+- @nazi_urgency
+- @root: Zurück
+
+@iron_front_buildup
+title: Baut die Eiserne Front auf
+subtitle: Verstärkt unserere Propagandamaßnahmen, um mehr Mitglieder für das Reichsbanner zu rekrutieren.
+choose-if: advisor_action_timer == 0 and iron_front_formed
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if iron_front_formed == 0 : Die Eiserne Front wurde noch nicht gebildet. ?]
+on-arrival: advisor_action_timer = 6; rb_strength += 200*workers_spd/(workers_spd+workers_kpd+workers_nsdap+workers_z+workers_dnvp+workers_other);
+
+Wir haben weitere Mitglieder für das Reichsbanner gewonnen.
+
+
+@form_iron_front
+title: Gründung der Eisernen Front
+choose-if: advisor_action_timer == 0 and iron_front_formed == 0 and nazi_urgency >= 2
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if iron_front_formed : Die Eiserne Front hat sich bereits formiert. ?][? if nazi_urgency < 2 : Die Partei erkennt die Gefahr der Nazis noch nicht. ?]
+on-arrival: advisor_action_timer = 6; rb_strength += 50; nazi_urgency += 1
+go-to: confronting_nazis.iron_front 
+
+
+@nazi_urgency
+title: Warnung vor den Nazis
+subtitle: Indem wir die Partei vor den Nazis warnen, können wir unsere Mitglieder zum Handeln bewegen.
+choose-if: advisor_action_timer == 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; nazi_urgency += 1; rb_militancy += 0.01; nsdap_workers -= 4*(1-dissent);
+
+Wir haben eine Propagandakampagne begonnen, um unsere Mitglieder vor den Nazis zu warnen.

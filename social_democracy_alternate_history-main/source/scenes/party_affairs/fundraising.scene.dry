@@ -1,0 +1,39 @@
+title: Mitgliedsbeiträge
+new-page: true
+view-if: fundraising_timer <= 0 and (not historical_mode)
+on-arrival: fundraising_timer = 6; month_actions += 1
+frequency: 300
+is-card: true
+card-image: img/poster_2.jpg
+tags: party_affairs
+
+= Mitgliedsbeiträge
+
+Ob es einem gefällt oder nicht, die Partei kann ohne Geld nicht existieren.
+
+- @maintain: Behalten wir unsere aktuellen Beiträge bei.
+- @reduce: Beiträge senken.
+- @increase: Beiträge erhöhen.
+
+@maintain
+subtitle: [+ dues +] Ressourcen bekommen.
+on-arrival: resources += dues;
+
+Wir behalten unsere aktuellen Beiträge bei.
+
+@reduce
+subtitle: [+ dues - 1 +] Ressourcen bekommen.
+choose-if: dues > 1
+on-arrival: dues -= 1; resources += dues; left_dissent -= 8; center_dissent -= 8; reformist_dissent -= 8; labor_dissent -= 8
+
+Unsere derzeitigen Mitglieder wissen das zu schätzen, aber niemand entscheidet sich aufgrund der niedrigen Beiträge für den Beitritt zu einer Partei.
+
+@increase
+subtitle: [+ dues + 1 +] Ressourcen bekommen. [? if unemployed >= 15 : Angesichts der aktuellen wirtschaftlichen Lage könnte dies schmerzhaft sein. ?][? if dues >= 4 : Die Mitgliedsbeiträge sind bereits recht hoch; eine Erhöhung könnte unsere Mitgliederzahl verringern. ?]
+on-arrival: dues += 1; resources += dues; workers_spd -= 3; unemployed_spd -= 3; workers_spd -= 10 if unemployed >= 15; unemployed_spd -= 10 if unemployed >= 15; workers_spd -= 3*dues if dues >= 5; unemployed_spd -= 3*dues if dues >= 5
+view-if: dues <= 4
+
+Unsere Mitglieder murren darüber und einige der weniger engagierten Mitglieder verlassen uns. Doch nun haben wir Zugang zu zusätzlichen Ressourcen.
+
+[? if unemployed >= 15 : Aufgrund der derzeit hohen Arbeitslosigkeit bekommen unsere Mitglieder die zusätzliche Belastung stark zu spüren. ?]
+

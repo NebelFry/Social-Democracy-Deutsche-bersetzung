@@ -1,0 +1,33 @@
+title: Hitler übernimmt die Macht.
+subtitle: Der Anfang vom Ende.
+view-if: chancellor == "Hitler" or president == "Hitler" or chancellor_party == "NSDAP"
+on-arrival: spd_in_government = 0
+tags: event
+new-page: true
+
+[? if hitler_deported and president != "Hitler" and chancellor != "Hitler": Die erste Amtshandlung des Kanzlers [+ chancellor +] nach seinem Amtsantritt besteht darin, Adolf Hitler nach Deutschland zurückzuholen und ihm die Staatsbürgerschaft sowie einen offiziellen Kabinettsposten zu verleihen. ?]
+
+Hitler hat einen Rachefeldzug gegen die Sozialisten angekündigt, und die Nazis haben auf den Straßen bereits viel Blut vergossen. In seinem veröffentlichten Manifest verspricht er einen Feldzug von unsagbarem Schrecken gegen unsere Juden sowie endlose Kriege gewaltsamer Expansion, die ganz Europa ins Verderben stürzen werden.
+
+Was sollen wir jetzt tun?
+
+- @fight: Wir werden auf der Straße kämpfen, um zu verhindern, dass Hitler die Macht übernimmt.
+- @give_up: Wir werden im Reichstag gegen die Nazis stimmen.
+
+
+@fight
+
+Ist uns klar, dass dies einen Bürgerkrieg gegen die volle Macht des Staates bedeutet?
+
+- @civil_war: Ja.
+- @give_up: Wir sind nicht bereit für den Krieg. Stattdessen werden wir im Reichstag gegen die Nazis stimmen.
+
+@give_up
+
+Reden werden gehalten. Abstimmungen finden statt. Auf den Straßen fliegen Kugeln. Manche Sozialisten werden getötet oder inhaftiert. Andere fliehen aus dem Land. Was können Abstimmungen in dieser Situation überhaupt bewirken?
+
+Der Reichstag brennt – angeblich in Brand gesetzt von einem ausländischen Kommunisten. In der Folge erlassen die Nationalsozialisten Verordnungen, die ihnen uneingeschränkte Macht verleihen. Gemeinsam mit der DNVP werden sie bei den nächsten Wahlen die Mehrheit erringen.
+
+Deutschland ist verloren.
+
+- @game_over: Spiel vorbei.

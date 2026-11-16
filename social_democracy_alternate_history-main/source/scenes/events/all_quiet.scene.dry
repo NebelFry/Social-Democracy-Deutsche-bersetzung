@@ -1,0 +1,45 @@
+title: Im Westen nichts Neues
+subtitle: Zensur und Gewalt wegen eines Films ...
+view-if: year = 1930 and month = 12 and spd_prussia
+max-visits: 1
+tags: event
+new-page: true
+face-image: img/All_Quiet.jpg
+
+= Im Westen nichts Neues
+
+Der amerikanische Film *All Quiet on the Western Front*, der auf dem deutschen Roman *Im Westen nichts Neues* von Erich Maria Remarque basiert, handelt von den Erfahrungen deutscher Soldaten im Ersten Weltkrieg und davon, wie sie allmählich von den Ideen des Patriotismus und Nationalismus desillusioniert wurden.
+
+Als Antikriegsfilm ist er Ziel heftiger Proteste rechtsextremer Akteure, insbesondere der Nationalsozialisten und des Stahlhelms. Sie fordern die Regierung auf, den Film zu verbieten. Sollte dies nicht geschehen, droht die SA damit, die Vorführung oder das Ansehen des Films gewaltsam zu unterbinden.
+
+- @ban: Verbieten wir den Film, um Nazi-Gewalt zu verhindern.
+- @allow: Gestatten wir, dass der Film gezeigt wird.
+- @allow_protect: Gestatten wir die Vorführung des Films und setzen die preußische Polizei ein, um Störungen durch die Nazis zu verhindern.
+- @everyone: Tatsächlich sollte jeder die Lehren aus diesem Film verinnerlichen. Wir sollten kostenlose Eintrittskarten an Schüler und Staatsbedienstete geben.
+
+@ban
+on-arrival: old_middle_nsdap += 5; new_middle_nsdap += 4; workers_nsdap += 2; unemployed_nsdap += 2; sa_strength += 50; nationalism += 6; pro_republic -= 5
+
+Wenn wir den Film verbieten, feiern die Nazis das sofort als großen Sieg; sie behaupten, dass sogar die roten Marxisten ihnen zustimmen! Das stärkt ihre Moral enorm.
+
+
+@allow
+on-arrival: nationalism += 3; old_middle_nsdap += 4; new_middle_nsdap += 3; workers_nsdap += 1; sa_strength += 15; pro_republic -= 3; strife += 1
+
+Obwohl die Vorführungen des Films gestattet werden, werden sie von Gewalt überschattet. Schließlich werden die Vorführungen eingestellt, und die Nazis beanspruchen den Sieg für sich.
+
+
+@allow_protect
+choose-if: prussian_police_loyalty >= 0.65
+unavailable-subtitle: The police are not willing to protect the film.
+on-arrival: nationalism -= 4; pro_republic += 4*(1-dissent); strife += 1
+
+Unter Polizeischutz können die Menschen den Film in Ruhe ansehen. Störungen durch Nazis werden auf ein Minimum beschränkt.
+
+@everyone
+choose-if: prussian_police_loyalty >= 0.75
+unavailable-subtitle: The police are unable to guarantee the safety of all the attendees.
+on-arrival: nationalism -= 5; pro_republic += 5*(1-dissent); workers_nsdap -= 3; unemployed_nsdap -= 3; new_middle_nsdap -= 3
+
+Unter Polizeischutz drängen sich Menschenmengen in die Filmvorführungen, während draußen Nazis protestieren. Die Resonanz ist gemischt, doch es entspinnt sich eine neue nationale Debatte, in der die Rolle rechter Kreise im Krieg neu hinterfragt wird. Im Stillen wandeln sich viele Ansichten – oder werden zumindest auf subtile Weise beeinflusst.
+

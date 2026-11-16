@@ -1,0 +1,110 @@
+title: Aufbau einer Volkspartei
+new-page: true
+is-card: true
+card-image: img/poster_0.jpg
+view-if: neorevisionism > 0 and peoples_party_support >= 3 and peoples_party = 0 and peoples_party_timer == 0
+on-arrival: peoples_party_timer = 6
+tags: party_affairs
+max-visits: 4
+#subtitle: Kann die SPD über die Arbeiterklasse hinauswachsen?
+
+= Aufbau einer Volkspartei
+
+Entgegen orthodox-marxistischen Prognosen wächst das Industrieproletariat nicht stetig an. Das rasche Anwachsen des „neuen Mittelstands“ aus Angestellten sowie der Fortbestand von Kleinbauern und der Bauernschaft widerlegen die Vorhersagen einer Mehrheit der Arbeiterklasse.
+
+Um eine sozialistische Mehrheit zu schaffen, fordern viele Reformisten und Neorevisionisten, dass unsere Partei über die städtische Arbeiterklasse hinausblickt und sich auch der Anliegen der Mittelschicht, der Landwirte sowie der Frauen aller Schichten annimmt. Wir können eine neue, integrative Vision der Partei entwickeln, die alle Menschen umfasst, die ihren Lebensunterhalt durch Arbeit bestreiten – also so gut wie alle im Land, mit Ausnahme der Aristokraten und der Spitzenkapitalisten.
+
+- @support_peoples_party: Ja, wir müssen eine Volkspartei werden!
+- @build_support: Wir müssen weitere Unterstützung aufbauen, bevor wir zur Volkspartei werden.
+- @support_peoples_party_hard: Trotz heftigen Widerstands aus den Fraktionen der Mitte und der Linken werden wir zur Volkspartei werden.
+- @no_new_ideas: Nein, wir werden immer eine Partei der Arbeiterklasse sein.
+- @root: Vielleicht können wir das zu einem späteren Zeitpunkt besprechen.
+- @easy_discard
+- @cancel_advisor_action
+
+@build_support
+view-if: (neorevisionist_strength + reformist_strength < left_strength + center_strength) or peoples_party_support < 5
+on-arrival: peoples_party_support += 1; neorevisionist_strength += 5; left_strength -= 5; left_dissent += 5
+
+Innerhalb unserer Partei treiben wir Vorschläge für eine Volkspartei voran – gegen die Linke und die Mitte.
+
+
+@support_peoples_party
+choose-if: (neorevisionist_strength + reformist_strength >= left_strength + center_strength) and peoples_party_support >= 4
+unavailable-subtitle: Die Opposition ist zu stark.
+on-arrival: neorevisionist_strength += 15; reformist_strength += 15; neorevisionist_dissent -= 10; reformist_dissent -= 10; peoples_party = 1; workers_spd -= 12; rural_spd += 10; new_middle_spd += 10; old_middle_spd += 8; catholics_spd += 8; left_dissent += 25; center_dissent += 20; kpd_relation -= 10; kpd_coalition_dissent += 1; coalition_dissent -= 1; z_relation += 5*(1-dissent); dvp_relation += 5*(1-dissent)
+achievement: volkspartei
+
+Auf einer Notfallkonferenz haben wir beschlossen, eine Volkspartei zu werden, die alle einfachen Menschen Deutschlands umfasst – nicht nur die Arbeiter und die städtischen Armen. Linke und Zentristen behaupten, unser neues Parteiprogramm sei ein Verrat an unseren Gründungsprinzipien, eine Abkehr vom Marxismus hin zum bürgerlichen Opportunismus. Wie dem auch sei: Wir sind nun eine Partei, die das gesamte Volk vertritt, nicht bloß das Proletariat.
+
+Sollten wir eine neue Kampagne starten, um unseren neuen Weg bekannt zu machen?
+
+- @campaign_workers
+- @campaign_middle
+- @campaign_rural
+- @campaign_unemployed
+- @campaign_women
+
+
+
+@support_peoples_party_hard
+subtitle: Dies wird den Unmut innerhalb der Partei verstärken.
+view-if: (neorevisionist_strength + reformist_strength < left_strength + center_strength) or (peoples_party_support < 4)
+on-arrival: neorevisionist_strength += 10; reformist_strength += 8; peoples_party = 1; workers_spd -= 15; rural_spd += 10; new_middle_spd += 10; old_middle_spd += 8; catholics_spd += 8; left_dissent += 40; center_dissent += 40; kpd_relation -= 10; kpd_coalition_dissent += 1; coalition_dissent -= 1
+achievement: volkspartei
+
+Es ist ein mühsamer und umstrittener Prozess, doch wir haben den Vorschlag durchgesetzt, eine Volkspartei zu werden. Linke und Zentristen behaupten, unser neues Parteiprogramm sei ein Verrat an unseren Gründungsprinzipien – eine Abkehr vom Marxismus hin zu bürgerlichem Opportunismus. Wie dem auch sei: Wir sind nun eine Partei, die das gesamte Volk vertritt, nicht bloß das Proletariat.
+
+Sollten wir eine neue Kampagne starten, um unseren neuen Weg bekannt zu machen?
+
+- @campaign_workers
+- @campaign_middle
+- @campaign_rural
+- @campaign_unemployed
+- @campaign_women
+- @campaign_catholics
+
+@campaign_workers
+title: Werben Sie unter den Arbeitern dafür, ihre Zweifel an unseren Veränderungen auszuräumen.
+on-arrival: workers_spd += 6*(1-dissent);
+
+Die Arbeiterschaft ist nach wie vor ein wesentlicher Teil unserer Wählerschaft und wir dürfen sie im Zuge der Transformation unserer Partei nicht vor den Kopf stoßen.
+
+@campaign_middle
+title: Richten wir uns auf den Mittelstand aus.
+on-arrival: old_middle_spd += 5*(1-dissent); new_middle_spd += 6*(1-dissent)
+
+Als Volkspartei vertreten wir die Arbeitnehmer und Kleinunternehmer des Mittelstands und diese zeigen sich zunehmend empfänglich für unsere Botschaften.
+
+@campaign_rural
+title: Richten wir uns auf die Bauern aus.
+choose-if: rural_policy > 0
+unavailable-subtitle: Wir haben noch keine ländlichen politischen Maßnahmen erlassen.
+on-arrival: rural_spd += 7*(1-dissent)
+
+Als Volkspartei vertreten wir auch Landwirte und Landarbeiter und diese zeigen sich zunehmend offen für unsere Botschaften.
+
+@campaign_unemployed
+title: Betreiben wir Wahlkampf unter den Arbeitslosen.
+on-arrival: unemployed_spd += 6*(1-dissent);
+
+Als Volkspartei sind die städtischen Armen nach wie vor ein wesentlicher Teil unserer Wählerschaft.
+
+@campaign_women
+title: Richten wir uns auf Frauen aller Schichten aus.
+on-arrival: workers_spd += 3*(1-dissent); new_middle_spd += 3*(1-dissent); old_middle_spd += 3*(1-dissent); rural_spd += 3*(1-dissent); unemployed_spd += 3*(1-dissent);
+
+Als Volkspartei vertreten wir Frauen aller Schichten.
+
+@campaign_catholics
+title: Richten wir uns auf die Katholiken aus.
+on-arrival: catholics_spd += 7*(1-dissent);
+
+Historisch gesehen waren die Katholiken an die Zentrumspartei gebunden, doch es gibt keinen Grund, warum unsere Partei sie nicht ebenfalls ansprechen könnte. Insbesondere das Preußische Konkordat zeugt von unserer Verbundenheit mit dem Katholizismus.
+
+
+@no_new_ideas
+on-arrival: neorevisionist_strength -= 6; neorevisionist_dissent += 5; center_strength += 8; left_strength += 3; peoples_party = 0; peoples_party_support -= 3
+
+Die Sozialdemokraten waren und werden immer eine Partei der Arbeiterklasse sein.
+

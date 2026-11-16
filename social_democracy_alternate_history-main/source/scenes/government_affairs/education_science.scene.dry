@@ -1,0 +1,260 @@
+title: Bildung & Wissenschaft
+new-page: true
+is-card: true
+view-if: spd_in_government and spd_prussia and chancellor_party = "SPD" and education_science_timer = 0 and (black_thursday_seen = 0 or return_to_normalcy = 1)
+on-arrival: education_science_timer += 9; month_actions += 1
+card-image: img/portraits/EinsteinAlbert.jpg
+go-to: ed_menu
+tags: govt_affairs, cabinet
+
+# options:
+# - fund research (basic science research at the KWI, medical research, applied and industrial research to benefit Germany's economy)
+# - change the educational curriculum (only once per 3 years) - will have a "major" and "minor" option:
+# - democratic education - focus on critical thinking and democratic values rather than authoritarian teaching. (+ democratization, pro_republic)
+# - scientific education - focus on the sciences, mathematics, and technical skills (+ NMC, science)
+# - humanistic education - focus on literature, history, and philosophy. (+ NMC, pro_republic if democratization is high)
+# - traditional education (reduces relations with DDP)
+
+# - increase educational opportunities for working-class families.
+# - Secularize education (+ DVP, instant Zentrum vonc)
+
+# source for some of the education stuff: Martin, G. W. “Educational Reform in Germany 1918-1933.” Masters, Durham University, 1972. https://etheses.dur.ac.uk/9738/.
+
+# Forman, Paul. “The Financial Support and Political Alignment of Physicists in Weimar Germany.” Minerva 12, no. 1 (1974): 39–66.
+
+# science increases economic growth...
+
+= Bildung & Wissenschaft
+
+Das Bildungswesen in Deutschland unterliegt einer geteilten Zuständigkeit von Landes- und Zentralregierung. Zwar schreibt die Weimarer Verfassung vor, dass das Schulwesen in den Kompetenzbereich der Zentralregierung fällt, doch in der Praxis liegt ein Großteil der Verantwortung bei den Ländern, da der Reichstag historisch gesehen nicht in der Lage war, ein Bildungsgesetz zu verabschieden. Da wir derzeit die Kontrolle über Preußen sowie das Amt des Reichskanzlers innehaben, können wir versuchen, die Bildungspolitik für einen großen Teil des Landes zu gestalten.
+
+[? if major_curriculum: Aktueller Lehrplan - [+ major_curriculum +], [+ minor_curriculum +] ?]
+
+@ed_menu
+view-if: not last_advisor_action
+
+- @increase_science
+- @structure
+- @curriculum
+- @return: Do not enact any policies for now.
+- @easy_discard
+- @cancel_advisor_action
+
+
+@increase_science
+title: Mittel für die wissenschaftliche Forschung erhöhen.
+choose-if: economic_minister_party = "SPD"
+unavailable-subtitle: Dies erfordert das Wirtschaftsministerium.
+
+Der Sozialismus hat stets für Wissenschaft und Rationalität gestanden. Trotz der Rückschläge durch den Großen Krieg, die Hyperinflation sowie die politisierte und reaktionäre Haltung vieler Akademiker wird die Wissenschaft in der deutschen Republik nach wie vor weltweit beneidet. Durch eine massive Aufstockung der Fördermittel hoffen wir, diesen Status zu bewahren und unsere Errungenschaften weiter auszubauen.
+
+- @kwg
+- @applied
+- @medical
+- @cut_funding
+- @ed_menu: Die Forschungsgelder sollten nicht erhöht werden.
+- @cancel_advisor_action
+
+@kwg
+title: Kaiser-Wilhelm-Gesellschaft zur Förderung der wissenschaftlichen Grundlagenforschung finanzieren.
+subtitle: -1 Budget
+choose-if: budget >= 1
+on-arrival: budget -= 1; science += 1; kwg_research += 1; economic_growth += 0.3 if economic_growth <= 8; new_middle_spd += 5*(1-dissent); ddp_relation += 5*(1-dissent); unemployed -= 0.2 if unemployed >= 4; west_relation += 1; science_funding += 1
+
+Die Kaiser-Wilhelm-Gesellschaft zählt zu den angesehensten wissenschaftlichen Forschungseinrichtungen der Welt; zu ihren berühmtesten Mitarbeitern gehört der Physiker Albert Einstein. Unser Forschungsprogramm zielt darauf ab, der Gesellschaft zusätzliche Mittel zur Verfügung zu stellen, um Wissenschaftler einzustellen und auszubilden sowie Grundlagenforschung zu betreiben, die auf den eigenen Interessen der Wissenschaftler beruht.
+
+@applied
+title: Förderung angewandter Forschung im Bereich wirtschaftlich nützlicher Technologien.
+subtitle: -1 Budget
+choose-if: budget >= 1
+on-arrival: budget -= 1; science += 1; applied_research += 1; economic_growth += 0.5 if economic_growth <= 8 and applied_research <= 1; economic_growth += 3 if applied_research > 1; new_middle_spd += 5*(1-dissent); workers_spd += 3*(1-dissent); ddp_relation += 5*(1-dissent); unemployed -= 0.5 if unemployed >= 4; capital_strike_progress -= 1 if capital_strike_progress > 1; science_funding += 1
+
+Unser Forschungsprogramm konzentriert sich auf die Zusammenarbeit mit der Industrie zur Entwicklung nützlicher Technologien sowie auf die Schaffung neuer Forschungseinrichtungen für angewandte Wissenschaft. Diese Zusammenarbeit zielt auf wirtschaftliches Wachstum und Entwicklung ab.
+
+
+@medical
+title: Finanzierung der biomedizinischen Forschung an Krankenhäusern und medizinischen Fakultäten.
+subtitle: -1 Budget
+choose-if: budget >= 1
+on-arrival: budget -= 1; science += 1; medical_research += 1; economic_growth += 0.4 if economic_growth <= 8; new_middle_spd += 5*(1-dissent); workers_spd += 3*(1-dissent); ddp_relation += 5*(1-dissent); unemployed -= 0.2 if unemployed >= 4; science_funding += 1
+
+Unser Forschungsprogramm konzentriert sich auf die medizinische Forschung zur Verbesserung der Behandlung von Krankheiten und der öffentlichen Gesundheit. [? if change_sex: Zu unseren medizinischen Fortschritten gehören neue Methoden für geschlechtsangleichende Operationen und Hormontherapien für transsexuelle Personen. ?]
+
+@cut_funding
+title: Kürzung der Forschungsgelder.
+subtitle: +1 Budget
+choose-if: science_funding >= 1
+unavailable-subtitle: Wir haben die Wissenschaft nicht finanziert.
+on-arrival: budget += 1; science -= 1; science_funding -= 1; applied_research -= 0.33; kwg_research -= 0.33; medical_research -= 0.33; economic_growth -= 0.5; new_middle_spd -= 5; workers_spd -= 2; ddp_relation -= 5; unemployed += 0.3
+
+Wir haben die Mittel für die Wissenschaft gekürzt. Dies wirkt sich negativ auf unser Wirtschaftswachstum aus und arbeitslose Wissenschaftler unterstützen die SPD mit geringerer Wahrscheinlichkeit.
+
+
+@structure
+title: Struktur und Finanzierung des Bildungswesens müssen verändern.
+
+Das Bildungswesen in Deutschland war traditionell nach religiösen und sozialen Schichten gegliedert. Schulen sind häufig entweder evangelisch oder katholisch (oder selten jüdisch) geprägt und an den meisten konfessionell gemischten Schulen ist Religionsunterricht obligatorisch. Zudem kommt die Arbeiterschaft in den Genuss von höchstens acht Jahren öffentlicher Schulbildung an Grund- und Mittelschulen, während der Mittel- und Oberschicht der Zugang zu Privatschulen und Gymnasien offensteht, die auf ein Universitätsstudium vorbereiten. Folglich werden die Universitäten tendenziell von Konservativen und Reaktionären dominiert, was sich nachteilig auf die Rekrutierung von Verwaltungspersonal auswirkt.
+
+- @secularize
+- @public_hs
+- @school_boards
+- @ed_menu: Finanzierung oder Organisation der Schule nicht verändert werden.
+- @cancel_advisor_action
+
+@secularize
+title: Weltliche Schulen unterstützen, um die religiöse Vorherrschaft im Bildungswesen zu beenden.
+subtitle: -1 Budget
+unavailable-subtitle: -1 Budget - erfordert, dass eine Mehrheit der Parteien säkulare Schulen unterstützt.
+choose-if: budget >= 1 and (progressive_coalition + dvp_r >= 50)
+view-if: secularized = 0
+
+Bist du dir da sicher? Die Weimarer Koalition hatte vereinbart, Religionsschulen nicht anzutasten; die katholische Zentrumspartei wird revoltieren.
+
+- @secularize_2: Ja, macht es.
+- @ed_menu: Nein, die religiöse Erziehung darf nicht angetastet werden.
+- @cancel_advisor_action
+
+@secularize_2
+on-arrival: secularized = 1; catholics_spd -= 15; z_relation -= 15; dvp_relation += 6*(1-dissent); ddp_relation += 6*(1-dissent); kpd_relation += 6*(1-dissent); new_middle_spd += 3*(1-dissent); workers_spd += 3*(1-dissent); education_science += 0.5; new_middle_ddp += 4; new_middle_dvp += 4
+go-to: vote_of_no_confidence.vonc_menu if in_weimar_coalition or in_grand_coalition or in_popular_front or in_emergency_government
+
+# instant VONC from zentrum
+
+Die SPD, [+ ddp_name +], DVP und KPD stimmten für eine weltliche Bildung und setzten sich damit gegen den Widerstand der religiös orientierten Zentrumspartei und der DNVP durch. Wir haben weltliche Gemeinschaftsschulen finanziert, um einige der bisherigen Konfessionsschulen zu ersetzen.
+
+[? if in_weimar_coalition or in_grand_coalition or in_popular_front or in_emergency_government: Natürlich läuft die Zentrumspartei gegen diesen Vorschlag Sturm und hat ein Misstrauensvotum gegen unsere Regierung beantragt. ?]
+
+
+
+@public_hs
+title: Die Bildungschancen für die Arbeiterklasse sollen durch die Finanzierung öffentlicher Gymnasien verbessert werden.
+subtitle: -1 Budget
+choose-if: budget >= 1
+on-arrival: budget -= 1; public_hs += 1; workers_spd += 6*(1-dissent); unemployed_spd += 3*(1-dissent); prussian_police_loyalty += 0.04; education_science += 0.5; unemployed -= 0.2; economic_growth += 0.2; pro_republic += 4*(1-dissent);
+max-visits: 3
+
+# this makes the bureaucracy more proletarian
+Wir haben mehr öffentliche weiterführende Schulen finanziert, damit Kinder aus der Arbeiterklasse dieselbe Bildung erhalten können wie Kinder aus der Mittel- und Oberschicht und auf ein Universitätsstudium vorbereitet werden können.
+
+
+@school_boards
+title: Es sollen gewählte Schulbehörden geschaffen werden, um den lokalen Gebieten mehr Kontrolle über das Bildungswesen zu geben.
+on-arrival: school_boards += 1; workers_spd += 3*(1-dissent); new_middle_spd += 3*(1-dissent); old_middle_spd += 2*(1-dissent); education_science += 0.2;
+view-if: school_boards = 0
+
+Wir haben lokal gewählte Schulgremien eingerichtet und ihnen einen Teil der Entscheidungsbefugnisse für die örtlichen Schulen übertragen.
+
+
+@curriculum
+title: Lehrplan ändern.
+choose-if: curriculum_timer = 0
+unavailable-subtitle: [? if curriculum_timer > 0 : Es ist zu früh, den Lehrplan erneut zu ändern. ?][? if not spd_prussia: Wir haben keine Kontrolle über die preußische Regierung. ?]
+
+Viele Sozialisten sind der Ansicht, dass das deutsche Bildungswesen nicht mehr zeitgemäß ist. Große Teile des Bildungssystems orientieren sich noch immer an Traditionen militaristischer Disziplin aus der Kaiserzeit und rechtsextreme Professoren sowie Studenten beherrschen die Universitäten. Dennoch wurden Fortschritte dabei erzielt, Kindern aus der Arbeiterklasse den Zugang zu Schulen zu ermöglichen.
+
+Was sollte der Schwerpunkt unseres neuen Lehrplans sein?
+
+- @dem_major
+- @science_major
+- @human_major
+- @vocational_major
+- @trad_major
+- @ed_menu: Den Lehrplan nicht verändern.
+- @cancel_advisor_action
+
+# note: education_science is a variable that affects how much education affects economic growth.
+
+@dem_major
+title: Demokratischer Lehrplan
+subtitle: Kritisches Denken, demokratische Bürgerschaft und Zusammenarbeit
+on-arrival: curriculum_timer = 50; major_curriculum = "democratic"; pro_republic += 5*(1-dissent); workers_spd += 3*(1-dissent); democratization += 1; z_relation -= 3; dvp_relation -= 5; coalition_dissent += 1 if in_grand_coalition; pacifism += 1; education_science += 0.3
+go-to: curriculum_minor
+
+Wir sollten Schülern vermitteln, wie man Bürger einer demokratischen Republik ist, indem wir sie lehren, Politik und aktuelle Ereignisse kritisch zu hinterfragen, ihre Rechte wahrzunehmen und die Rechte anderer Bürger zu respektieren. Traditionalisten unterschiedlichster Couleur stehen diesem Lehrplan kritisch gegenüber.
+
+@science_major
+title: Wissenschaftlicher Lehrplan
+subtitle: Moderne Wissenschaft, Mathematik und technische Fähigkeiten
+on-arrival: curriculum_timer = 50; major_curriculum = "scientific"; education_science += 1; coalition_dissent += 1 if in_weimar_coalition; z_relation -= 5; ddp_relation += 4*(1-dissent); kpd_relation += 3*(1-dissent); new_middle_spd += 3*(1-dissent); workers_spd += 2*(1-dissent)
+go-to: curriculum_minor
+
+Unser Bildungssystem sollte das moderne Zeitalter widerspiegeln, und wir sollten Naturwissenschaften sowie rationales Denken vermitteln. Religiöse Konservative reagieren darauf meist ablehnend.
+
+@human_major
+title: Humanistischer Lehrplan
+subtitle: Kunst, Literatur, Geschichte und Philosophie
+on-arrival: curriculum_timer = 50; major_curriculum = "humanist"; ddp_relation += 3*(1-dissent); new_middle_spd += 4*(1-dissent); education_science += 0.2
+go-to: curriculum_minor
+
+Unser Lehrplan sollte sich auf die Geisteswissenschaften konzentrieren, einschließlich Kunst, Literatur, Geschichte und Philosophie. Einige kritisieren, dass sich dieser Lehrplan zu sehr auf „nutzlose“ Themen konzentriert, während andere befürchten, dass das Kunstinstitut zu eng mit dem romantischen Nationalismus verbunden ist.
+
+@vocational_major
+title: Beruflicher Lehrplan
+subtitle: Nützliche technische Fähigkeiten für zukünftige Karrieren
+on-arrival: curriculum_timer = 50; major_curriculum = "vocational"; dvp_relation += 3*(1-dissent); ddp_relation += 3*(1-dissent); workers_spd += 4*(1-dissent); rural_spd += 2*(1-dissent); unemployed_spd += 3*(1-dissent); new_middle_spd -= 1; unemployed -= 0.1; education_science += 0.5
+go-to: curriculum_minor
+
+Der Schwerpunkt der Bildung sollte auf einer nützlichen, praxisorientierten Ausbildung liegen und jene Fähigkeiten vermitteln, die für das künftige Leben der Schüler am wertvollsten sind.
+
+
+@trad_major
+title: Traditioneller Lehrplan
+subtitle: Klassiker, Disziplin und Nationalismus
+on-arrival: curriculum_timer = 50; major_curriculum = "traditional"; dvp_relation += 5*(1-dissent); z_relation += 4*(1-dissent); old_middle_spd += 3*(1-dissent); rural_spd += 3*(1-dissent); pacifism -= 1 if pacifism > 0; pro_republic -= 5; education_science += 0.2
+go-to: curriculum_minor
+
+Der traditionelle Lehrplan legte den Schwerpunkt auf Alte Geschichte und Sprachen (insbesondere Latein und Griechisch) sowie auf strenge Disziplin und ein gewisses Maß an Militarismus.
+
+
+@curriculum_minor
+
+Und was sollte einen weiteren Schwerpunkt des Lehrplans bilden?
+
+- @dem_minor
+- @science_minor
+- @human_minor
+- @vocational_minor
+- @trad_minor
+
+@dem_minor
+title: Demokratischer Lehrplan
+subtitle: Kritisches Denken, demokratische Bürgerschaft und Zusammenarbeit
+view-if: major_curriculum != "democratic"
+on-arrival: minor_curriculum = "democratic"; pro_republic += 3*(1-dissent); workers_spd += 2*(1-dissent); democratization += 1; z_relation -= 2; dvp_relation -= 3;
+
+Wir sollten den Schülern beibringen, Bürger einer demokratischen Republik zu sein, indem wir ihnen beibringen, Politik und aktuelle Ereignisse kritisch zu bewerten, ihre Rechte auszuüben und die Rechte anderer Bürger zu respektieren. Traditionalisten aller Couleur stehen diesem Lehrplan kritisch gegenüber.
+
+@science_minor
+title: Wissenschaftlicher Lehrplan
+subtitle: Moderne Wissenschaft, Mathematik und technische Fähigkeiten
+view-if: major_curriculum != "scientific"
+on-arrival: minor_curriculum = "scientific"; education_science += 0.5; z_relation -= 3; ddp_relation += 3*(1-dissent); kpd_relation += 2*(1-dissent); new_middle_spd += 2*(1-dissent); workers_spd += 2*(1-dissent)
+
+Unser Bildungssystem sollte das moderne Zeitalter widerspiegeln, und wir sollten Naturwissenschaften sowie rationales Denken vermitteln. Religiöse Konservative reagieren darauf meist ablehnend.
+
+@human_minor
+title: Humanistischer Lehrplan
+subtitle: Kunst, Literatur, Geschichte und Philosophie
+view-if: major_curriculum != "humanist"
+on-arrival: minor_curriculum = "humanist"; new_middle_spd += 3*(1-dissent); ddp_relation += 3*(1-dissent);
+
+Unser Lehrplan sollte sich auf die Geisteswissenschaften konzentrieren, einschließlich Kunst, Literatur, Geschichte und Philosophie. Einige kritisieren, dass sich dieser Lehrplan zu sehr auf „nutzlose“ Themen konzentriert, während andere befürchten, dass das Kunstinstitut zu eng mit dem romantischen Nationalismus verbunden ist.
+
+@vocational_minor
+title: Beruflicher Lehrplan
+subtitle: Nützliche technische Fähigkeiten für zukünftige Karrieren
+view-if: major_curriculum != "vocational"
+on-arrival: minor_curriculum = "vocational"; education_science += 0.3; workers_spd += 3*(1-dissent); unemployed_spd += 2*(1-dissent);
+
+Der Schwerpunkt der Bildung sollte auf einer nützlichen, praxisorientierten Ausbildung liegen und jene Fähigkeiten vermitteln, die für das künftige Leben der Schüler am wertvollsten sind.
+
+
+@trad_minor
+title: Traditioneller Lehrplan
+subtitle: Klassiker, Disziplin und Nationalismus
+view-if: major_curriculum != "traditional"
+on-arrival: minor_curriculum = "traditional"; dvp_relation += 2*(1-dissent); z_relation += 2*(1-dissent); old_middle_spd += 2*(1-dissent); rural_spd += 2*(1-dissent); pro_republic -= 3
+
+Der traditionelle Lehrplan legte den Schwerpunkt auf Alte Geschichte und Sprachen (insbesondere Latein und Griechisch) sowie auf strenge Disziplin.
+
+

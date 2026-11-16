@@ -1,0 +1,45 @@
+title: Arbeitsangelegenheiten
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: labor_affairs_timer = 6; month_actions += 1; labor_affairs_seen = 1
+view-if: spd_in_government = 1 and labor_minister_party = "SPD" and labor_affairs_timer = 0 and strike_term_seen = 0
+card-image: img/portraits/WissellRudolf.jpg
+#subtitle: Umgang mit Arbeitsunruhen und Streiks.
+
+= Arbeitsangelegenheiten
+
+Im industriellen Ruhrgebiet brodelt es vor Arbeitsunruhen. Die Unternehmer haben eine umfassende Aussperrung eingeleitet, um die Belegschaft zu weiteren Kürzungen bei Löhnen und Sozialleistungen zu zwingen. Es ist erforderlich, dass das Arbeitsministerium in den Konflikten zwischen Arbeitgebern und Arbeitern schlichtend eingreift.
+
+- @support_labor: Unterstützt die Gewerkschaften in ihren Forderungen.
+- @support_employers: Unterstützt die Arbeitgeber bei ihren Forderungen.
+- @balance: Versuchen einen Kompromiss zwischen den Parteien zu erzielen.
+- @easy_discard
+#- @cancel_advisor_action
+
+@support_labor
+subtitle: Dies ist bei den Arbeitern beliebt, wird aber der Bourgeoisie vor den Kopf stoßen.
+on-arrival: labor_strength += 5; labor_dissent -= 5; left_dissent -= 5; workers_spd += 6*(1-dissent); coalition_dissent += 1; dvp_relation -= 4; capital_strike_progress += 1 if dvp_relation <= 30; capital_strike_progress += 1 if unemployed > 15; capital_strike_progress += 1 if unemployed > 24; labor_goal_completed += 1; inflation += 0.1; pro_labor += 1; strike_term_seen += 1; economic_growth -= 0.1;
+
+Die Unterstützung der Arbeiter ist in der SPD stets populär, wenngleich viele unserer Koalitionspartner Arbeitgeberinteressen vertreten und davon weniger begeistert sind.
+
+@support_employers
+subtitle: Beliebt beim Bürgertum, weit weniger bei der Arbeiterschaft.
+on-arrival: labor_dissent += 8; workers_spd -= 3; coalition_dissent -= 1 if coalition_dissent > 0; dvp_relation += 5; z_relation += 5; workers_kpd += 3; kpd_coalition_dissent += 1; kpd_relation -= 8; capital_strike_progress -= 1 if capital_strike_progress > 1; capital_strike_progress -= 1 if capital_strike_progress > 8; pro_labor -= 1; strike_term_seen += 1
+
+Die radikaleren Arbeiter verabscheuen unser Vorgehen gegen ihre Streiks und fühlen sich dabei an die Zeit Friedrich Eberts erinnert.
+
+@balance
+subtitle: Beide Seiten müssen die Lasten der aktuellen Krise gemeinsam tragen.
+on-arrival: labor_dissent += 4; workers_spd -= 2; kpd_coalition_dissent += 1; kpd_relation -= 5; strike_term_seen += 1
+
+Viele Arbeiter sind mit unseren Kompromissen unzufrieden, aber sie werden lernen zu akzeptieren, dass wir alle gemeinsam gegen wirtschaftliche Kräfte kämpfen.
+
+
+
+# options: support the workers in their demands, pushing back against the employers.
+# this is the approach favored by the unions. While they do not get everything they desire, an agreement favorable to the workers is reached. The employer associations and their bourgeois allies accuse us of overstepping our bounds.
+# try to make some compromise between the sides. Both sides need to share the pain in the current crisis.
+# whatever it takes, end the strikes and unrest as soon as possible.
+# this is not our business to intervene.
+# We are the party of labor, and it is not our business to intervene? There is incredulity in the ranks. The workers are less likely to trust us in the future.

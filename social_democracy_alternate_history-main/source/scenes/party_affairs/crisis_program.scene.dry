@@ -1,0 +1,93 @@
+title: Die Wirtschaftskrise
+new-page: true
+is-card: true
+view-if: crisis_urgency >= 1 and crisis_program_timer = 0 and economic_plan = 0 and black_thursday_seen == 1
+frequency: 200
+on-arrival: month_actions += 1; crisis_program_timer = 5
+card-image: img/bankrun.jpg
+tags: party_affairs, govt_affairs
+
+= Bewältigung der Wirtschaftskrise
+
+Unsere Partei ist tief gespalten in der Frage, wie mit der Wirtschaftskrise umzugehen ist. Aus dem Lager der Mitte argumentiert Hilferding, man müsse der Wirtschaftskrise ihren Lauf lassen, da sie schlicht Teil der zyklischen Natur des Kapitalismus sei.
+
+Aus den Reihen der Arbeitnehmerschaft argumentiert der Ökonom Wladimir Woytinsky, dass ein massives Programm für öffentliche Arbeiten aufgelegt werden müsse, um die Arbeitslosigkeit zu senken und die Nachfrage anzukurbeln – gegebenenfalls unter Inkaufnahme einer Deficit-Spending-Politik. Seine Gegner, wie etwa Hilferding, wenden ein, dass dieser Plan zu einer Rückkehr der Hyperinflation führen und der Wirtschaft nicht einmal nützen würde. Zudem stehe Woytinskys Strategie, so Hilferding, im Widerspruch zu marxistischen Prinzipien.
+
+Der sogenannte WTB-Plan – benannt nach seinen Hauptvertretern Woytinsky, Tarnow und Baade – findet innerhalb der Partei zunehmend Beachtung.
+
+Linke Kräfte innerhalb der Partei argumentieren jedoch, der WTB-Plan sei lediglich ein Pflaster für die grundlegenden Mängel des Kapitalismus. Sie vertreten die Ansicht, die Krise biete die Gelegenheit, den Kapitalismus durch massive Verstaatlichungen der Industrie zu beenden und unser Land endlich in den Sozialismus zu führen.
+
+Unterdessen erarbeiten Moderate und Reformer Vorschläge für ein begrenztes Programm zur Schaffung von Arbeitsplätzen – finanziert aus Steuern –, das weder eine Neuverschuldung noch eine umfassende Umstrukturierung der Wirtschaft vorsieht. Die Gewerkschafter halten den Plan hinsichtlich seines Umfangs und seiner Ambitionen für unzureichend.
+
+- @support_centrist: Unterstützen wir die Position der Zentristen.
+- @support_labor: Unterstützen wir die Position der Gewerkschafter.
+- @support_left: Unterstützen wir die Position der Linken.
+- @support_moderate: Unterstützen wir die Position der Reformisten.
+- @defer: Verschieben Sie die Entscheidung, bis wir mehr Informationen haben.
+
+@support_centrist
+subtitle: Lasst die Depression ihren Lauf nehmen.
+on-arrival: center_strength += 5; center_dissent -= 5; labor_dissent += 10; wtb_support -= 1; left_dissent += 10;
+
+Woytinsky und die Gewerkschaften kritisieren die Zentristen scharf für deren Politik. Die Arbeiter hungern; sollen wir sie gefühllos im Stich lassen und uns auf die Seite der bürgerlichen Sparpolitik schlagen? Die Zentristen wiederum werfen Woytinsky vor, den Arbeitern falsche Hoffnungen zu machen; ihrer Ansicht nach lässt sich nichts gegen die Depression unternehmen. Zudem verweisen sie auf die Befürchtung, dass durch eine Defizitfinanierung ausgelöste neue Hyperinflation drohen könnte.
+
+Unsere politische Linie besteht derzeit darin, dass nichts zur Linderung der Depression unternommen werden kann.
+
+
+@support_labor
+subtitle: Forderung nach verstärkten öffentlichen Bauvorhaben und fiskalischen Konjunkturimpulsen.
+unavailable-subtitle: Die Gewerkschafter sind nicht stark genug.
+choose-if: historical_mode == 0 or (labor_strength >= left_strength and labor_strength >= center_strength and labor_strength >= reformist_strength)
+on-arrival: center_dissent += 10; left_dissent += 5; labor_strength += 5; wtb_support += 1;
+go-to: plan_adopted if wtb_support >= 3; plan_support if wtb_support < 3
+
+@plan_support
+
+Unsere Unterstützung des WTB-Plans stößt bei den orthodoxen Marxisten des zentristischen Flügels auf Ablehnung und ruft im gesamten politischen Spektrum sowohl Kritik als auch Zustimmung hervor. Linke kritisieren den Plan als fehlerhaft, da er den Kapitalismus unangetastet lasse, während sich einige Reformisten vorsichtig optimistisch äußern.
+
+Wir haben die Partei noch nicht davon überzeugt, den Plan förmlich zu verabschieden. Es ist noch weitere Arbeit erforderlich.
+
+@plan_adopted
+on-arrival: wtb_adopted = 1; labor_dissent -= 15; reformist_dissent -= 10; labor_strength += 10; center_strength -= 10; center_dissent += 20; left_dissent += 5; economic_plan = 1
+
+Durch unsere harte Arbeit haben wir endlich die Mehrheit der Partei davon überzeugt, den WTB-Plan anzunehmen! [? if spd_in_government == 1 : Wir können so bald wie möglich mit der Umsetzung des Plans beginnen, sofern wir das Wirtschafts- oder das Finanzministerium innehaben. ?][? if spd_in_government = 0 : Wir sollten den Plan in unserer Wahlpropaganda hervorheben. ?]
+
+@support_left
+subtitle: Forderung nach massenhaften Verstaatlichungen und der Umgestaltung der Wirtschaft.
+unavailable-subtitle: Die Linken sind nicht stark genug.
+choose-if: historical_mode == 0 or (left_strength >= labor_strength and left_strength >= center_strength and left_strength >= reformist_strength)
+on-arrival: left_strength += 10; reformist_dissent += 5; labor_dissent += 5; nationalization_support += 2
+go-to: support_left_progress if nationalization_support < 3; adopt_left if nationalization_support >= 3
+
+@support_left_progress
+
+Wir versuchen, die Partei davon zu überzeugen, als Reaktion auf die Wirtschaftskrise ein Programm massiver Verstaatlichungen zu unterstützen. Linke argumentieren, dass diese Politik im Einklang mit unserem langjährigen sozialistischen Programm stehe, während Reformisten und einige Gewerkschafter einwenden, der Plan sei unrealistisch und man müsse sich auf unmittelbarere Verbesserungen der Lebensbedingungen der Arbeiter konzentrieren.
+
+Wir haben den Plan noch nicht förmlich verabschiedet. Es ist noch weitere Arbeit erforderlich.
+
+@adopt_left
+on-arrival: left_strength += 15; left_dissent -= 10; reformist_dissent += 10; neorevisionist_dissent += 8; labor_dissent += 6; nationalization_adopted = 1; coup_progress += 1; economic_plan = 3; kpd_relation += 5*(1-dissent)
+
+Durch unsere harte Arbeit haben wir die Mehrheit der Partei davon überzeugt, den sozialistischen Wirtschaftsplan anzunehmen! [? if spd_in_government == 1 : Wir können so bald wie möglich mit der Umsetzung des Plans beginnen, sofern wir das Wirtschafts- oder das Finanzministerium innehaben. ?] Der Widerstand des Bürgertums dürfte heftig ausfallen. [? if spd_in_government == 0 : Angesichts der gegenwärtigen Umstände könnte es schwierig sein, den Plan umzusetzen. ?]
+
+@support_moderate
+subtitle: Forderung nach einem begrenzten Programm zur Schaffung von Arbeitsplätzen ohne schuldenfinanzierte Ausgaben.
+unavailable-subtitle: Die Reformer sind nicht stark genug.
+choose-if: historical_mode == 0 or (reformist_strength >= left_strength and reformist_strength >= center_strength and reformist_strength >= labor_strength)
+on-arrival: moderate_plan_support += 1; reformist_strength += 8; reformist_dissent -= 5; left_dissent += 6; labor_dissent += 5
+go-to: adopt_moderate if moderate_plan_support >= 2; support_moderate_progress if moderate_plan_support < 2
+
+@support_moderate_progress
+
+Wir versuchen, die Partei davon zu überzeugen, ein gemäßigtes Programm zur Schaffung von Arbeitsplätzen zu unterstützen, das ohne eine Finanzierung durch Defizite auskommt. Befürworter dieses gemäßigten Plans argumentieren, dass er am ehesten auf die Unterstützung der bürgerlichen Parteien zählen kann und sich kurzfristig am besten umsetzen lässt. Kritiker aus dem linken Lager und den Gewerkschaftsfraktionen bemängeln hingegen, dass der Plan nicht weit genug gehe.
+
+Wir haben den Plan noch nicht förmlich verabschiedet. Es ist noch weitere Arbeit erforderlich.
+
+@adopt_moderate
+on-arrival: reformist_strength += 10; reformist_dissent -= 10; left_dissent += 8; labor_dissent += 6; moderate_plan_adopted = 1; economic_plan = 2; coalition_dissent -= 1 if unemployed > 15; z_relation += 5;
+
+Durch unsere harte Arbeit haben wir die Mehrheit der Partei davon überzeugt, den moderaten Plan zur Schaffung von Arbeitsplätzen anzunehmen! [? if spd_in_government == 1 : Wir können so bald wie möglich mit der Umsetzung des Plans beginnen, sofern wir über das Wirtschafts- oder Finanzministerium verfügen. ?]
+
+@defer
+
+Wir stellen eine Entscheidung zur Wirtschaftspolitik zurück und warten weitere Informationen ab. Woytinsky und seine Anhänger argumentieren, dass Nichtstun eine eigene Form des Handelns darstellt.

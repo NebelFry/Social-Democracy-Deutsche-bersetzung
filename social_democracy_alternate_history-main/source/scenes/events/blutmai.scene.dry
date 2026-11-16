@@ -1,0 +1,67 @@
+title: 1. Mai 1929
+new-page: true
+subtitle: Eine kommunistische Demonstration
+tags: event
+view-if: year = 1929 and month = 5
+max-visits: 1
+face-image: img/redfront.jpg
+
+= 1. Mai 1929
+
+In Berlin ist die Stimmung angespannt. Die Kommunisten planen eine Demonstration zum zehnten Jahrestag des Spartakusaufstands. Niemand hat vergessen, dass es unsere Parteimitglieder waren, die die Niederschlagung des Aufstands anordneten und die Kommunisten machen uns noch immer für den Tod von Rosa Luxemburg und Karl Liebknecht verantwortlich.
+
+Viele Nichtkommunisten fürchten einen weiteren gewaltsamen Aufstand und unsere Verbündeten in der preußischen Koalition fordern das preußische Innenministerium auf, die Demonstrationen zu verbieten.
+
+- @ban: Verbieten wir die Demonstrationen.
+- @allow_police: Lassen wir die Demonstrationen zu, aber halten wir eine starke Polizeipräsenz aufrecht.
+- @allow: Lassen wir die Demonstrationen ihren Lauf nehmen.
+- @join: Wir beteiligen uns selbst an den Demonstrationen.
+
+@ban
+on-arrival: blutmai = 1; kpd_relation -= 25; z_relation += 5; dvp_relation += 5; workers_spd -= 3; unemployed_spd -= 3; workers_kpd += 3; unemployed_kpd += 3; communist_coalition -= 3; strife += 1
+face-image: img/blutmai.jpg
+
+Wir erließen das Verbot der Demonstrationen und entsandten Polizeikräfte, um dieses Verbot durchzusetzen. Es kam zu einer Konfrontation zwischen der Polizei und Kommunisten, und es brach Gewalt aus. Berichten zufolge tötete die Berliner Polizei Dutzende von Demonstranten und unbeteiligten Passanten. Die Kommunisten bezeichnen diesen Vorfall bereits als „Blutmai“.
+
+Damit mag zwar jeder Versuch einer Versöhnung mit der KPD zunichte gemacht werden, doch das Zentrum und die Volkspartei befürworten unser Vorgehen.
+
+- @corrupt_police: Es ist die Schuld korrupter und reaktionärer Elemente innerhalb der Polizei. Man muss die Verantwortlichen aus dem Dienst entfernen.
+- @communist_fault: Es ist die Schuld der Kommunisten, dass sie sich weigern, die Rechtsstaatlichkeit zu achten.
+- @no_fault: Es ist ein bedauerlicher Vorfall, der nicht hätte geschehen sollen, aber niemandes Schuld ist.
+
+@corrupt_police
+on-arrival: kpd_relation += 10; z_relation -= 2; dvp_relation -= 2; prussian_police_loyalty += 0.05
+
+Wir haben die für die Tötungen verantwortlichen Polizisten festgenommen und vor Gericht gestellt.[? if judicial_reform = 0 : Leider ließ die reaktionäre Justiz sie so gut wie ungestraft davonkommen. ?]
+
+Dies besänftigt einen Teil der Empörung der Kommunisten, aber sicherlich nicht die gesamte.
+
+@communist_fault
+on-arrival: kpd_relation -= 10; z_relation += 5; dvp_relation += 5; rfb_strength -= 80; rfb_banned = 1
+
+Wenn die KPD weiterhin illegal agiert, muss sie die Konsequenzen tragen. Daher haben wir den RFB, ihre paramilitärische Organisation, verboten. Die bürgerlichen und rechten Parteien billigen dies.
+
+@no_fault
+
+Diese Position verschafft uns keine Verbündeten und verprellt niemanden weiter.
+
+
+@allow_police
+on-arrival: kpd_relation += 5; workers_kpd += 5; unemployed_kpd += 5
+
+Die Demonstration verläuft friedlich unter den wachsamen Augen der Polizei. Schaulustige bewundern die Stärke der kommunistischen Arbeiter, und womöglich haben sich einige unserer Anhänger abgelöst.
+
+
+@allow
+on-arrival: workers_kpd += 5; unemployed_kpd += 5; kpd_relation += 10; rfb_strength += 50; z_relation -= 3; dvp_relation -= 3; coalition_dissent += 1; rfb_militancy += 0.1
+
+Die Demonstration verläuft friedlich und bei minimaler Polizeipräsenz. Schaulustige bewundern die Stärke der kommunistischen Arbeiter und womöglich haben sich einige unserer Mitglieder ihnen angeschlossen. Die KPD wird es zwar nie zugeben, doch sie beginnt, uns mit weniger Feindseligkeit zu betrachten (auch wenn sie uns noch nicht mögen). Unsere Verbündeten aus der politischen Mitte verurteilen die Demonstration, doch ihre Proteste bleiben wirkungslos.
+
+
+@join
+choose-if: kpd_relation >= 45
+unavailable-subtitle: Die Kommunisten vertrauen uns nicht genug.
+on-arrival: kpd_relation += 15; workers_kpd += 5; unemployed_kpd += 5; workers_spd += 5; unemployed_spd += 5; new_middle_spd -= 5; old_middle_spd -= 5; z_relation -= 10; dvp_relation -= 10; coalition_dissent += 2; communist_coalition += 2; rfb_strength += 100; rfb_militancy += 0.1; sa_strength += 50; sh_strength += 50
+achievement: die_rote_fahne
+
+Angesichts der Geschichte ihrer und unserer Partei ist es schwierig, die Kommunisten dazu zu bewegen, uns mit ihnen marschieren zu lassen. Schließlich geben sie jedoch nach. Die Demonstration proletarischer Einheit begeistert die Arbeiter und versetzt Bourgeoisie und Mittelschicht in Angst und Schrecken. [? if in_grand_coalition : Unsere Koalitionspartner in der Regierung sind empört über unser Auftreten gemeinsam mit den Kommunisten und drohen damit, die Regierung zu Fall zu bringen. ?] Die rechtsextremen Paramilitärs verstärken ihre Rekrutierung, um uns etwas entgegenzusetzen.

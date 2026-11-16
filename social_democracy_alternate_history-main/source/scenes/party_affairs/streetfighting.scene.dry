@@ -1,0 +1,65 @@
+title: Straßenkämpfe
+new-page: true
+is-card: true
+on-arrival: streetfighting_timer = 6; month_actions += 1; rb_militarization_cost = 2 if rb_militancy > 0.1 else rb_militarization_cost = 1; rb_militarization_cost = 3 if rb_militancy > 0.25; strife += 1
+view-if: year >= 1930 and sa_strength >= 150 and streetfighting_timer == 0 and not return_to_normalcy
+card-image: img/blutmai_2.jpg
+tags: party_affairs; antifascism
+
+= Straßenkämpfe
+
+Auf den Straßen toben Kämpfe zwischen der nationalsozialistischen SA, dem nationalistischen Stahlhelm, dem kommunistischen Rotfrontkämpferbund (RFB) und unserem eigenen Reichsbanner. In einigen Teilen des Landes nähern sich die Zustände bürgerkriegsähnlichen Ausmaßen, da jeden Monat Dutzende Menschen ums Leben kommen.
+
+Wir müssen etwas unternehmen, um die Arbeiter vor diesen Übergriffen zu schützen.
+
+# - @battle: Testen wir unsere Verteidigungseinheiten im Kampf gegen die Faschisten!
+- @arm_rb: Verstärkung der Ausbildung und Bewaffnung des Reichsbanners.
+- @if_training: Bilde Gewerkschaftsmitglieder für den Kampf als Teil der Eisernen Front aus.
+- @prussian_police_training: Setzen wir die preußische Polizei ein, um bei der Ausbildung des Reichsbanners zu helfen.
+- @peace: Versuchen wir, jegliche gewaltsamen Auseinandersetzungen so weit wie möglich zu vermeiden.
+- @truce_rfb: Versuchen wir, uns mit der RFB zu versöhnen.
+- @easy_discard
+
+@battle
+view-if: rb_militancy > 0.1 and rb_militancy < 0.5
+on-arrival: rb_militancy += 0.1; sa_strength += 40; rb_strength -= 100; 
+max-visits: 1
+
+Viele Mitglieder des Reichsbanners sind nicht für den eigentlichen Kampf gerüstet und scheiden daher aus. Die Verbleibenden werden dadurch jedoch abgehärtet. Unsere Auseinandersetzungen liefern zudem reichlich Rekrutierungsmaterial für die nationalsozialistische SA.
+
+@arm_rb
+subtitle: -[+ rb_militarization_cost +] Ressourcen
+choose-if: resources >= rb_militarization_cost
+unavailable-subtitle: Nicht genügend Ressourcen ([+ rb_militarization_cost +] benötigt).
+on-arrival: resources -= rb_militarization_cost; rb_militancy += 0.06; rb_strength += 50; sa_strength += 50; z_relation -= 5 if historical_mode 
+
+Wir haben die Ausbildung verstärkt und mehr Rüstungsgüter für das Reichsbanner angeschafft.
+
+[? if historical_mode : Die Zentrumspartei verurteilt die Militarisierung des Reichsbanners und ihre Mitglieder verlassen die republikanische Organisation. ?]
+
+
+@if_training
+view-if: iron_front_formed == 1
+on-arrival: rb_militancy += 0.03; rb_strength += 200; sa_strength += 50; 
+max-visits: 2
+
+Als Teil der Eisernen Front verstärken wir die Abstimmung zwischen dem Reichsbanner und den Gewerkschaften und viele Gewerkschaftsmitglieder wollen sich stärker engagieren.
+
+@prussian_police_training
+view-if: spd_prussia == 1 and prussian_police_loyalty > 0.5
+on-arrival: rb_militancy += 0.05; sa_strength += 50; prussian_police_training += 1
+
+Die loyalen Teile der preußischen Polizei können bei der Ausbildung des Reichsbanners helfen.
+
+@peace
+on-arrival: rb_militancy -= 0.02; rb_strength -= 50; pacifism += 1
+
+Durch den Verzicht auf den Kampf verkümmert die Kraft des Reichsbanners. Die Pazifisten in der Partei gewinnen die Oberhand.
+
+@truce_rfb
+choose-if: kpd_relation >= 45
+view-if: kpd_truce == 0
+unavailable-subtitle: Die KPD ist nicht interessiert.
+on-arrival: kpd_truce = 1; kpd_relation += 5; rfb_strength += 50; rb_strength += 50; sa_strength += 50;
+
+Wir haben zumindest einen vorübergehenden Waffenstillstand mit der KPD geschlossen, damit die jeweiligen paramilitärischen Verbände die Kämpfe einstellen.

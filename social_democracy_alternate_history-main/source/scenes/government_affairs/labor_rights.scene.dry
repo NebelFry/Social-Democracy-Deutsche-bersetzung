@@ -1,0 +1,80 @@
+title: Arbeitsrechte
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: labor_rights_timer += 10; month_actions += 1
+view-if: spd_in_government = 1 and labor_minister_party = "SPD" and labor_rights_timer <= 0 and labor_affairs_seen = 1
+card-image: img/portraits/WissellRudolf.jpg
+max-visits: 6
+go-to: labor_rights_menu
+#subtitle: Arbeitszeiten, Sicherheitsvorschriften und Arbeitslosenversicherung.
+
+= Arbeitsrechte
+
+Mit der Kontrolle über das Arbeitsministerium können wir nationale Arbeitsstandards festlegen. Unsere Anhänger erwarten von uns, dass wir die 40-Stunden-Woche und Sicherheitsvorschriften durchsetzen sowie die Arbeitslosenversicherung vollständig finanzieren.
+
+# 40-Stunden-Woche durchsetzen
+# Sicherheitsvorschriften für den Bergbau und die Industrie entwickeln und durchsetzen
+# works councils are part of another card...
+
+@labor_rights_menu
+
+- @working_hours: 40-Stunden-Woche durchsetzen.
+- @shorten_hours: Arbeitszeit auf unter 40 Stunden verkürzen.
+- @safety: Sicherheitsvorschriften entwickeln und durchsetzen.
+- @unemployment_insurance: Arbeitslosenversicherungssystem finanzieren.
+- @root: Keine Richtlinien erlassen.
+- @easy_discard
+- @cancel_advisor_action
+
+@working_hours
+view-if: working_hours < 2
+on-arrival: working_hours += 1; labor_dissent -= 8; left_dissent -= 5; labor_strength += 5; workers_spd += 7*(1-dissent); dvp_relation -= 4; coalition_dissent += 1; capital_strike_progress += 1 if dvp_relation <= 30; labor_goal_completed = 1; inflation += 0.1; economic_growth -= 0.1
+
+Obwohl während der deutschen Revolution von 1918 die 40-Stunden-Woche eingeführt wurde, ist deren Einhaltung im Laufe der Jahre zunehmend aufgeweicht worden. Den Kapitalisten ist es gelungen, zahlreiche Ausnahmen und Schlupflöcher durchzusetzen und so zu dem alten System der erzwungenen Überstunden für die Arbeiter zurückzukehren.
+
+Nun setzen wir – gestützt auf die Macht des Arbeitsministeriums – endlich das Recht der Arbeiter auf ihre eigene Zeit durch. Die Bourgeoisie und ihre politischen Vertreter sind darüber verärgert.
+
+@shorten_hours
+view-if: working_hours >= 2 and black_thursday_seen = 1
+subtitle: Könnten wir durch eine Verkürzung der Arbeitszeit mehr Einstellungen bewirken und die Arbeitslosigkeit verringern?
+on-arrival: working_hours += 1; labor_dissent -= 8; left_dissent -= 5; labor_strength += 5; workers_spd += 7*(1-dissent); dvp_relation -= 4; coalition_dissent += 1; capital_strike_progress += 1; labor_goal_completed = 1; unemployed -= 0.3; economic_growth -= 0.2;
+
+Vertreter der Gewerkschaften argumentieren, dass eine Senkung der Höchstarbeitszeit Arbeitgeber dazu veranlassen würde, mehr Personal einzustellen, wodurch die Arbeitslosigkeit sinken würde. Zudem wird angeführt, dass dies einer Deflation entgegenwirken würde, da die Kaufkraft der Arbeiter trotz Arbeitszeitverkürzung bei gleichbleibenden Löhnen erhalten bliebe. Die Arbeitgeber hingegen lehnen diese Maßnahme ab und plädieren stattdessen für mehr Flexibilität bei Einstellungen und Entlassungen.
+
+
+@safety
+on-arrival: workers_safety += 1; labor_dissent -= 5; labor_strength += 2; workers_spd += 5*(1-dissent); capital_strike_progress += 1 if workers_safety >= 3
+
+Das Arbeitsministerium arbeitet an der Entwicklung und Durchsetzung von Sicherheitsvorschriften, um gesunde Arbeitsbedingungen für das Proletariat zu gewährleisten. [? if workers_safety >= 3 : Unternehmen haben begonnen zu argumentieren, dass unser Fokus auf Sicherheit überzogen und unnötig sei und die Wirtschaft beeinträchtige. ?]
+
+@unemployment_insurance
+view-if: unemployed >= unemployment_insurance_threshold + 4
+subtitle: Angesichts der steigenden Arbeitslosigkeit müssen wir neue Wege finden, unser wichtigstes Programm zu finanzieren.
+
+Angesichts der einsetzenden Depression und der riesigen Zahl an Arbeitslosen gerät unser Arbeitslosenversicherungssystem unter Druck. Das Programm war nie für eine derart große Anzahl von Antragstellern ausgelegt; es müssen Maßnahmen ergriffen werden, um den Haushalt auszugleichen.
+
+- @cut_benefits: Leistungen kürzen.
+- @increase_employers: Arbeitgeberbeiträge erhöhen.
+- @balance: Arbeitgeber- als auch die Arbeitnehmerbeiträge erhöhen.
+- @labor_rights_menu: Wir können diese Entscheidung vorerst aufschieben.
+
+@cut_benefits
+subtitle: Die Arbeiter werden dies als Verrat betrachten.
+on-arrival: workers_spd -= 0.12*workers_spd; unemployed_spd -= 0.2*unemployed_spd; workers_kpd += 6; workers_nsdap += 6; unemployed_kpd += 5; unemployed_nsdap += 5; left_dissent += 15; center_dissent += 10; labor_dissent += 15; reformist_dissent += 5; welfare -= 2; budget += 1; unemployed += 3; pro_republic -= 4; kpd_relation -= 8; inflation -= 2; unemployment_insurance_threshold = unemployed; unemployment_insurance_timer = 10; economic_growth -= 0.2;
+
+Aus Haushaltsgründen haben wir die Leistungen der Arbeitslosenversicherung gekürzt. Leider sind den Arbeitern die Gründe für unsere Haushaltsdisziplin völlig fremd. Sie sind wütend über unseren Verrat – ebenso wie ein beträchtlicher Teil unserer Mitgliedschaft quer durch alle Fraktionen. Was wir verlieren, kommt der KPD zugute und selbst die NSDAP – jene Schoßhündchen der Bourgeoisie – hat in die Kritik an unserem Sparkurs eingestimmt.
+
+
+
+@increase_employers
+subtitle: Employers are strongly against this. [? if in_grand_coalition: Die DVP wird die Koalition wahrscheinlich sprengen. ?]
+on-arrival: capital_strike_progress += 2; coalition_dissent = 2 if in_grand_coalition; coalition_dissent += 1; welfare += 1; workers_spd += 6*(1-dissent); unemployed_spd += 6*(1-dissent); old_middle_spd -= 6*(1-dissent); new_middle_spd -= 2*(1-dissent); unemployment_insurance_threshold = unemployed; unemployment_insurance_timer = 10; economic_growth -= 0.2;
+
+Wir haben die Arbeitgeberbeiträge zur Arbeitslosenversicherung erhöht und so den Fortbestand des Programms gesichert, ohne die Arbeiter und Arbeitslosen zu belasten. Es ist wohl verständlich, dass die Kapitalisten und ihre politischen Parteien darüber in Rage sind, während unsere Basis in den Gewerkschaften und unter den Arbeitslosen zufrieden ist.
+
+@balance
+subtitle: Weder Arbeiter noch Arbeitgeber werden vollends zufrieden oder unzufrieden sein. [? if in_grand_coalition and dvp_relation < 30: Die DVP wird den Kompromiss wahrscheinlich als inakzeptabel betrachten. ?][? if in_grand_coalition and dvp_relation >= 30: Die DVP könnte den Kompromiss vorerst widerwillig akzeptieren. ?]
+on-arrival: workers_spd -= 4; unemployed_spd -= 5; workers_kpd += 4; unemployed_kpd += 3; unemployed_nsdap += 3; left_dissent += 10; labor_dissent += 8; center_dissent += 5; welfare -= 1; budget += 1; month += 1; kpd_relation -= 4; inflation -= 1; unemployment_insurance_threshold = unemployed; unemployment_insurance_timer = 10; coalition_dissent = 2 if in_grand_coalition and dvp_relation < 30; coalition_dissent += 1 if in_grand_coalition; economic_growth -= 0.1;
+
+Keine der beiden Seiten ist mit unserer Kompromisslösung vollends zufrieden. Viele der Arbeiter und Arbeitslosen betrachten sie als Verrat, auch wenn wir sie als erfolgreiche Abwendung einer weitaus schlimmeren Alternative darstellen. [? if in_grand_coalition: Unterdessen ist die DVP entsetzt über die Aussicht, überhaupt irgendwelche Unternehmenssteuern zu erhöhen. ?]

@@ -1,0 +1,33 @@
+title: Rudolf Wissell
+is-pinned-card: true
+tags: advisor, labor
+card-image: img/portraits/WissellRudolf.jpg
+view-if: wissell_advisor = 1
+new-page: true 
+
+= Rudolf Wissell
+
+Wissell ist Arbeitsökonom beim ADGB, dem Dachverband der freien Gewerkschaften, und war mehrfach Arbeitsminister. Sein Schwerpunkt liegt auf der Verbesserung der Bedingungen für organisierte Arbeiter.
+
+- @labor_rights_
+- @union_unity
+- @root: Zurück
+
+@labor_rights_
+title: Arbeitsrechte
+subtitle: Als Arbeitsminister kann Wissell dazu beitragen, Regelungen für die Arbeitsbedingungen festzulegen.
+choose-if: advisor_action_timer <= 0 and spd_in_government and labor_minister_party = "SPD"
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if labor_minister_party != "SPD" : Die SPD kontrolliert nicht das Arbeitsministerium. ?]
+on-arrival: advisor_action_timer = 6; labor_rights_timer -= 10; last_advisor_action = 1
+go-to: labor_rights
+
+
+@union_unity
+title: Koordinierung zwischen Gewerkschaften und Partei
+subtitle: Verringert die Unzufriedenheit unter den Gewerkschaften.
+choose-if: advisor_action_timer <= 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; labor_dissent -= 5; labor_strength += 5
+
+Wir haben die Spannungen mit den Gewerkschaften abgebaut und dessen Stärke innerhalb der Partei erhöht.
+

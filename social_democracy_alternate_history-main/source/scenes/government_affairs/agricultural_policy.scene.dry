@@ -1,0 +1,57 @@
+title: Agrarpolitik
+new-page: true
+is-card: true
+on-arrival: agricultural_policy_timer += 6; month_actions += 1
+view-if: spd_in_government = 1 and (agriculture_minister_party = "SPD") and agricultural_policy_timer == 0
+card-image: img/portraits/BaadeFritz.jpg
+tags: govt_affairs, cabinet
+#subtitle: Fragen der Finanzierung für Landwirte, des Getreideankaufs und der Landreform.
+
+= Agrarpolitik
+
+Auch wenn die Agrarpolitik historisch gesehen nicht das angestammte Feld der SPD war, besteht in diesem Bereich erheblicher politischer Handlungsbedarf. Unsere städtischen Wahlkreise hoffen auf eine preiswertere und stabilere Lebensmittelversorgung, während Kleinbauern wirtschaftliche Entlastung benötigen. Zudem gibt es Bestrebungen für eine Bodenreform, um die großen adligen Güter aufzuteilen und das Land an die Bauern neu zu verteilen.
+
+- @land_reform
+- @agricultural_finance
+- @pro_consumer
+- @state_buyer
+- @root: Vorerst keine Richtlinien einführen.
+- @easy_discard
+- @cancel_advisor_action
+
+@land_reform
+title: Bodenreform
+subtitle: -1 Budget - Die großen aristokratischen Güter zerschlagen und an landlose Arbeitern geben.
+unavailable-subtitle: [? if budget <= 0 : Benötigt 1 Budget. ?] [? if judicial_reform < 2 : Die Justiz würde das niemals zulassen. ?]
+choose-if: judicial_reform >= 2 and budget > 0
+on-arrival: budget -= 1; land_reform += 1; coalition_dissent += 1; rural_spd += 5*(1-dissent); rural_nsdap -= 4*(1-dissent); unemployed -= 1 if unemployed >= 5; dvp_relation -= 5; z_relation -= 4; left_strength += 8; left_dissent -= 5; rural_sol += 3; rural_policy += 1; coup_progress += 1; agriculture_goal_completed += 1;
+max-visits: 4
+
+Mit unserer Politik der Landreform erwerben wir Ackerland von Großgrundbesitzern und übergeben es an Vereinigungen von Landarbeitern sowie an Kleinbauern. Im Grunde tragen wir damit den Klassenkampf aufs Land und brechen die halbfeudalen Eigentumsverhältnisse auf, die in Ostpreußen und anderen Gebieten mit Großgrundbesitz vorherrschen. Die bürgerlichen Parteien und Großbauern verabscheuen unseren Eingriff in die Unantastbarkeit des Privateigentums, während Linke der Entwicklung vorsichtig optimistisch gegenüberstehen.
+
+
+@agricultural_finance
+title: Agrarfinanzierung
+subtitle: -1 Budget - Erhöhung der Finanzierung für Agrarkredite und -versicherungen.
+choose-if: budget >= 1
+on-arrival: budget -= 1; agricultural_finance += 1; rural_spd += 5*(1-dissent); rural_nsdap -= 3*(1-dissent); peoples_party_support += 1; center_dissent += 5; left_dissent += 4; rural_sol += 4; rural_policy += 1; economic_growth += 0.2;
+
+Wir haben die finanzielle Unterstützung für Kleinbauern aufgestockt und ihnen Zugang zu Krediten und Versicherungen verschafft, um sie vor Not zu bewahren. Der linke Flügel und die Mitte unserer Partei lehnen unsere Agrarpolitik ab, da sie diese Maßnahmen als Geschenke an kleinbürgerliche Landwirte betrachten.
+
+
+@pro_consumer
+title: Lebensmittelbeschaffung
+subtitle: -1 Budget - Den Arbeitern preiswerte Verpflegung zur Verfügung stellen.
+choose-if: budget >= 1
+on-arrival: budget -= 1; pro_consumer += 1; workers_spd += 4*(1-dissent); unemployed_spd += 4*(1-dissent); workers_sol += 4; coalition_dissent += 1 if black_thursday_seen; economic_growth += 0.2;
+
+Wir haben den staatlichen Ankauf von Grundnahrungsmitteln zur Versorgung der städtischen Arbeiterschaft und der ärmeren Bevölkerungsschichten ausgeweitet. Davon profitieren die Arbeiter mehr als die Landwirte, da wir niedrigere Ankaufspreise aushandeln. [? if black_thursday_seen and (in_weimar_coalition or in_grand_coalition) : Unsere Koalitionspartner betrachten diese Politik als verschwenderische Almosen. ?]
+
+@state_buyer
+title: Staatliches Ankaufsmonopol
+subtitle: -2 Budget - Schaffen Sie ein Staatsmonopol für den Getreideankauf, das den Landwirten garantierte Preise und den Verbrauchern stabile Preise sichert. [? if judicial_reform < 2 : Die Justiz würde dies niemals zulassen. ?]
+choose-if: budget >= 2 and judicial_reform >= 2
+on-arrival: budget -= 2; state_buyer = 1; rural_spd += 5*(1-dissent); rural_nsdap -= 3*(1-dissent); workers_spd += 4*(1-dissent); unemployed_spd += 5*(1-dissent); coalition_dissent += 1 if (in_grand_coalition or in_weimar_coalition); dvp_relation -= 5; z_relation -= 3; peoples_party_support += 1; rural_policy += 2; capital_strike_progress += 1; economic_growth += 0.4;
+max-visits: 1
+
+Unsere neue Einkaufsstelle garantiert den Landwirten faire Preise und sorgt zugleich für niedrigere Lebensmittelpreise für Arbeiter und die städtische Armutsbevölkerung. Diese Politik erfordert hohe Ausgaben und ein beispielloses Maß an staatlichen Eingriffen in die Wirtschaft, was den Unmut konservativer Ökonomen hervorruft.

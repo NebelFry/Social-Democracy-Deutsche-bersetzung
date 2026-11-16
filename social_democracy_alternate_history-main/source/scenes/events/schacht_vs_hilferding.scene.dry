@@ -1,0 +1,34 @@
+title: Hjalmar Schacht gegen Hilferding
+new-page: true
+view-if: year = 1929 and month >= 11 and spd_in_government = 1 and finance_minister = "Hilferding" and finance_minister_party = "SPD"
+tags: event
+max-visits: 1
+face-image: img/portraits/SchachtHjalmar.jpg
+
+= Schacht gegen Hilferding
+
+Reichsbankpräsident Hjalmar Schacht hat den SPD-Finanzminister Hilferding für dessen Haushaltsentwurf kritisiert; dieser sei unausgewogen und enthalte zu viele Sozialausgaben sowie zu wenige Steuersenkungen für Spitzenverdiener und Unternehmen. Vor allem aber weigert er sich, für die Arbeitsfähigkeit der Regierung unerlässliche Kredite freizugeben, sofern Hilferding seinen Haushaltsplan nicht grundlegend ändert oder zurücktritt.
+
+Natürlich ist diese Kritik unbegründet, doch das bürgerliche Establishment schert das nicht.
+
+- @expose_him: Entlarvt seine reaktionären Machenschaften!
+- @work_with: Mit ihm zusammenarbeiten, um das Budget zu gestalten.
+- @hilferding_resign: Hilferding muss zurücktreten.
+
+@expose_him
+view-if: investigate_far_right >= 1
+
+Wir machen Schachts Machenschaften mit den Nazis öffentlich. Ob zum Guten oder zum Schlechten – er ist eingeschüchtert und sieht von weiteren Schritten gegen uns ab.
+
+
+@work_with
+
+Auch nach einem zweiten Haushaltsentwurf hält Schacht Hilferdings Haushalt weiterhin für inakzeptabel – ungeachtet der stärker regressiven Steuern und der Ausgabenkürzungen.
+
+- @hilferding_resign: Hilferding muss zurücktreten.
+
+
+@hilferding_resign
+on-arrival: finance_minister_party = "DVP" if in_grand_coalition; finance_minister_party = "I" if in_weimar_coalition or in_popular_front or in_left_front; finance_minister = "Moldenhauer"
+
+Da ihm keine andere Wahl blieb, ist Hilferding als Finanzminister zurückgetreten; an seine Stelle soll ein [? if in_grand_coalition: Mitte-Rechts ?][? if not in_grand_coalition: technokratischer ?] Kandidat treten.

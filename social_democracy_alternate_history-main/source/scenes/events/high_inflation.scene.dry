@@ -1,0 +1,44 @@
+title: Hohe Inflation
+subtitle: Arbeiter erleben einen Rückgang ihrer Kaufkraft.
+view-if: inflation >= 7 and high_inflation_timer = 0 and spd_in_government
+new-page: true
+on-arrival: capital_strike_progress += 1; workers_spd -= 4; old_middle_spd -= 6; new_middle_spd -= 6; rural_spd -= 5; unemployed_spd -= 4; high_inflation_timer = 6; high_inflation_timer = 4 if inflation > 8; high_inflation_timer = 2 if inflation >= 10; pro_republic -= 5; old_middle_nsdap += 2; new_middle_nsdap += 2; rural_nsdap += 2
+tags: event
+
+= Hohe Inflation
+
+Die Inflation ist gestiegen. Menschen aller sozialen Schichten erleben einen Rückgang ihrer Kaufkraft. Erinnerungen an die Hyperinflation von 1923 hallen im öffentlichen Bewusstsein nach, auch wenn die gegenwärtige Inflation bei Weitem nicht so schwerwiegend ist.
+
+Die Bevölkerung und die Presse fordern lautstark Maßnahmen zur Senkung der Inflation.
+
+- @taxes: Erhöhen wir die Steuern.
+- @welfare: Sozialleistungen und Sozialausgaben kürzen.
+- @price_controls: Preis- und Lohnkontrollen einführen.
+- @bank: Die Reichsbank hat doch sicher diesmal einen Plan?
+- @nothing: Realistisch betrachtet können wir nichts tun.
+
+@taxes
+on-arrival: upper_tax_rates += 1; lower_tax_rates += 1; budget += 2; unemployed += 1.5; capital_strike_progress -= 1; inflation -= 1; new_middle_spd -= 3; old_middle_spd -= 3; workers_spd -= 3; rural_spd -= 3; kpd_coalition_dissent += 1; kpd_relation -= 5; left_dissent += 5; economic_growth -= 0.4
+
+Steuererhöhungen sind bei niemandem beliebt, aber sie könnten notwendig sein, um die Inflation unter Kontrolle zu halten.
+
+@welfare
+on-arrival: welfare -= 1; budget += 1; capital_strike_progress -= 2; unemployed += 1.5; new_middle_spd += 4*(1-dissent); old_middle_spd += 4*(1-dissent); workers_spd -= 5; unemployed_spd -= 5; inflation -= 1; left_dissent += 5; labor_dissent += 5; center_dissent += 5; kpd_coalition_dissent += 1; economic_growth -= 0.4
+
+Der klassischen Wirtschaftstheorie zufolge sollte eine Senkung der Staatsausgaben die Inflationsrate verringern. Sie bürdet jedoch denjenigen Lasten auf, die ohnehin am stärksten leiden.
+
+@price_controls
+on-arrival: capital_strike_progress += 3; inflation -= 3; coalition_dissent += 1; unemployed += 1; old_middle_spd -= 4; new_middle_spd -= 3; rural_spd -= 5; workers_spd -= 2; unemployed_spd += 3; labor_dissent += 6; dvp_relation -= 6; z_relation -= 4; ddp_relation -= 4; economic_growth -= 0.4
+
+Preiskontrollen sind bei der Bourgeoisie und ihren Vertretern sowie bei den Erzeugern auf dem Land äußerst unbeliebt, während Lohnkontrollen die organisierten Arbeiter treffen. Dennoch dämmen diese Maßnahmen die Inflation zumindest ein wenig ein.
+
+@bank
+on-arrival: capital_strike_progress += 2
+
+Leider, wenn auch vielleicht erwartungsgemäß weigert sich die Reichsbank, der Regierung zu helfen, mit der Begründung, unsere sozialistische Politik sei allein daran schuld. Reichsbank Präsident [? if year <= 1930 : Hjalmar Schacht ?][? if year > 1930 : Hans Luther ?] fordert praktisch den Sturz der Regierung.
+
+@nothing
+on-arrival: capital_strike_progress += 1
+
+Realistisch gesehen können wir nichts tun, um die Inflationsflut einzudämmen.
+

@@ -1,0 +1,57 @@
+title: Den Feind verstehen
+subtitle: Warum erhielten die Nationalsozialisten so viele Stimmen?
+view-if: year >= 1929 and year <= 1932 and nsdap_r >= 15 and understanding_enemy_seen = 0 and understanding_enemy_timer = 0 and neorevisionism = 0
+on-arrival: understanding_enemy_seen = 1
+max-visits: 1
+new-page: true
+tags: event
+
+= Den Feind verstehen
+
+Der Aufstieg der Nazis ist für eine politische Partei im modernen Deutschland beispiellos, und sozialistische Intellektuelle bemühen sich nach Kräften, den rasanten Aufstieg dieser gefährlichen Partei zu begreifen.
+
+# Harsch p. 106-109
+
+Der gewerkschaftliche Forscher Theodor Geiger hat einen Artikel mit dem Titel „Panik im Mittelstand“ verfasst, in dem er die Nationalsozialisten als eine Bewegung beschreibt, die vor allem den Mittelstand – insbesondere Beamte und Angehörige freier Berufe aus der unteren Mittelschicht – anspricht; diese fürchten die proletarisierenden Auswirkungen der Wirtschaftskrise. Geiger argumentiert, der Mittelstand sei wirtschaftlich und politisch entwurzelt, seit Langem auf viele konkurrierende Parteien zersplittert und zwischen Großkapital und Proletariat eingezwängt. Die Mischung aus nationalistischer, antidemokratischer und vage antikapitalistischer Rhetorik der Nationalsozialisten findet bei dieser Gruppe Anklang – womöglich jedoch nur vorübergehend, bis der Mittelstand seine wahren Klasseninteressen erkennt.
+
+Der Theoretiker Alexander Schifrin hingegen begreift die Nationalsozialisten als einen neuen, beispiellosen Typus politischer Bewegung – als eine faschistische Partei, die über Klassengrenzen hinweg eine nicht-ökonomische Anziehungskraft ausübt. Er hebt hervor, dass der Einsatz gewalttätiger Propaganda und von Straßendemonstrationen für ihren Aufstieg von zentraler Bedeutung war.
+
+# Harsch p. 77-78
+
+Carlo Mierendorff, einer der führenden Köpfe der „neuen Revisionisten“, begreift die Nationalsozialisten als eine politisch inkohärente, aber dennoch mächtige Bewegung. Zusammengehalten werden sie durch die Schlagkraft ihres Organisationsapparats sowie durch die emotionale Anziehungskraft ihrer diffusen Ideologie, die vor allem weniger informierte Wähler anspricht, deren Wahlentscheidung auf dem Bauchgefühl beruht. Um ihnen wirksam zu begegnen, bedürfte es eines neuen Stils der politischen Auseinandersetzung, der stärker auf Symbole und Emotionen setzt als auf Vernunft.
+
+
+Es ist möglich, dass alle oder keine dieser Hypothesen zutreffen. Wie dem auch sei, es muss etwas geben, das wir tun können, um ihren Aufstieg zu stoppen.
+
+# Georg Decker
+
+# Alexander Shifrin
+
+# Carlo Mierendorff
+
+- @p1: Die Nazis sind das Verschulden des Kleinbürgertums. Es ist nicht unsere Aufgabe als Arbeiterpartei, sie aufzuhalten.
+- @p2: Wir können die Nazis bekämpfen, indem wir uns als „Volkspartei“ positionieren, die um die Unterstützung der Mittelschicht werben kann.
+- @p3: Wir sollten Mierendorffs neue Propagandamethoden nutzen, um die Nazis zu bekämpfen.
+- @p4: Wir müssen unsere Arbeit in der Arbeiterklasse darauf konzentrieren, ein Vordringen der Nazis zu verhindern.
+
+@p1
+
+Die Nazis sind das Verschulden des Kleinbürgertums. Es ist nicht unsere Aufgabe als Arbeiterpartei, sie aufzuhalten.
+
+@p2
+on-arrival: peoples_party_support += 1; neorevisionist_strength += 5; left_strength -= 3; left_dissent += 4; center_dissent += 3;
+
+Wir können die Nazis bekämpfen, indem wir uns als „Volkspartei“ positionieren, die um die Unterstützung der Mittelschicht wirbt. Dazu können wir eine neue, integrative Vision der Partei entwickeln, die alle Erwerbstätigen einbezieht – also so gut wie alle Menschen im Land, mit Ausnahme der Aristokraten und der Spitzenkapitalisten.
+
+[? if peoples_party = 0 : Dieses Vorhaben stößt auf erheblichen Widerstand aus dem linken und dem gemäßigten Flügel unserer Partei, die eine stärker auf die Arbeiterklasse ausgerichtete Partei bevorzugen. Um die Vision einer Volkspartei vollends zu verwirklichen, sollten wir unsere Wahlkampfaktivitäten auf weitere Bevölkerungsgruppen ausweiten. ?]
+
+
+@p3
+on-arrival: neorevisionist_strength += 10; nazi_urgency += 1; neorevisionism += 1;
+
+In Zusammenarbeit mit anderen „Neorevisionisten“ wie Sergei Chakhotin hat Mierendorff neue Propagandamethoden entwickelt, um den Aufstieg der Nationalsozialisten zu bekämpfen. Sie setzen dabei auf visuell eindringliche Symbole und sich wiederholende Parolen. Wie wirksam diese sind, wird die Zeit zeigen.
+
+@p4
+on-arrival: left_strength += 4; center_strength += 4; labor_strength += 4; left_dissent -= 3; center_dissent -= 3; labor_dissent -= 3; workers_spd += 2*(1-dissent); unemployed_spd += 2*(1-dissent)
+
+Die Appelle der Nazis finden selbst in der Arbeiterschaft Anklang; daher müssen wir unsere Propagandakampagnen in unserer Anhängerschaft verstärken, um jegliche Hinwendung zu den Nazis zu verhindern.

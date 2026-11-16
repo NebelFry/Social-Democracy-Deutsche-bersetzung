@@ -1,0 +1,111 @@
+title: Politik der KPD
+subtitle: Die KPD-Minister setzen ihre jeweiligen Aufgabenbereiche um.
+new-page: true
+view-if: (in_popular_front or in_left_front) and (labor_minister_party = "KPD" or economic_minister_party = "KPD" or finance_minister_party = "KPD") and (kpd_policy_timer = 0)
+on-arrival: kpd_policy_timer = 5
+#tags: event
+#max-choices: 1
+
+# disable this event for now - the KPD is abstentionist in government. This position is loosely based on Paul Levi's ideas during the Kapp Putsch. A KPD that is willing to support an SPD government would necessarily have some different policy ideas from the Thälmann Stalinist line, so I looked to the earlier Paul Levi KPD as well as the French popular front for ideas.
+
+# ironically the hypothetical KPD position towards the Popular Front is basically analogous to the SPD position towards the Brüning government (i.e. toleration).
+
+# Sources: Gaido, Daniel. “Paul Levi and the Origins of the United-Front Policy in the Communist International.” Historical Materialism 25, no. 1 (2017): 131–74. https://doi.org/10.1163/1569206x-12341515.
+# LaPorte, Norman H. “The German Communist Party in Saxony, 1924-1933 : Factionalism, Fratricide and Political Failure,” 1998. http://dspace.stir.ac.uk/handle/1893/3259.
+
+
+= Politik der KPD
+
+# The Communist-run ministries are pursuing their own policy course. It is up to us whether to support or oppose these policies.
+
+# different policies for every minister choice
+
+- @labor
+- @economy
+- @finance
+- @foreign
+- @interior
+
+@labor
+title: Arbeitsministerium
+subtitle: Das Arbeitsministerium macht der organisierten Arbeiterschaft erhebliche Zugeständnisse.
+view-if: labor_minister_party = "KPD"
+
+Das von der KPD kontrollierte Arbeitsministerium verfolgt eine Politik der Unterstützung der Arbeitnehmerschaft in sämtlichen Konflikten zwischen Arbeitern und Unternehmern, was zu einer Welle von Streiks im ganzen Land führt. Angesichts der wirtschaftlichen Lage besteht die Sorge, dass dies einer möglichen wirtschaftlichen Erholung schaden könnte, ganz zu schweigen von den Konflikten, die sich daraus mit den bürgerlichen Parteien ergeben könnten.
+
+Unterstützen wir ihre radikale Arbeitspolitik?
+
+- @labor_support: Natürlich unterstützen wir die Arbeiter.
+- @labor_oppose: Nein, das ist zu radikal.
+
+@labor_support
+on-arrival: capital_strike_progress += 2; workers_kpd += 5; workers_spd += 3*(1-dissent); kpd_labor_support += 1; coalition_dissent += 1; z_relation -= 6; unemployment += 2; kpd_influence += 2
+
+Die arbeitnehmerfreundliche Politik ist bei der Arbeiterschaft beliebt und verschafft der KPD mehr Zulauf; als Reaktion darauf entlassen die Unternehmen jedoch mehr Arbeiter und kürzen die Arbeitszeiten. Damit steuert die Regierung auf eine Konfrontation mit den Kapitalisten zu.
+
+@labor_oppose
+on-arrival: kpd_coalition_dissent += 1; workers_spd -= 5; workers_kpd += 5; kpd_relation -= 6
+
+Wir lehnen die Politik der KPD ab und verhindern deren Umsetzung. Die KPD ist darüber verärgert, ebenso wie die Arbeiter, die davon profitiert hätten.
+
+@economy
+title: Wirtschaftsministerium
+subtitle: Das Wirtschaftsministerium verfolgt eine Politik der Verstaatlichungen.
+view-if: economic_minister_party = "KPD"
+
+Das von der KPD kontrollierte Wirtschaftsministerium plant eine Politik der Massenverstaatlichungen. [? if budget < 3 : Sie planen, mithilfe von Defizitausgaben die staatliche Übernahme unterausgelasteter Industrieunternehmen zu finanzieren und diese zum Wohle der Arbeiter zu betreiben. ?] [? if budget >= 3 : Sie planen, stillgelegte und unterausgelastete Industriebetriebe aufzukaufen und diese zum Wohle der Arbeiter unter Vollauslastung zu betreiben. ?] 
+
+Unterstützen wir diese Politik?
+
+- @economy_support: Ja, unterstützen wir die Verstaatlichungspolitik.
+- @economy_oppose: Nein, das muss gestoppt werden.
+
+@economy_support
+on-arrival: nationalization_progress += 1; capital_strike_progress += 4; unemployed -= 2.5 if unemployed >= 6; unemployed -= 1.2 if works_councils >= 3; budget -= 3; works_program += 1; workers_spd += 4*(1-dissent); workers_kpd += 8*(1-dissent); unemployed_kpd += 4*(1-dissent); coalition_dissent += 2; dvp_relation -= 6; z_relation -= 4; new_middle_spd -= 3; old_middle_spd -= 3; economy_goal_completed += 1; kpd_influence += 2
+
+Die KPD hat bei den Arbeitern an Ansehen gewonnen, weil sie vielen ermöglicht hat, ihre Arbeitsplätze zu behalten. Unterdessen machen die bürgerlichen Parteien und die Wähler aus der Mittelschicht die SPD dafür verantwortlich, die Verstaatlichungen ermöglicht zu haben.
+
+@economy_oppose
+on-arrival: kpd_coalition_dissent += 1; workers_spd -= 5; workers_kpd += 5; kpd_relation -= 6
+
+Nachdem wir uns gegen die Verstaatlichungspolitik ausgesprochen haben, hat die KPD eine Propagandakampagne gegen uns eingeleitet und wirft der SPD eine weitere Perfidie vor.
+
+@finance
+title: Finanzministerium
+subtitle: Das Finanzministerium erhöht die Steuern für Reiche.
+view-if: finance_minister_party = "KPD"
+
+Unterstützen wir diese Politik?
+
+- @finance_support: Ja, wir unterstützen Steuererhöhungen für Reiche.
+- @finance_oppose: Nein, jetzt ist nicht der richtige Zeitpunkt.
+
+@finance_support
+
+@finance_oppose
+
+@foreign
+title: Außenministerium
+subtitle: Das Außenministerium unterstützt die Sowjetunion.
+view-if: foreign_minister_party = "KPD"
+
+Das von der KPD kontrollierte Außenministerium plant, Wirtschaftshilfe an die Sowjetunion zu senden.
+
+- @foreign_support: Ja, wir unterstützen die Hilfe für die Sowjetunion.
+- @foreign_oppose: Nein, das muss gestoppt werden.
+
+@foreign_support
+
+@foreign_oppose
+
+@interior
+title: Innenministerium
+subtitle: Das Innenministerium betreibt eine Säuberung der Sicherheitsdienste.
+view-if: interior_minister_party = "KPD"
+
+- @interior_support: Ja, wir unterstützen eine Säuberung der Sicherheitsdienste.
+- @interior_oppose: Nein, das scheint ein Vorwand für eine Machtübernahme der KPD zu sein.
+
+@interior_support
+
+@interior_oppose

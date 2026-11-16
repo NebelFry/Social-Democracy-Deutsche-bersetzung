@@ -1,0 +1,29 @@
+title: Antisemitismus entgegentreten
+new-page: true
+is-card: true
+view-if: iron_front_formed == 1 and nazi_urgency >= 3
+on-arrival: confronting_antisemitism += 1; month_actions += 1
+card-image: img/iron_front.png
+tags: party_affairs, antifascism
+max-visits: 1
+
+= Antisemitismus entgegentreten
+
+Antisemitismus ist schon lange ein latentes Merkmal der deutschen Gesellschaft, doch seit Beginn der Wirtschaftskrise hat er ein erschreckendes Ausmaß angenommen. Die Nationalsozialisten sind dabei am schlimmsten, doch auch alle anderen rechten Parteien sind zutiefst antisemitisch. Was speziell die SPD betrifft, so setzen unsere rechten Feinde nur allzu gern ihre rassistische Rhetorik gegen unsere zahlreichen jüdischen Genossen ein, bauschen Kritik an noch so geringfügigen Verfehlungen auf und bezeichnen die gesamte SPD als „Judenpartei“. Wir sind ein bevorzugtes Ziel ihrer Schmähungen.
+
+- @socialism_of_fools: Antisemitismus ist der „Sozialismus der Dummen“. Wir werden sie mit echtem Sozialismus besiegen.
+- @if: Antisemitism is a crisis. Richten Sie die volle Kraft der Eisernen Front gegen den Antisemitismus.
+- @all: Alle Deutschen werden unter dem Faschismus leiden, nicht nur die Juden. Wir brauchen keine gesonderte Politik für sie.
+
+@socialism_of_fools
+
+Die beste Strategie im Umgang mit dieser Art von irrationalem, sinnlosem Hass ist es, ihn zu ignorieren. Nur wenige lassen sich von rassistischer Rhetorik beeinflussen; am besten bekämpft man sie, indem man für wirtschaftliche Sicherheit sorgt, damit sich die Menschen nicht dem Antisemitismus zuwenden.
+
+@if
+on-arrival: confronting_antisemitism += 2; sa_strength -= 20; democratization += 1; pacifism += 1; nationalism -= 5*(1-dissent); workers_nsdap -= 6*(1-dissent);
+
+Wir entwickeln unter dem Schirm der Eisernen Front eine umfassende Kampagne gegen den Antisemitismus. Hoffentlich kann unsere Kampagne die Arbeiter vom Nationalsozialismus abbringen.
+
+@all
+
+Wir benötigen keine Sonderbehandlung für Minderheiten.

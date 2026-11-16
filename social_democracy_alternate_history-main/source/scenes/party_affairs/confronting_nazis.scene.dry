@@ -1,0 +1,73 @@
+title: Konfrontation mit den Nazis
+new-page: true
+is-card: true
+view-if: (nsdap_r >= 10 and nazi_urgency > 1) and confronting_nazis_timer == 0 and iron_front_formed == 0
+on-arrival: confronting_nazis_seen += 1; confronting_nazis_timer = 5; month_actions += 1
+card-image: img/iron_front.png
+tags: party_affairs; antifascism
+
+# Gründung der Eisernen Front
+
+Die Stärke der Nazis nimmt zu, wie ihre jüngsten Wahlergebnisse und ihr gewalttätiges Auftreten auf der Straße zeigen. Ihr Faschismus droht, Deutschland erneut in den Abgrund zu stürzen.
+
+Viele in unserer Partei fordern dringendes Handeln. Die „neorevisionistische“ Strömung, angeführt von jungen Sozialisten wie Carlo Mierendorff und Julius Leber, hat sich eigens um dieses Anliegen herum formiert. Doch auch in allen anderen Strömungen der Partei wird zum Handeln aufgerufen.
+
+- @not_a_big_deal: Die Zeit der Nazis wird vorübergehen. Lasst uns nichts überstürzen.
+- @economic_crisis
+- @major_crisis: Wir müssen etwas unternehmen, um den Nazis entgegenzutreten.
+- @iron_front
+
+
+@not_a_big_deal
+on-arrival: nazi_urgency -= 1; left_dissent += 5; neorevisionist_dissent += 15
+view-if: mierendorff_advisor = 0 and leber_advisor = 0 and schumacher_advisor = 0
+
+Die Nazis sind nur eine weitere rechtsextreme Bewegung, die früher oder später an ihren eigenen Widersprüchen zugrunde gehen wird; wir müssen keine gezielte Strategie zu ihrer Bekämpfung entwickeln.
+
+@economic_crisis
+title: Wir müssen uns zuerst der Wirtschaftskrise widmen.
+view-if: economic_plan == 0 and black_thursday_seen == 1
+go-to: crisis_program
+
+@major_crisis
+view-if: nazi_urgency < 5
+on-arrival: nazi_urgency += 1; neorevisionist_dissent -= 5; neorevisionist_strength += 5
+
+Die Nazis stellen eine der größten Bedrohungen für die deutsche Republik dar. Wir arbeiten jedoch noch an einer Strategie, um ihnen zu begegnen, und versuchen weiterhin, innerhalb unserer Partei einen Konsens für ein Vorgehen zu erzielen. Informieren dich zu einem späteren Zeitpunkt erneut darüber.
+
+@iron_front
+title: Bildet die Eiserne Front!
+subtitle: Die Eiserne Front besteht aus der SPD, den Gewerkschaften und dem Reichsbanner.
+view-if: nazi_urgency >= 3 and iron_front_formed == 0
+on-arrival: iron_front_formed = 1; radicalization += 1; nazi_urgency += 1; workers_spd += 5*(1-dissent); pro_republic += 5*(1-dissent); left_dissent -= 8; neorevisionist_dissent -= 10; neorevisionist_strength += 5
+achievement: eiserne_front
+
+Die Nazi-Gefahr lässt sich nicht länger ignorieren. Wir müssen eine neue Organisation gründen, um ihnen entgegenzutreten – die Eiserne Front –, bestehend aus der SPD, dem Gewerkschaftsbund ADGB und dem *Reichsbanner Schwarz-Rot-Gold*. Wir haben ein neues Symbol: die drei Pfeile, die nach links unten weisen.
+
+Wofür stehen die drei Pfeile?
+
+- @unity: Einheit, Aktivität und Disziplin.
+- @anti: Ablehnung von Faschismus, Stalinismus und Monarchismus.
+- @orgs: SPD, ADGB und Reichsbanner.
+- @wtb: Woytinsky, Tarnow und Baade vom WTB-Plan
+- @all: Alle oben genannten.
+
+@unity
+go-to: if_end
+
+@anti
+go-to: if_end
+
+@orgs
+go-to: if_end
+
+@wtb
+view-if: wtb_adopted == 1
+go-to: if_end
+
+@all
+go-to: if_end
+
+@if_end
+
+Die Eiserne Front hat unserer Partei neue Energie verliehen.

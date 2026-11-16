@@ -1,0 +1,44 @@
+title: Theodor Leipart
+is-pinned-card: true
+tags: advisor, labor
+card-image: img/portraits/LeipartTheodor.jpg
+view-if: leipart_advisor = 1
+new-page: true 
+
+= Theodor Leipart
+
+Leipart ist der Vorsitzende des ADGB, des Allgemeinen Deutschen Gewerkschaftsbundes.
+
+- @organizing
+- @depression
+- @root: Zurück
+
+# leipart was one of the people who argued for union independence
+#- @union_unity
+
+@organizing
+title: Organisierung von Arbeitern
+subtitle: Verbessert unser Ansehen bei den Arbeitern.
+choose-if: advisor_action_timer <= 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; workers_spd += 4*(1-dissent); workers_spd += 3*(1-dissent) if wtb_adopted == 1; labor_strength += 2;
+
+Wir haben unsere Organisation unter den Arbeitern verstärkt.
+
+@depression
+title: Bewältigung der Wirtschaftskrise
+subtitle: Entwerfen wir einen Plan, wie wir aus diesem Schlamassel herauskommen.
+choose-if: advisor_action_timer <= 0 and wtb_adopted = 0 and black_thursday_seen
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if black_thursday_seen == 0 : Wir befinden uns derzeit nicht in einer Wirtschaftskrise. ?][? if wtb_adopted > 0 : Wir haben den WTB-Plan bereits verabschiedet. ?]
+on-arrival: advisor_action_timer = 6; wtb_support += 2; center_dissent += 10; labor_strength += 1
+
+Der WTB-Plan – benannt nach seinen Hauptinitiatoren Woytinsky, Tarnow und Baade – wurde als gewerkschaftliches Programm zur Überwindung der Depression verabschiedet. Leipart wirbt innerhalb der Partei und der Gewerkschaften für diese Politik.
+
+@union_unity
+title: Koordinierung zwischen Gewerkschaften und Partei
+subtitle: Verringert die Unzufriedenheit unter den Gewerkschaften.
+choose-if: advisor_action_timer <= 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; labor_dissent -= 5; labor_strength += 5
+
+Wir haben die Spannungen mit den Gewerkschaften abgebaut und dessen Stärke innerhalb der Partei erhöht.

@@ -1,0 +1,17 @@
+title: Der Tod Hindenburgs
+subtitle: Der Held des Großen Krieges und ehemalige Präsident ist gestorben...
+new-page: true
+view-if: year = 1934 and month >= 7 and president != "Hindenburg"
+on-arrival: hindenburg_dead = 1
+max-visits: 1
+tags: event
+face-image: img/Hindenburg_head.jpg
+go-to: game_over_1934
+
+= Der Tod Hindenburgs
+
+Paul von Hindenburg ist im Alter von 86 Jahren verstorben.
+
+Die Nation gibt ihrer Trauer um ihren Kriegshelden und ehemaligen Präsidenten Ausdruck. Selbst für überzeugte Sozialisten und Republikaner ist dies ein bittersüßer Moment. Auch wenn er die Verkörperung des preußischen Militarismus und Monarchismus darstellte, führte er die Nation doch durch schwierige Zeiten, ohne die Demokratie zu zerstören. Es hätte durchaus schlimmer kommen können.
+
+Mit dem Tod Hindenburgs scheint eine historische Ära zu Ende zu gehen. Die schlimmsten Krisenjahre sind vorüber, und die Tage des Nationalsozialismus sind gezählt. Vielleicht tritt Deutschland nun endlich in eine neue Ära echten Friedens ein...

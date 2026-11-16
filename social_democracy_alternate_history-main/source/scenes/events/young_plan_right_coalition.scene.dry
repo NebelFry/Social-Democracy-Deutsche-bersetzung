@@ -1,0 +1,46 @@
+title: Young-Plan
+new-page: true
+subtitle: Die Rechtskoalition ist zusammengebrochen...
+tags: event
+view-if: year = 1929 and month >= 7 and young_plan_seen = 0 and in_right_coalition
+on-arrival: young_plan_seen = 1
+max-visits: 1
+
+= Der Young-Plan und der Fall der Koalition
+
+Das Außenministerium unter Gustav Stresemann hat dem Young-Plan zugestimmt, einer Vereinbarung mit den Westmächten, die eine Verringerung der deutschen Reparationszahlungen sowie mehr finanzpolitische Eigenständigkeit vorsieht. Gleichzeitig hat sich Frankreich bereit erklärt, seine Besatzungstruppen aus dem Rheinland abzuziehen.
+
+Obwohl dies eine positive Entwicklung für das Land zu sein scheint, lehnt die DNVP (und insbesondere ihr Vorsitzender Alfred Hugenberg) den Plan ab. Sie argumentiert, dass jegliche Reparationszahlungen eine Form nationaler Sklaverei darstellten. Unterstützt von der NSDAP und der KPD, hat sie ein Misstrauensvotum gegen die Regierung sowie ein Volksbegehren gegen den Young-Plan gefordert.
+
+Wir können entweder dafür stimmen, die Regierung zu Fall zu bringen und Neuwahlen abzuhalten oder eine von den verbliebenen bürgerlichen Parteien geführte Regierung „tolerieren“.
+
+- @vonc_yes
+- @vonc_no
+- @no_matter
+
+@vonc_yes
+title: Unterstützen wir das Misstrauensvotum, indem wir gegen die Regierung stimmen.
+subtitle: Die Regierung wird stürzen und es wird Neuwahlen geben.
+view-if: neo_weimar_coalition >= 50
+on-arrival: time_to_election = 3; spd_in_government = 0; in_right_coalition = 0; in_grand_coalition = 0; spd_toleration = 0; pro_republic -= 5; dvp_relation -= 5; z_relation -= 5;
+call: set_next_election_time
+
+Die rechte Koalition ist zerbrochen. Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+
+@vonc_no
+title: Unterstützen wir die verbliebene, von der Zentrumspartei geführte Regierung, indem wir für die Regierung stimmen.
+subtitle: We would essentially provide "toleration" to a bourgeois government.
+view-if: neo_weimar_coalition >= 50
+on-arrival: spd_toleration = 1; in_right_coalition = 0; left_dissent += 8; 
+
+Durch die Unterstützung der Regierung sind wir im Grunde eine Vereinbarung zur „Duldung“ der Regierung eingegangen. Wir sind zwar nicht an der Regierung beteiligt, tragen aber Verantwortung für deren fortgesetzte Stabilität. Der linke Flügel unserer Partei lehnt dieses Vorhaben ab und würde Neuwahlen vorziehen.
+
+@no_matter
+title: Es spielt keine Rolle, was wir tun.
+subtitle: Die regierungsfeindlichen Parteien kommen auf über 50 % der Stimmen, ganz gleich, wie wir uns entscheiden.
+view-if: neo_weimar_coalition < 50
+call: set_next_election_time
+on-arrival: time_to_election = 3; spd_in_government = 0; in_right_coalition = 0; in_grand_coalition = 0; spd_toleration = 0; pro_republic -= 5
+
+Die rechte Koalition ist zerbrochen. Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].

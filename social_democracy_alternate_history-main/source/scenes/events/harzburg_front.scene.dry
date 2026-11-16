@@ -1,0 +1,21 @@
+title: Die Harzburger Front
+subtitle: Die rechten Kräfte vereinen sich gegen die amtierende Regierung.
+new-page: true
+on-arrival: harzburg_front_seen = 1; sh_strength += 100; sa_strength += 100; old_middle_nsdap += 5; unemployed_nsdap += 5; rural_nsdap += 5; nazi_urgency += 1; iron_front_timer = 0
+tags: event
+view-if: (year = 1931 and month >= 10 and chancellor != "Schleicher" and chancellor != "Papen") or (coup_progress >= 6)
+max-visits: 1
+
+= Die Harzburger Front
+
+Die rechtsextremen Parteien und paramilitärischen Verbände – die NSDAP (und deren paramilitärische Organisation, die SA), der Stahlhelm-Bund und die DNVP – haben sich zur Harzburger Front zusammengeschlossen, einer Kraft, die den Sturz der amtierenden Regierung zum Ziel hat.
+
+- @strategy: Wir müssen eine kohärente Strategie zur Bekämpfung der Rechten entwickeln.
+- @confronting_nazis.iron_front: Wir müssen die Eiserne Front bilden!
+- @iron_front: Die Eiserne Front wird unsere Antwort sein!
+
+@strategy
+view-if: nazi_urgency < 3
+on-arrival: nazi_urgency += 1
+
+Wir haben noch keine schlüssige Strategie zur Bekämpfung der Faschisten. Wir müssen so bald wie möglich eine solche entwickeln.

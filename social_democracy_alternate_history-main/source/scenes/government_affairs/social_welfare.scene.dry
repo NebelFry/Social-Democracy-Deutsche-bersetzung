@@ -1,0 +1,59 @@
+title: Sozialpolitik
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: social_welfare_timer = 10; month_actions += 1
+view-if: spd_in_government = 1 and social_welfare_timer = 0
+card-image: img/portraits/JuchaczMarie.jpg
+
+= Sozialpolitik
+
+Das Sozialsystem – einschließlich Arbeitslosenversicherung, Gesundheitsversorgung und Altersvorsorge – ist die stolzeste Errungenschaft der SPD. Es herrscht ständiger Druck, das Sozialsystem abzubauen[? if black_thursday_seen = 1 :, insbesondere angesichts der Wirtschaftskrise ?].
+
+- @reduce_spending: Sozialausgaben kürzen.
+- @increase_spending_pre_depression: Erhöhung der Sozialausgaben.
+- @increase_spending_post_depression: Erhöhung der Ausgaben (das Wohlstandsniveau bleibt in etwa gleich).
+- @spending_same_pre_depression: Ausgaben beibehalten.
+- @spending_same_post_depression: Ausgaben beibehalten (was faktisch einer Leistungskürzung gleichkommt).
+- @easy_discard
+#- @cancel_advisor_action
+
+@reduce_spending
+subtitle: Das wird unserer proletarischen Basis schaden. +1 Budget
+unavailable-subtitle: Es gibt nichts mehr zu kürzen.
+choose-if: welfare >= -5
+on-arrival: budget += 1; workers_spd -= 6; unemployed_spd -= 6; workers_kpd += 3; welfare -= 1; reformist_dissent += 10; left_dissent += 10; labor_dissent += 10; center_dissent += 5; neorevisionist_dissent += 5; dvp_relation += 5; z_relation += 3; pro_republic -= 3; coalition_dissent -= 1 if in_grand_coalition and coalition_dissent > 0; kpd_coalition_dissent += 1; kpd_relation -= 8; inflation -= 0.3; unemployed += 0.4; economic_growth -= 0.2;
+
+Wir haben die Sozialausgaben gekürzt. Das bedeutet mehr Armut und Leid für die Arbeiterklasse. Unsere Kritiker behaupten, wir würden die Existenzgrundlage des Proletariats zugunsten des Klassenfriedens mit der Bourgeoisie opfern. Haben sie Unrecht? Handeln die Arbeiter falsch, wenn sie sich angesichts unserer Entscheidungen den Kommunisten zuwenden?
+
+
+@increase_spending_pre_depression
+view-if: unemployed <= 15
+choose-if: budget > 0
+subtitle: -1 Budget
+on-arrival: budget -= 1; workers_spd += 6*(1-dissent); unemployed_spd += 6*(1-dissent); welfare += 1; reformist_dissent -= 5; labor_dissent -= 5; center_dissent -= 5; left_dissent -= 5; neorevisionist_dissent -= 5; coalition_dissent += 1 if welfare > 1; welfare_goal_completed += 1; inflation += 0.3; unemployed -= 0.4; economic_growth += 0.2;
+
+Wir haben die Sozialausgaben erhöht. Unsere proletarische Basis ist zufrieden.
+
+@increase_spending_post_depression
+view-if: unemployed > 15
+choose-if: budget > 0
+on-arrival: budget -= 1; workers_spd += 3*(1-dissent); unemployed_spd += 3*(1-dissent); coalition_dissent += 1 if welfare > 0; welfare_goal_completed += 1; inflation += 0.3
+subtitle: Die gestiegene Arbeitslosigkeit macht höhere Ausgaben für Hilfsleistungen erforderlich, um das bisherige Leistungsniveau aufrechtzuerhalten. -1 Budget
+
+Angesichts der steigenden Arbeitslosigkeit ist eine Erhöhung der Sozialausgaben erforderlich; wir treten also im Grunde auf der Stelle.
+
+@spending_same_pre_depression
+view-if: unemployed <= 15
+
+Wir haben die Sozialausgaben unverändert gelassen.
+
+
+@spending_same_post_depression
+view-if: unemployed > 15
+on-arrival: workers_spd -= 3; unemployed_spd -= 4; welfare -= 1; reformist_dissent += 5; left_dissent += 5; labor_dissent += 5; center_dissent += 5; neorevisionist_dissent += 5; kpd_coalition_dissent += 1; kpd_relation -= 8 if in_popular_front or in_left_front
+subtitle: Die gestiegene Arbeitslosigkeit macht höhere Ausgaben für Hilfsmaßnahmen erforderlich.
+
+Angesichts der steigenden Arbeitslosigkeit sind höhere Sozialausgaben notwendig; dennoch haben wir die Sozialleistungen im Grunde gekürzt. Die Arbeiter sind zu Recht unzufrieden – wir opfern ihre Lebensgrundlage, um den Forderungen des Bürgertums nach Sparmaßnahmen nachzugeben.
+
+[? if in_popular_front or in_left_front: Die KPD wendet sich wegen unserer Sozialpolitik gegen uns. ?]

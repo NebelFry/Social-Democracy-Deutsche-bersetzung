@@ -1,0 +1,44 @@
+title: Hermann Müller
+is-pinned-card: true 
+tags: advisor, centrist
+card-image: img/portraits/MüllerHermann.jpg
+new-page: true
+view-if: muller_advisor = 1
+
+= Herman Müller
+
+
+Müller ist ein ehemaliger [? if chancellor = "Müller": und momentaner ?] Kanzler und ist ein langjähriger sozialdemokratischer Führungspolitiker.
+
+- @coalition
+- @toleration
+- @snap_election
+- @root: Zurück
+
+@coalition
+title: Verhandlungen mit der Koalition
+subtitle: Müller kann unsere Beziehungen zu unseren Koalitionspartnern verbessern.
+choose-if: advisor_action_timer <= 0 and spd_in_government = 1
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government: Die SPD ist nicht in der Regierung. ?]
+on-arrival: advisor_action_timer = 6; coalition_dissent -= 1 if spd_in_government = 1 and coalition_dissent > 0; z_relation += 5; ddp_relation += 5; dvp_relation += 5
+
+Wir haben unsere Beziehungen zur Zentrumspartei, zur [+ ddp_name +] und zur DVP verbessert und die Spannungen mit der Koalition abgebaut.
+
+
+@toleration
+title: Tolerierung verteidigen
+subtitle: Müller unterstützt die Tolerierungsvereinbarung mit den bürgerlichen Parteien.
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_toleration: Die SPD befindet sich nicht in einem Tolerierungsverhältnis. ?]
+choose-if: spd_in_government = 0 and spd_toleration = 1 and advisor_action_timer = 0
+on-arrival: advisor_action_timer = 6; left_dissent -= 8; neorevisionist_dissent -= 8; center_dissent -= 5;
+
+Wir haben die Unzufriedenheit unter den Fraktionen, die Toleranz ablehnen, verringert.
+
+@snap_election
+title: Vorgezogene Neuwahl
+subtitle: Eine vorgezogene Neuwahl ansetzen.
+unavailable-subtitle: [? if chancellor != "Müller" : Müller muss Kanzler sein. ?][? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+choose-if: advisor_action_timer == 0 and chancellor == "Müller"
+on-arrival: advisor_action_timer = 6; next_election_time = time + 3 if next_election_time > time+3; next_election_month = month + 3 if next_election_time >= time+3; next_election_year = year if next_election_time >= time+3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12;
+
+Wir haben Neuwahlen gefordert, die angesetzt sind für [+ next_election_month : month +] [+ next_election_year +].

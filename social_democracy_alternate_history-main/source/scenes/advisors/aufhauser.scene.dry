@@ -1,0 +1,51 @@
+title: Siegfried Aufhäuser
+is-pinned-card: true
+tags: advisor, reformist
+card-image: img/portraits/AufhäuserSiegfried.jpg
+view-if: aufhauser_advisor = 1
+new-page: true 
+
+= Siegfried Aufhäuser
+
+Aufhäuser ist einer der führenden Köpfe des AfA-Bunds, des Allgemeinen freien Angestelltenbund, der Dachverband der Angestelltengewerkschaft.
+
+- @white_collar
+- @union_unity
+- @crisis
+- @moderate_economic_plan
+- @root: Zurück
+
+@white_collar
+title: Organisierung von Angestellten
+subtitle: Verbessert unser Ansehen beim neuen Mittelstand.
+choose-if: advisor_action_timer <= 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?] 
+on-arrival: advisor_action_timer = 6; new_middle_spd += 6*(1-dissent);
+
+Wir haben unsere Organisierung unter den Angestellten verstärkt.
+
+@union_unity
+title: Koordination zwischen Gewerkschaften und Partei
+subtitle: Verringert die Unzufriedemheit der Gewerkschaften.
+choose-if: advisor_action_timer <= 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; labor_dissent -= 10;
+
+Wir haben die Spannungen mit den Gewerkschaftern abgebaut.
+
+@crisis
+title: Bewältigung der Wirtschaftskrise
+subtitle: Aufhäuser kann dazu beitragen das Wirtschaftsprogramm der Linken zu unterstützen.
+choose-if: advisor_action_timer <= 0 and nationalization_adopted == 0 and black_thursday_seen == 1 and nationalization_support <= 3
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if black_thursday_seen == 0 : Wir befinden uns derzeit nicht in einer Wirtschaftskrise. ?][? if nationalization_adopted > 0 : Wir haben bereits den Wirtschaftsplan Plan der Linken verabschiedet. ?]
+on-arrival: advisor_action_timer = 6; 
+go-to: crisis_program.support_left 
+
+@moderate_economic_plan
+title: Unterstützt den reformorientierten Wirtschaftsplan
+subtitle: Aufhäuser kann auch einen moderaten Wirtschaftsplan unterstützen.
+choose-if: advisor_action_timer = 0 and moderate_plan_adopted = 0 and black_thursday_seen = 1
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?] [? if moderate_economic_plan = 0 : Wir haben bereits den reformorientierten Wirtschaftsplan verabschiedet. ?] [? if black_thursday_seen == 0 : Wir befinden uns derzeit nicht in einer Wirtschaftskrise. ?]
+on-arrival: advisor_action_timer = 6
+go-to: crisis_program.support_moderate
+

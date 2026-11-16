@@ -1,0 +1,167 @@
+title: Marsch auf Berlin
+subtitle: Rechte Militante werden aktiv...
+view-if: ((spd_in_government = 1 and coup_progress >= 10 and year >= 1930 and (sa_banned=0 or sh_banned=0)) or (year >= 1933 and month >= 2 and nsdap_normalized + dnvp_normalized >= 0.5)) and march_on_berlin_timer = 0
+new-page: true
+max-visits: 4
+on-arrival: march_on_berlin_seen += 1; sa_strength += 80; sh_strength += 80; strife += 1; march_on_berlin_timer += 8
+go-to: ask_resign if spd_in_government and president != "Braun"; govt_menu if president = "Braun"; non_govt_menu if spd_in_government = 0 and president != "Braun"
+tags: event
+
+= Marsch auf Berlin
+
+Die extreme Rechte mobilisiert. Paramilitärische Verbände von Stahlhelm und SA, organisiert in der Harzburger Front, sind auf Berlin marschiert und drohen mit einem gewaltsamen Sturz der Regierung.
+
+Sie fordern entweder sofortige Neuwahlen unter der „Aufsicht“ der nationalistischen Paramilitärs oder aber den sofortigen Rücktritt der Regierung und die Ernennung Adolf Hitlers zum Reichskanzler[? if hitler_deported : , sowie die Aufhebung seiner Abschiebung ?]. Es ist offensichtlich, dass sie mit einem Bürgerkrieg drohen, sollten ihre Forderungen nicht erfüllt werden.
+@non_govt_menu
+
+Es scheint, dass Präsident [+ president +] den faschistischen Vorschlägen wohlwollend gegenübersteht. Kanzler [+ chancellor +] hat Rücktrittspläne angekündigt.
+
+- @fight
+- @accept
+
+@accept
+title: Wir können nichts tun.
+go-to: accept_election if (nsdap_normalized + dnvp_normalized >= 0.5 and far_right_coalition < 50); accept_hitler if (nsdap_normalized + dnvp_normalized < 0.5 or far_right_coalition >= 50)
+
+@accept_election
+on-arrival: next_election_time = time + 1 if next_election_time > time+1; next_election_month = month + 1 if next_election_time >= time+1; next_election_year = year if next_election_time >= time+1; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; old_middle_nsdap += 10; new_middle_nsdap += 10; workers_nsdap += 10; rural_nsdap += 10; unemployed_nsdap += 8; workers_spd -= 10; workers_kpd -= 10; sa_strength += 100;
+
+Präsident [+ president +] hat zu vorgezogenen Neuwahlen unter einer Übergangsregierung aufgerufen, die im kommenden Monat stattfinden sollen. Die SA darf straflos agieren und Wähler durch Einschüchterung dazu bewegen, die Faschisten zu unterstützen.
+
+
+@accept_hitler
+on-arrival: chancellor = "Hitler"; chancellor_party = "NSDAP"; spd_in_government = 0
+
+Nach dem Rücktritt des Reichskanzlers wurde Hitler zum Reichskanzler ernannt.[? if hitler_deported: , nachdem ihm die Staatsbürgerschaft wieder verliehen worden war ?].
+
+- @hitler_takes_power
+
+@ask_resign
+
+Präsident [+ president +] hat unsere Regierung zum Rücktritt aufgefordert.
+
+- @fight
+- @fight_constitution
+- @resign
+
+# TODO: if Hindenburg is president, he will always ask the govt to resign. If the SPD refuses, this causes a constitutional crisis. If there is a constitutional crisis, then if judicial reform >= 4, then the courts intervene against Hindenburg and preserves the government.
+
+# if Reichsbanner + Prussian Police >= SA + Stahlhelm, then the fascists retreat.
+
+@govt_menu
+
+
+- @fight
+- @new_elections
+
+@fight
+title: Mobilisiert das Reichsbanner und ruft zum Generalstreik auf, um den Faschisten Widerstand zu leisten!
+on-arrival: defense_strength = rb_strength*rb_militancy*(1-dissent/2); defense_strength += prussian_police_strength*prussian_police_militancy*prussian_police_loyalty if spd_prussia; enemy_strength = sa_strength*sa_militancy + sh_strength*sh_militancy; defense_strength += workers_spd_normalized*(2 - dissent)*(2 - unemployed/100); defense_strength += reichswehr_strength*reichswehr_loyalty*reichswehr_militancy if president=="Braun" and spd_in_government
+go-to: fight_2_win if defense_strength >= enemy_strength and march_on_berlin_seen <= 1; fight_2_win_2 if defense_strength >= enemy_strength and march_on_berlin_seen > 1; fight_2_pre_civil_war if defense_strength < enemy_strength
+
+Die Stärke des Reichsbanners beläuft sich auf [+ rb_strength +] Tausend; viele sind in Berlin, um der faschistischen Demonstration entgegenzutreten.
+
+[? if spd_prussia: Die preußische Polizei wurde gegen die Faschisten mobilisiert. ?] [? if spd_in_government and president == "Braun" : Auch die loyalen Teile der Reichswehr werden eingesetzt. ?]
+
+
+@fight_2_win
+on-arrival: coup_progress = 0; sa_strength *= 0.7; sh_strength *= 0.7; rb_strength *= 0.9; workers_nsdap -= 12*(1-dissent); unemployed_nsdap -= 10*(1-dissent); new_middle_nsdap -= 6*(1-dissent); workers_spd += 8*(1-dissent); unemployed_spd += 6*(1-dissent); pro_republic += 15
+achievement: drei_pfeile
+
+Unsere Streitkräfte stellen sich den Faschisten entgegen und tatsächlich, die Faschisten ziehen sich zurück! Sie waren von unserer Machtdemonstration überwältigt und haben sich dazu entschlossen, sich davonzuschleichen. Der Putschversuch ist vorüber, zumindest vorerst.
+
+Die Machtdemonstration hat die Unterstützung für die Republik und für die SPD neu belebt und die Faschisten geschwächt.
+
+@fight_2_win_2
+on-arrival: coup_progress = 0; pro_republic += 5; workers_nsdap -= 2*(1-dissent); unemployed_nsdap -= 2*(1-dissent); new_middle_nsdap -= 2*(1-dissent); rb_strength *= 0.9; sa_strength *= 0.9; sh_strength *= 0.9
+
+# if march on Berlin has already been seen
+
+Unsere Streitkräfte stellen sich den Faschisten entgegen, und tatsächlich, die Faschisten ziehen sich zurück! Sie waren von unserer Machtdemonstration überwältigt und haben sich dazu entschlossen, sich davonzuschleichen. Der Putschversuch ist vorüber, zumindest vorerst.
+
+Die Machtdemonstration hat die Unterstützung für die Republik und für die SPD neu belebt und die Faschisten geschwächt.
+
+
+@fight_2_pre_civil_war
+
+Unsere Kräfte stehen den Faschisten auf den Straßen Berlins gegenüber und es kommt zu bewaffneten Kämpfen. Keine Seite wird von ihren Positionen verdrängt.
+
+- @civil_war: Es ist ein Bürgerkrieg.
+
+
+@fight_constitution
+title: Das ist verfassungswidrig! Wir werden unsere Regierungsposten behalten und die Gerichte bitten, uns an der Macht zu halten.
+choose-if: judicial_reform >= 3
+unavailable-subtitle: Die Justiz würde uns niemals zustimmen.
+
+Die Gerichte sind sich einig, dass es falsch ist, wenn Präsident [+ president +] uns entlässt, und dass wir in der Regierung bleiben sollten. Der Präsident mag die Gerichtsentscheidung vorerst respektieren, doch die Faschisten auf der Straße tun dies nicht. Sie fordern weiterhin Neuwahlen oder den Rücktritt der Regierung und werden so lange auf der Straße bleiben, bis wir entweder ihren Forderungen nachkommen oder sie gewaltsam vertrieben werden.
+
+- @new_elections
+- @fight
+
+
+@new_elections
+title: Forderung nach vorgezogenen Neuwahlen.
+subtitle: Wir werden nicht unter Waffengewalt zurücktreten und versuchen, die Integrität der Wahlen zu wahren.
+go-to: new_elections_braun if president == "Braun"; new_elections_hindenburg if president != "Braun" and z_relation >= 40 and far_right_coalition < 50; new_elections_hindenburg_reject if president != "Braun" and (z_relation < 40 or far_right_coalition >= 50)
+
+
+@new_elections_braun
+go-to: new_elections_braun_2 if nsdap_normalized + dnvp_normalized >= 0.5 and far_right_coalition < 50; new_elections_braun_reject if (nsdap_normalized + dnvp_normalized < 0.5 or far_right_coalition >= 50)
+
+# if the Nazis + DNVP have a current majority in the Reichstag, then they'll instantly launch the coup.
+
+
+@new_elections_braun_reject
+
+Die Faschisten lehnen unser Angebot freier und fairer Wahlen ab. Sie fordern, dass Präsident [+ president +] die amtierende Regierung entlässt und Hitler zum Reichskanzler ernennt. [? if far_right_coalition >= 50 : Sie argumentieren, dass ihnen, da die rechtsextreme Koalition über die Mehrheit im Reichstag verfügt, verfassungsrechtlich das Recht zustehe, den Reichskanzler zu bestimmen. Leider ist dieses Argument nicht gänzlich von der Hand zu weisen. ?]
+
+- @braun_appoints_hitler
+- @fight
+
+@new_elections_braun_2
+go-to: new_elections_2
+
+Die Faschisten scheinen zu glauben, dass sie eine Wahl gewinnen würden, wenn sie jetzt abgehalten würde; daher stimmen sie zu, dass wir für nächsten Monat eine Wahl ansetzen.
+
+
+@new_elections_hindenburg
+go-to: new_elections_2
+
+Unter Vermittlung verschiedener Vertreter des Establishments werden Neuwahlen für den kommenden Monat angesetzt, ohne den Einsatz faschistischer „Wahlbeobachter“.
+
+
+@new_elections_2
+on-arrival: next_election_time = time + 1 if next_election_time > time+1; next_election_month = month + 1 if next_election_time >= time+1; next_election_year = year if next_election_time >= time+1; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12;
+
+
+@new_elections_hindenburg_reject
+
+Beeinflusst von seinem engsten Kreis und den Faschisten auf der Straße, lehnt Reichspräsident Hindenburg unser Angebot neuer, freier und fairer Wahlen ab und fordert erneut unseren Rücktritt. Daran ist nicht zu rütteln.
+
+- @resign
+- @fight
+
+
+
+@resign
+title: Unsere Ämter in der Regierung niederlegen.
+choose-if: president != "Braun"
+unavailable-subtitle: Präsident Braun kann nicht zurücktreten.
+on-arrival: chancellor = "Papen"; chancellor_party = "I"; spd_in_government = 0;
+go-to: accept
+
+Wir sind von unseren Ämtern in der Regierung zurückgetreten.
+
+
+
+@braun_appoints_hitler
+title: Uns bleibt nichts anderes übrig, als Hitler zum Reichskanzler zu ernennen.
+view-if: president == "Braun"
+choose-if: nsdap_normalized >= 0.5 or largest_party == "NSDAP"
+unavailable-subtitle: Es ist ausgeschlossen, dass Präsident [+ president +] eine derart offensichtlich undemokratische Handlung begehen könnte.
+on-arrival: chancellor = "Hitler"; chancellor_party = "NSDAP"; spd_in_government = 0
+
+Angesichts der Drohung eines Bürgerkriegs und nicht mehr bereit zu kämpfen, entlässt Präsident [+ president +] die amtierende Regierung und ernennt Hitler von der NSDAP zum Reichskanzler.
+
+- @hitler_takes_power

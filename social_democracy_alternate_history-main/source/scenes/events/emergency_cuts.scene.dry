@@ -1,0 +1,42 @@
+title: Notfall Haushaltskürzungen
+subtitle: Kanzler [+ chancellor +] schlägt erhebliche Kürzungen der Sozialausgaben vor.
+new-page: true
+view-if: (year == 1929 or year == 1930 or year == 1931 or year == 1932) and month >= 12 and chancellor == "Brüning" and spd_in_government == 0 and (unemployed > 15 or (year == 1929 and unemployed > 10)) and welfare >= 0 and emergency_cuts_timer = 0
+on-arrival: emergency_cuts_seen = 1; emergency_cuts_timer = 12
+tags: event
+max-visits: 4
+
+= Notfall Haushaltskürzungen
+
+Aufgrund der Weltwirtschaftskrise sind die Staatshaushalte geschrumpft, während die Sozialausgaben erheblich gestiegen sind. Kanzler [+ chancellor +] hat Artikel 48 der Verfassung genutzt, um ein Notgesetz zur Kürzung der Sozialausgaben zu verabschieden.
+
+[? if spd_toleration : Würden wir dies ablehnen, käme dies dem Ende des Tolerierungsabkommens gleich und [+ chancellor +] würde wahrscheinlich den Reichstag auflösen und Neuwahlen ansetzen. Natürlich lehnen die Arbeiter diese Politik ab, auch wenn sie für die wirtschaftliche und politische Stabilität notwendig sein mag. ?]
+
+- @nothing_to_do: Wir können nichts tun.
+- @vote_no
+- @vote_yes
+
+@nothing_to_do
+view-if: spd_toleration == 0
+on-arrival: welfare -= 1; unemployed += 2; unemployed_nsdap += 4; unemployed_kpd += 3; unemployed_spd += 2; pro_republic -= 4; budget += 1; inflation -= 2; economic_growth -= 0.5;
+
+Die Notverordnung wird gemäß den Notfallbestimmungen verabschiedet, da der Reichstag derzeit aufgelöst ist. Die Nazis nutzen dies zur Mitgliederwerbung und wir ebenfalls.
+
+
+@vote_no
+title: Stimmen wir gegen diese Maßnahme zur Beendigung der Tolerierungsvereinbarung.
+view-if: spd_toleration
+on-arrival: time_to_election = 3; spd_in_government = 0; in_grand_coalition = 0; spd_toleration = 0; pro_republic -= 5
+call: set_next_election_time
+
+Wir haben mit der [+ chancellor +] Regierung gebrochen und bei einem Misstrauensvotum gegen sie gestimmt. Das Sozialsystem wurde gerettet doch um welchen Preis?
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+
+@vote_yes
+title: Stimmen wir für diese Maßnahme zur Fortsetzung des Tolerierungsabkommens.
+view-if: spd_toleration
+on-arrival: welfare -= 1; unemployed += 2; left_dissent += 10; labor_dissent += 10; workers_spd *= 0.9; unemployed_spd *= 0.9; unemployed_nsdap += 5; unemployed_kpd += 5; workers_nsdap += 5; workers_kpd += 5; workers_spd -= 4 if welfare < 0; unemployed_spd -= 5 if welfare < 0; pro_republic -= 4; kpd_relation -= 8; budget += 1; inflation -= 2; economic_growth -= 0.5;
+
+Wir versuchen, die Arbeiterschaft davon zu überzeugen, dass diese Politik notwendig ist, um eine stabile parlamentarische Regierung zu erhalten und die fiskalischen Folgen der Depression zu bewältigen. Dennoch liefert diese Politik den Nazis und Kommunisten hervorragendes Material für die Mitgliederwerbung.

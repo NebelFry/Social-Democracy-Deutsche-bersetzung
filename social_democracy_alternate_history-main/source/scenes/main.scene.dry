@@ -1,0 +1,61 @@
+title: Next month
+set-bg: img/map_3.jpg
+is-hand: true
+on-arrival: {!
+if (Q.advisor_action_timer <= 0) {
+    Q.pinnedCardsDescription = 'Berater – eine Aktion ist verfügbar.';
+} else if (Q.advisor_action_timer == 1) {
+    Q.pinnedCardsDescription = 'Berater – nächste Aktion in 1 Monat verfügbar.';
+} else {
+    Q.pinnedCardsDescription = 'Berater – nächste verfügbare Aktion in ' + Q.advisor_action_timer + ' Monaten.';
+}
+!}
+max-cards: 3
+
+#Here, the main deck will be displayed. Clicking on the deck draws a card into your hand. Clicking on a card activates that card.
+
+[? if year = 1928 and month = 2 : Die derzeitige bürgerlich-rechte Regierung ist gestürzt. Die nächsten Wahlen sind für Mai dieses Jahres angesetzt. ?]
+
+- @party
+- @govt
+- #advisor
+- @shuffle_leadership_pinned
+
+@main_easy
+set-bg: img/map_3.jpg
+is-hand: true
+on-arrival: {!
+if (Q.advisor_action_timer <= 0) {
+    Q.pinnedCardsDescription = 'Berater – eine Aktion ist verfügbar.';
+} else if (Q.advisor_action_timer == 1) {
+    Q.pinnedCardsDescription = 'Berater – nächste Aktion in 1 Monat verfügbar.';
+} else {
+    Q.pinnedCardsDescription = 'Berater – nächste verfügbare Aktion in ' + Q.advisor_action_timer + ' Monaten.';
+}
+!}
+max-cards: 4
+
+#Here, the main deck will be displayed. Clicking on the deck draws a card into your hand. Clicking on a card activates that card.
+
+[? if year = 1928 and month = 2 : Die derzeitige bürgerlich-rechte Regierung ist gestürzt. Die nächsten Wahlen sind für Mai dieses Jahres angesetzt. ?]
+
+- @party
+- @govt
+- #advisor
+- @shuffle_leadership_pinned
+
+
+@party
+title: Partei
+card-image: img/Vorwaerts_nr_1.png
+is-deck: true
+
+- #party_affairs
+
+@govt
+title: Regierung
+view-if: time >= 6
+card-image: img/reichstag_2.jpg
+is-deck: true
+
+- #govt_affairs

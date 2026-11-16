@@ -1,0 +1,40 @@
+title: Parteitag der Zentrumspartei
+subtitle: Die Zentrumspartei wählt ihren neuen Vorsitzenden...
+view-if: year = 1928 and month = 12 and z_party_leader = "Marx"
+max-visits: 1
+tags: event
+new-page: true
+
+= Parteitag der Zentrumspartei
+
+# reference: Evans, Ellen L. “Adam Stegerwald and the Role of the Christian Trade Unions in the Weimar Republic.” The Catholic Historical Review 59, no. 4 (1974): 602–26.
+
+Wilhelm Marx, ehemaliger Reichskanzler und Präsidentschaftskandidat der Zentrumspartei, hat beschlossen, den Parteivorsitz niederzulegen. Nun hält die Partei einen Parteitag ab, um seine Nachfolge zu regeln.
+
+Der Konsenskandidat des rechten Flügels ist Ludwig Kaas, ein katholischer Priester, der die Traditionalisten der Partei vertritt. Demgegenüber steht Joseph Joos, ein führender Vertreter der katholischen Gewerkschaften, der einer Zusammenarbeit mit der SPD positiver gegenübersteht als der Großteil der Zentrumspartei.
+
+- @kaas: Die Zentrumspartei wählt Ludwig Kaas zum Parteivorsitzenden.
+- @joos: Beeinflussen wir die Zentrumspartei dahingehend, Joseph Joos zum Parteivorsitzenden zu wählen.
+- @joos_campaign: Wir müssen eine Kampagne zur Unterstützung von Joseph Joos als Parteivorsitzenden durchführen.
+
+@kaas
+on-arrival: z_party_leader = "Kaas"; z_relation -= 5
+
+Ludwig Kaas wurde zum Vorsitzenden der Zentrumspartei gewählt. Er scheint für eine Rechtswende gegenüber Marx zu stehen und wird einer Zentrumspartei vorstehen, die weniger zu Kompromissen mit der Linken geneigt ist.
+
+@joos
+unavailable-subtitle: Unsere Beziehungen sind nicht gut genug.
+subtitle: Joos wird uns gegenüber wahrscheinlich freundlicher sein als Kaas.
+choose-if: z_relation >= 70
+on-arrival: z_party_leader = "Joos"; catholics_spd += 5; workers_z += 3
+
+Dank unserer Verbindungen zur Parteibasis konnten wir die Delegierten der Zentrumspartei dazu bewegen, Joseph Joos als neuen Parteivorsitzenden zu unterstützen. Er ist seit Langem ein Freund der SPD und wird eher zu einer Zusammenarbeit mit uns bereit sein als Kaas. Zudem steigert er die Attraktivität der Zentrumspartei für die Arbeiterschaft.
+
+@joos_campaign
+choose-if: z_relation >= 62 and resources >= 1 
+view-if: z_relation < 70
+unavailable-subtitle: [? if z_relation <= 62 : Unsere Beziehungen sind nicht gut genug. ?] [? if resources < 1 : Wir haben nicht genug Ressourcen. ?]
+subtitle: -1 Ressource. Joos wird uns gegenüber wahrscheinlich freundlicher sein als Kaas.
+on-arrival: resources -= 1; z_party_leader = "Joos"; catholics_spd += 5; workers_z += 3
+
+Dank unserer Verbindungen zur Parteibasis sowie einer professionellen Kampagne ist es uns gelungen, die Delegierten der Zentrumspartei dazu zu bewegen, Joseph Joos als neuen Parteivorsitzenden zu unterstützen. Er ist seit Langem ein Freund der SPD und wird eher zu einer Zusammenarbeit mit uns bereit sein als Kaas. Zudem erhöht er die Attraktivität der Zentrumspartei für die Arbeiterschaft.

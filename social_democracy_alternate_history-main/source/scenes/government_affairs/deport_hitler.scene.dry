@@ -1,0 +1,61 @@
+title: Wir können Hitler abschieben.
+subtitle: Er ist schließlich ein ausländischer Staatsbürger und ein Krimineller.
+unavailable-subtitle: [? if judicial_reform < 2 : Leider wird die reaktionäre Justiz nicht kooperieren. ?] [? if presidential_election_seen == 1 : Hitler ist im Vorfeld der Präsidentschaftswahl bereits die deutsche Staatsbürgerschaft verliehen worden. ?] [? if not spd_prussia : Wir können dies nicht ohne die Zusammenarbeit der preußischen Polizei bewerkstelligen, die sich derzeit nicht unter unserer Kontrolle befindet. ?]
+view-if: nazi_urgency >= 3 and hitler_deported = 0 and chancellor != "Papen" and chancellor != "Schleicher" and investigate_far_right >= 2
+choose-if: judicial_reform >= 2 and presidential_election_seen == 0 and spd_prussia == 1
+
+Ist es wirklich so einfach? Werden seine Anhänger nicht gewaltsam auf diesen Vorschlag reagieren? Und selbst wenn die Abschiebung gelingt: Wird er nicht einfach wieder ins Land zurückkehren oder seine Aktivitäten womöglich von Österreich aus steuern? Zudem betrachten manche dies als antidemokratischen Machtmissbrauch, bei dem das Gesetz genutzt wird, um gezielt gegen einen politischen Gegner vorzugehen.
+
+- @deport: Schiebt ihn ab!
+- @no_deport: Nein, dürfen wir nicht.
+
+@deport
+go-to: deport_violence if sa_strength >= 200; deport_success if sa_strength < 200
+
+@deport_violence
+
+Als sich die Polizei nähert, ist er von seinen SA-Wachen umringt, was verhindert, dass man ihn herausholt! Wir können versuchen, eine Konfrontation zu erzwingen, doch das könnte negative Folgen haben. Auch das Reichsbanner könnte versuchen, die SA abzulenken.
+
+- @force_approach: Erzwingen wir die Annäherung!
+- @no_deport: Die Abschiebung stoppen.
+
+@force_approach
+on-arrival: {!
+var total_allied_strength = Q.rb_strength*Q.rb_militancy + Q.prussian_police_strength*Q.prussian_police_militancy*Q.prussian_police_loyalty;
+var enemy_strength = Q.sa_strength*Q.sa_militancy;
+console.log('Deporting Hitler - force approach');
+console.log(total_allied_strength, enemy_strength);
+
+if (total_allied_strength > enemy_strength) {
+    Q.deportation_success = 1;
+} else {
+    Q.deportation_success = 0;
+}
+!}
+go-to: force_fail if deportation_success == 0; force_success if deportation_success = 1
+
+@force_fail
+on-arrival: sa_strength += 50; workers_nsdap += 5; unemployed_nsdap += 5; new_middle_nsdap += 5; old_middle_nsdap += 5; rural_nsdap += 5; coup_progress += 3
+
+Leider gelingt es unseren Kräften nicht, die SA aus ihren Stellungen um Hitler herum zu vertreiben. Er wird sowohl als starke und mächtige Führungspersönlichkeit als auch als Opfer wahrgenommen, was sein Image weiter stärkt. Die Nationalsozialisten gehen gestärkt aus der Situation hervor – stärker als je zuvor.
+
+@force_success
+on-arrival: hitler_deported = 1; sa_strength = sa_strength/2; workers_nsdap -= 10; new_middle_nsdap -= 10; old_middle_nsdap -= 10; rural_nsdap -= 10; unemployed_nsdap -= 10; sa_banned = 1; coup_progress -= 2; nsdap_leader = "Goebbels"
+achievement: deport_hitler
+
+Die Konfrontation endet damit, dass sich Polizei und Reichsbanner durchsetzen und Hitler festnehmen, sodass er abgeschoben werden kann! Dies ist ein Zeichen der Schwäche und die räumliche Distanz erschwert die Organisation, was die Bemühungen der Nazis, weitere Stimmen zu gewinnen, behindert.
+
+In Hitlers Abwesenheit ist Joseph Goebbels zum vorübergehenden Führer der NSDAP aufgestiegen, wobei Hermann Göring maßgeblichen Einfluss ausübt.
+
+@deport_success
+on-arrival: hitler_deported = 1; sa_strength = sa_strength/2; workers_nsdap -= 10; new_middle_nsdap -= 10; old_middle_nsdap -= 10; rural_nsdap -= 10; unemployed_nsdap -= 10; coup_progress -= 2; nsdap_leader = "Goebbels"
+achievement: deport_hitler
+
+Irgendwie hat der Plan funktioniert! Es gab kaum Widerstand gegen Hitlers Abschiebung. Dies ist ein Zeichen von Schwäche und die räumliche Distanz erschwert die Organisation, was die Bemühungen der Nationalsozialisten, weitere Stimmen zu gewinnen, behindert.
+
+In Hitlers Abwesenheit ist Joseph Goebbels zum vorübergehenden Führer der NSDAP aufgestiegen, wobei Hermann Göring maßgeblichen Einfluss ausübt.
+
+@no_deport
+go-to: root
+
+Wir werden Hitler nicht abschieben.

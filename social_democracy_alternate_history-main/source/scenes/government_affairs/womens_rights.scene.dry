@@ -1,0 +1,61 @@
+title: Frauenrechte
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+view-if: spd_in_government = 1 and womens_rights_timer = 0 and chancellor_party == "SPD"
+on-arrival: womens_rights_timer += 10; month_actions += 1
+card-image: img/portraits/PfülfAntonie.jpg
+frequency: 50
+max-visits: 6
+
+= Frauenrechte
+
+Laut Verfassung sind Frauen Männern gleichgestellt, doch in der Praxis wird dies nicht umgesetzt. Erwerbstätige Frauen erhalten für gleiche Arbeit keine gleiche Bezahlung und werden zudem nach der Heirat häufig aus dem Berufsleben gedrängt. In der Ehe- und Familienpolitik werden Männer nach wie vor bevorzugt, und auch in vielen anderen Bereichen gibt es Einschränkungen der Frauenrechte. Ganz zu schweigen von der in Deutschland vorherrschenden, stark patriarchalisch geprägten Kultur.
+
+Ob zum Guten oder zum Schlechten: Die Sozialisten stehen mit ihrer Unterstützung für erweiterte Frauenrechte praktisch allein da, und selbst innerhalb der Partei misst die Führung dem Thema keine Priorität bei. [? if spd_r < 50 : Leider unterstützen Frauen nach wie vor überproportional die bürgerlichen Parteien. ?]
+
+- @labor: Maßnahmen einführen, die Frauen im Berufsleben unterstützen.
+- @family: Reformieren wird das Ehe-, Scheidungs- und Eigentumsrecht.
+- @welfare: Verbesserung der sozialen Absicherung für alleinerziehende Mütter und Kinder.
+- @liberalize: Versuchen, die Abtreibungsgesetze zu liberalisieren.
+- @return: Vorerst keine Richtlinien einführen.
+- @easy_discard
+- @cancel_advisor_action
+
+@labor
+subtitle: Regelungen zu bezahltem Mutterschaftsurlaub, Richtlinien zur Lohngleichheit und so weiter.
+on-arrival: womens_work += 1; womens_rights += 1; workers_spd -= 4 if unemployed > 15; new_middle_spd += 4*(1-dissent); workers_spd += 4*(1 - dissent); economic_growth += 0.1;
+max-visits: 3
+
+Diese politische Linie führt dazu, dass unsere Partei bei den „neuen Frauen“, die berufstätig sind, an Beliebtheit gewinnt. [? if unemployed > 15 : Viele männliche Arbeitnehmer reagieren jedoch mit einer Gegenreaktion auf Frauen am Arbeitsplatz – insbesondere angesichts der steigenden Arbeitslosigkeit. ?]
+
+@family
+subtitle: Verändern wir das Familien- und Erbrecht, um Frauen gleichberechtigter zu behandeln.
+on-arrival: family_law += 1; womens_rights += 1; new_middle_spd += 2*(1-dissent); workers_spd += 3*(1-dissent); old_middle_spd -= 2; rural_spd -= 2; catholics_spd -= 4; coalition_dissent += 1; z_relation -= 4;
+max-visits: 2
+
+Diese Maßnahmen zielen darauf ab, sicherzustellen, dass Frauen innerhalb der Ehe gleichberechtigt sind, einschließlich des Rechts auf Scheidung. Konservativere gesellschaftliche Kreise betrachten unsere Reformen als schädlich für das soziale Gefüge.
+
+
+@welfare
+subtitle: -1 Budget
+choose-if: budget > 0
+on-arrival: welfare += 1; workers_spd += 5*(1-dissent); unemployed_spd += 5*(1-dissent); budget -= 1; womens_rights += 1; coalition_dissent += 1 if welfare >= 1 and unemployed >= 15; unemployed -= 0.4; inflation += 0.2; economic_growth += 0.3;
+
+Wir haben die Sozialausgaben für Frauen und Kinder erhöht. [? if welfare >= 1 and unemployed >= 15 : Einige unserer Koalitionspartner halten erhöhte Sozialausgaben zum jetzigen Zeitpunkt für verschwenderisch. ?]
+
+
+@liberalize
+max-visits: 1
+subtitle: [? if progressive_coalition < 50 : Es ist unwahrscheinlich, dass dies Erfolg hat; wir verfügen nicht über eine Mehrheit. ?]
+go-to: liberalize_fail if progressive_coalition < 50; liberalize_success if progressive_coalition >= 50
+
+@liberalize_fail
+on-arrival: z_relation -= 5; coalition_dissent += 1; workers_spd += 3*(1-dissent); catholics_spd -= 5;
+
+Leider wurde unser Antrag im Reichstag abgelehnt, wobei sich insbesondere die katholische Zentrumspartei (unsere langjährigen Partner) vehement dagegen aussprach und einige unserer eigenen Mitglieder gegen die Fraktionsdisziplin verstießen. Die Aktivisten, die durch diesen Versuch entmutigt waren, beschlossen, zunächst abzuwarten.
+
+@liberalize_success
+on-arrival: abortion_rights += 1; womens_rights += 1; coalition_dissent += 1; z_relation -= 8; catholics_spd -= 10; dvp_relation -= 5; workers_spd += 3*(1-dissent); new_middle_spd += 3*(1-dissent); workers_z += 3; new_middle_z += 3; old_middle_z += 3; old_middle_dnvp += 3; rural_dnvp += 3; workers_nsdap -= 3; new_middle_nsdap -= 3; old_middle_nsdap -= 2; rural_nsdap -= 2; unemployed_nsdap -= 2; unemployed_z += 3; unemployed_spd += 3*(1-dissent)
+
+Mit der Unterstützung einer „progressiven Koalition“, der unter anderem die KPD und [+ ddp_name +] angehörten, haben wir erfolgreich ein Gesetz zur Legalisierung der Abtreibung in Deutschland verabschiedet! Dies hat unsere eher progressiven Anhänger ermutigt, jedoch unsere Beziehungen zur Zentrumspartei belastet. Angesichts der zunehmenden politischen Debatte über Abtreibungen konnten die religiös geprägte Zentrumspartei und die DNVP konservative Wählerstimmen auf Kosten der NSDAP hinzugewinnen.

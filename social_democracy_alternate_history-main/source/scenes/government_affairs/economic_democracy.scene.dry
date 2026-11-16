@@ -1,0 +1,72 @@
+title: Wirtschaftsdemokratie
+is-card: true
+new-page: true
+on-arrival: economic_democracy_timer += 10; month_actions += 1
+view-if: spd_in_government and (economic_minister_party == "SPD" or finance_minister_party == "SPD") and (labor_minister_party == "SPD") and economic_democracy_timer <= 0
+card-image: img/portraits/HilferdingRudolf.jpg
+max-visits: 8
+tags: govt_affairs, cabinet
+#subtitle: Wie können wir den Arbeitern mehr Kontrolle über die Produktionsmittel geben?
+
+= Wirtschaftsdemokratie
+
+Ein wesentlicher Bestandteil des sozialdemokratischen Programms ist die Forderung, dass Arbeiter mehr Kontrolle über die Wirtschaft ausüben sollen. Dies kann entweder direkt auf Unternehmensebene geschehen – indem Betriebsräten mehr Einfluss auf die Unternehmensführung eingeräumt wird – oder indirekt über die demokratische Regierung, indem Schlüsselindustrien der Kapitalistenklasse entzogen und unter demokratische Kontrolle gestellt werden.
+
+Da wir die Ministerien für Arbeit [? if economic_minister_party == "SPD" : und Wirtschaft ?][? if finance_minister_party == "SPD" : und Finanzen ?] führen, können wir endlich damit beginnen, unsere langjährigen Ziele umzusetzen. [? if in_grand_coalition: Unsere bürgerlichen Koalitionspartner dürften damit jedoch nicht einverstanden sein. ?]
+
+- @expand_councils
+- @expand_councils_2
+- @expand_councils_3
+- @nationalize_1
+- @cooperatives_1
+- @return: Vorerst keine Richtlinien einführen.
+- @easy_discard
+- @cancel_advisor_action
+
+@expand_councils
+title: Betriebsräte unterstützen.
+subtitle: Den Betriebsräten einen größeren Einfluss auf die Unternehmensführung geben.
+view-if: works_councils == 0
+on-arrival: economic_democracy += 1; workers_spd += 7*(1-dissent); capital_strike_progress += 1; works_councils += 1; labor_dissent -= 6; labor_strength += 8; dvp_relation -= 5; coalition_dissent +=1 if in_grand_coalition
+max-visits: 1
+
+Die von der Belegschaft der größeren Betriebe gewählten Betriebsräte existieren zwar schon seit der deutschen Revolution von 1918, waren jedoch gegenüber dem Kapital weitgehend machtlos. Nun erhalten die Arbeiter eine Vertretung in den Unternehmensvorständen, was ihnen mehr Einfluss auf Managemententscheidungen verschafft.
+
+
+@expand_councils_2
+title: Nationale und Branchenspezifische Betriebsräte unterstützen.
+subtitle: Dies ist ein Schritt hin zur Kontrolle der gesamten Wirtschaft durch die Arbeiter.
+view-if: works_councils == 1
+on-arrival: economic_democracy += 1; workers_spd += 7*(1-dissent); capital_strike_progress += 1; works_councils += 1; labor_dissent -= 6; labor_strength += 8; dvp_relation -= 5; coalition_dissent +=1 if in_grand_coalition; economic_growth += 0.1 if economic_growth < 3
+max-visits: 1
+
+Nationale und branchenbezogene Arbeiterräte waren zwar Teil der Weimarer Verfassung, wurden jedoch in der Vergangenheit entmachtet und fungierten lediglich als beratende Gremien. Das können wir ändern.
+
+
+@expand_councils_3
+title: Stärkung der branchenspezifischen Betriebsräte.
+subtitle: Den Betriebsräten soll ein Mitspracherecht bei der Festlegung der Lohn- und Preispolitik für ganze Industriezweige eingeräumt werden.
+view-if: works_councils == 2
+on-arrival: economic_democracy += 1; workers_spd += 7*(1-dissent); capital_strike_progress += 1; works_councils += 1; labor_dissent -= 6; labor_strength += 8; dvp_relation -= 5; coalition_dissent +=1 if in_grand_coalition; unemployed -= 2 if unemployed > 5; workers += 2; economic_growth += 0.1 if economic_growth < 3
+max-visits: 1
+
+Branchenbetriebsräte können nun Lohn- und Preispolitiken für ganze Wirtschaftszweige aushandeln; dies trägt dazu bei, den Arbeitern mehr Mitspracherecht zu verschaffen und die Wirtschaft zu rationalisieren, indem die Willkürlichkeit des Marktes abgefedert wird.
+
+
+@nationalize_1
+title: Beginnen Schlüsselindustrien in die öffentliche Hand zu überführen.
+subtitle: -1 Budget - Wir sollten Industriezweige aufkaufen und sie gemeinsam mit Arbeitern und Verbrauchern verwalten.
+on-arrival: economic_democracy += 1; capital_strike_progress += 1; budget -= 1; socializations += 1; workers_spd += 6*(1-dissent); unemployed_spd += 3*(1-dissent); coalition_dissent += 1 if in_grand_coalition; capital_strike_progress += 1 if black_thursday_seen; unemployed -= 1 if unemployed > 9; economic_growth += 0.2 if economic_growth < 5
+choose-if: budget >= 1
+max-visits: 3
+
+Wir haben damit begonnen, Schlüsselindustrien zu vergesellschaften, indem wir die kapitalistischen Eigentümer ausbezahlt und koordinierte Leitungsgremien geschaffen haben, die sich aus Vertretern der Arbeitnehmerschaft, der Verbraucher und des Staates zusammensetzen. Die Kapitalisten sind über unseren Eingriff in die Wirtschaft nicht erfreut.
+
+@cooperatives_1
+title: Unterstützung von Arbeiter- und Verbrauchergenossenschaften.
+subtitle: -1 Budget
+on-arrival: economic_democracy += 1; cooperatives += 1; workers_spd += 4*(1-dissent); unemployed_spd += 4*(1-dissent); budget -= 1; unemployed -= 1 if unemployed > 9; economic_growth += 0.2
+choose-if: budget >= 1
+max-visits: 3
+
+Wir haben Gesetze verabschiedet, die die Gründung von Genossenschaftsunternehmen aller Art erleichtern und Genossenschaften in Schwierigkeiten finanziell unterstützen.

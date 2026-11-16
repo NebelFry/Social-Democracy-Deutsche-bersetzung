@@ -1,0 +1,46 @@
+title: Feinde wählen
+new-page: true
+view-if: year <= 1930 and enemies_timer <= 0
+on-arrival: month_actions += 1; enemies_timer = 18
+max-visits: 3
+is-card: true
+card-image: img/poster_1.png
+tags: party_affairs
+
+= Feinde wählen
+
+Wen sollten wir in unseren Medien und Wahlkämpfen als unsere Hauptgegner betrachten?
+
+[? if enemies != 0 : Bislang haben wir die [+ enemies +] als unsere eigentlichen Feinde betrachtet. Ist ein Kurswechsel erforderlich? ?]
+
+- @anti_dem: Die antidemokratischen Parteien der extremen Rechten und Linken – KPD, NSDAP und DNVP.
+- @far_right: Die extreme Rechte – die NSDAP und die DNVP.
+- @nsdap: Die NSDAP alleine.
+- @kpd: Die KPD.
+- @bourgeois: Die bürgerlichen Parteien – das Zentrum und die DVP.
+- @easy_discard
+
+@anti_dem
+on-arrival: enemies = "anti-democratic parties"; center_strength += 5; reformist_strength += 5; left_dissent += 5; workers_kpd -= 2; workers_nsdap -= 2; workers_dnvp -= 2; kpd_relation -= 10
+
+Angriffe auf die extreme Rechte und Linke sind bei allen beliebt – mit Ausnahme des linken Flügels unserer Partei, der lieber gegen die bürgerlichen Parteien kämpfen würde. Dies könnte zudem unsere Fähigkeit beeinträchtigen, uns in Zukunft mit der KPD zu versöhnen.
+
+@far_right
+on-arrival: enemies = "far right"; left_strength += 5; left_dissent -= 5; workers_nsdap -= 3; workers_dnvp -= 3;
+
+Angriffe auf die extreme Rechte finden in der gesamten Partei Anklang, wenngleich der linke Flügel die bürgerlichen Parteien für ebenso gefährlich hält, während der rechte Flügel unsere ausbleibende Reaktion auf die KPD kritisiert. Auch unsere bürgerlichen Koalitionspartner stehen unserer mangelnden Festlegung auf den Antikommunismus skeptisch gegenüber.
+
+@nsdap
+on-arrival: enemies = "NSDAP"; neorevisionist_strength += 5; nazi_urgency += 1; workers_nsdap -= 4;
+
+[? if nazi_urgency == 0 or nsdap_r < 10 : Die NSDAP ist derzeit eine winzige Partei, die mehr bellt als beißt. Viele in unserer Partei hinterfragen unsere Entscheidung. ?][? if nazi_urgency > 0 and nsdap_r >= 10 : Die Nazis sind das dringendste Problem, mit dem wir uns befassen müssen. ?]
+
+@kpd
+on-arrival: enemies = "KPD"; reformist_strength += 5; left_dissent += 8; reformist_dissent -= 5; kpd_relation -= 15; dvp_relation += 5; z_relation += 5; workers_kpd -= 4;
+
+Angriffe auf die KPD werden von allen außer den am weitesten links stehenden Sozialisten unterstützt und bringen uns bei den bürgerlichen Parteien ein gewisses Maß an Zustimmung ein. Sollten wir uns jedoch mit der KPD versöhnen wollen, ist dies womöglich nicht die beste Vorgehensweise.
+
+@bourgeois
+on-arrival: enemies = "bourgeois parties"; left_strength += 8; left_dissent -= 5; dvp_relation -= 5; z_relation -= 5; kpd_relation += 5; reformist_dissent += 8; workers_z -= 3; coalition_dissent += 1
+
+Unsere antibürgerliche Rhetorik ist bei der Linken beliebt, könnte es jedoch erschweren, jene Koalitionen zu bilden, die für eine künftige Regierungsbeteiligung notwendig sind.

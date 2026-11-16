@@ -1,0 +1,44 @@
+title: Kurt Schumacher
+is-pinned-card: true
+tags: advisor, neorevisionist
+card-image: img/portraits/SchumacherKurt.jpg
+view-if: schumacher_advisor = 1
+new-page: true 
+
+= Kurt Schumacher
+
+Als Veteran des Ersten Weltkriegs und führender Vertreter des Neorevisionismus plädiert Kurt Schumacher für entschiedenen Widerstand gegen die Nationalsozialisten.
+
+- @emergency_fundraising
+- @build_reichsbanner
+- @moderate_economic_plan
+- @root: Zurück
+
+@emergency_fundraising
+title: Notfallspendenaufruf
+subtitle: Eine Notfall-Zufuhr von Ressourcen.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; resources += dues
+#view-if: difficulty < 1
+
+# Schumacher's emergency fundraising is available on all difficulties.
+
+Wir haben +[+ dues +] Ressourcen.
+
+@build_reichsbanner
+title: Reichsbanner
+subtitle: Schumacher befürwortet die Bereitstellung weiterer Mittel für das Reichsbanner.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; reichsbanner_timer -= 6; last_advisor_action = 1
+go-to: reichsbanner
+
+@moderate_economic_plan
+title: Unterstützen wir den reformorientierten Wirtschaftsplan.
+subtitle: Forderung nach einem begrenzten Programm zur Schaffung von Arbeitsplätzen ohne schuldenfinanzierte Ausgaben.
+choose-if: advisor_action_timer = 0 and moderate_plan_adopted = 0 and black_thursday_seen = 1
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?] [? if moderate_economic_plan = 0 : Wir haben den reformorientierten Wirtschaftsplan bereits verabschiedet. ?] [? if black_thursday_seen == 0 : Wir befinden uns derzeit nicht in einer Wirtschaftskrise. ?]
+on-arrival: advisor_action_timer = 6
+go-to: crisis_program.support_moderate
+

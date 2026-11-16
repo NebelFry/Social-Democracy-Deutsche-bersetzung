@@ -1,0 +1,12 @@
+title: Der Tod von Paul Levi
+view-if: year == 1930 and month >= 2
+frequency: 1000
+max-visits: 1
+on-arrival: levi_dead = 1; n_advisors -= 1 if levi_advisor == 1; levi_advisor = 0
+tags: event
+new-page: true
+face-image: img/portraits/LeviPaul.jpg
+
+= Der Tod von Paul Levi
+
+Paul Levi, eine Führungspersönlichkeit des linken Flügels unserer Partei, ist bei einem tragischen Unfall ums Leben gekommen. Er wird uns fehlen.

@@ -1,0 +1,42 @@
+title: Wittorf-Affäre
+subtitle: Eine Krise in der KPD?
+new-page: true
+view-if: kpd_relation >= 30 and comintern_seen and year = 1928 and month >= 8 and month <= 10
+max-visits: 1
+on-arrival: wittorf_affair_seen = 1
+tags: event
+
+= Wittorf-Affäre
+
+Unsere Spione und Kontaktleute bei den Kommunisten haben Nachrichten über einen Skandal überbracht, der die Führung der KPD erschüttert. Ein Vertrauter des KPD-Vorsitzenden Ernst Thälmann, ein KPD-Funktionär namens John Wittorf, wird beschuldigt, Wahlkampfgelder veruntreut und Tausende von Reichsmark für private Zwecke abgezweigt zu haben; Thälmann wiederum wird vorgeworfen, die Angelegenheit vertuscht zu haben. Das Zentralkomitee der Partei stuft diesen Vorwurf als schwerwiegend ein.
+
+Die „Versöhnler“ innerhalb der KPD – eine Fraktion, die den derzeitigen harten Kurs der Partei ablehnt – sollen diese Informationen durchgestochen haben, um sich im parteiinternen Machtkampf einen Vorteil zu verschaffen. Auch abweichlerische Kommunisten im Leninbund verfügen über Informationen zu dieser Angelegenheit und planen, diese zu veröffentlichen.
+
+Was sollen wir mit diesen Informationen anfangen?
+
+- @publicize
+- @nothing
+- @secret
+
+@publicize
+title: Wir werden den Skandal öffentlich machen, um der KPD und Thälmann zu schaden.
+on-arrival: kpd_relation -= 10; workers_kpd -= 4; unemployed_kpd -= 4
+
+Unsere Zeitungen gehören zu den ersten, die die Affäre öffentlich machen und die Heuchelei der Kommunisten einer Welle der Kritik aussetzen. Wir haben das Ansehen der KPD in der Arbeiterschaft geschädigt, uns aber womöglich auch die Tür für eine weitere Zusammenarbeit verschlossen.
+
+Letztendlich trägt Stalins Druck dazu bei, dass Thälmann kaum nennenswerte Konsequenzen zu spüren bekommt.
+
+@nothing
+title: Unternehmen wir nichts mit den Informationen.
+on-arrival: workers_kpd -= 2; unemployed_kpd -= 2
+
+Die Information verbreitet sich ohne unser Zutun, was zu einem gewissen Verlust an Unterstützung für die KPD in der Arbeiterschaft führt.
+
+
+@secret
+title: Am besten bewahrt man diese Informationen geheim. Verhindern Sie, dass der Leninbund und abtrünnige KPD-Mitglieder sie verbreiten.
+choose-if: levi_advisor or rosenfeld_advisor
+unavailable-subtitle: Wir haben keine Kontakte zu den dissidenten Kommunisten.
+on-arrival: wittorf_secret = 1; reformist_dissent += 5; left_dissent += 5
+
+Einige in unserer Führung halten es für anrüchig, sich auf Machenschaften im Stil von Mantel-und-Degen-Intrigen einzulassen. Doch diese Geheimhaltung könnte für eine Zusammenarbeit mit der KPD notwendig sein, und die Informationen könnten sich später als nützlich erweisen.

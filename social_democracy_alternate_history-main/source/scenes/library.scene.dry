@@ -1,0 +1,495 @@
+title: library
+new-page: true
+is-special: true
+go-to: menu
+
+= Die Bibliothek
+
+Hier finden Sie relevante Informationen über die Regierung und Politik der deutschen Republik.
+
+@menu
+
+- @government: Regierungssystem in Deutschland
+- @weimar_timeline: Zeitstrahl der SPD und der Republik vor 1928
+- @curr_gov: Derzeitige Regierung
+- @demographics: Demographie
+- @parties: Parteien
+- @public_opinion: Öffentliche Meinung (und die prognostizierten Wahlergebnisse)
+- @paramilitaries: Paramilitärische Gruppen
+- @factions: Interne Fraktionen
+- @figures: Abbildungen und Diagramme
+- @backSpecialScene: Bibliothek verlassen.
+
+@government
+go-to: menu
+
+Die Deutsche Republik, von einigen unserer Kritiker als "Weimarer Republik" bezeichnet, ist eine parlamentarische Republik mit einem eher schwachen Präsidenten und starken Parlament, dem Reichstag. Der Reichstag ist für die Regierungsführung zuständig, während der Präsident eine weitgehend repräsentative Rolle spielt, aber auch einige wichtige Regierungsaufgaben wahrnimmt.
+
+Der Reichstag wird nach dem Verhältniswahlrecht gewählt, wodurch die Parteien in jedem Wahlkreis Sitze erhalten, die in etwa ihrem Stimmenanteil entsprechen. Der Reichstag wählt anschließend mit Stimmenmehrheit den Reichskanzler und das Kabinett, die für die Regierungsführung verantwortlich sind. Durch ein Misstrauensvotum mit Stimmenmehrheit kann die amtierende Regierung abgesetzt werden.
+
+Der Reichspräsident wird in zwei Wahlgängen in einer landesweiten Direktwahl gewählt. Der zweite Wahlgang findet statt, wenn im ersten Wahlgang kein Kandidat die Mehrheit erreicht hat; der Kandidat, der im zweiten Wahlgang die relative Mehrheit erhält, wird Reichspräsident (für schwächere Kandidaten besteht keine Verpflichtung, ihre Kandidatur zurückzuziehen). Die Aufgabe des Reichspräsidenten besteht vor allem darin, Deutschland zu vertreten, doch er verfügt auch über einige entscheidende Regierungsbefugnisse. Präsident und Kanzler können gemeinsam über Notverordnungen regieren, um so den Reichstag zu umgehen. Der Präsident kann zudem den Kanzler ernennen und absetzen, wenn sich keine parlamentarische Mehrheit bilden lässt; so kann er die Regierungsbildung beeinflussen.
+
+Deutschland ist in mehrere Staaten unterteilt, von denen jeder über eine eigene Regierung mit bestimmten Zuständigkeiten verfügt. Der mit Abstand größte und wichtigste Staat ist Preußen. 
+
+@weimar_timeline
+go-to: menu
+
+= Zeitstrahl der SPD und der Republik (bis 1928)
+
+**1875**: Die SPD entsteht aus dem Zusammenschluss des Allgemeinen Deutschen Arbeitervereins (ADAV), gegründet von Ferdinand Lassalle und der Sozialdemokratischen Arbeiterpartei (SDAP), geführt von Wilhelm Liebknecht und August Bebel. Mit der Zeit wächst die SPD zur größten Partei im Deutschen Kaiserreich.
+
+**1914**: Der Weltkrieg beginnt. Die SPD stimmt trotz erheblicher interner Meinungsverschiedenheiten für die Kriegskredite. Damit beginnt die "Burgfriedenspolitik", ein allgemeiner Frieden zwischen allen politischen Parteien und Gewerkschaften.
+
+**1917**: Die USPD, die linke anti-kriegs Abspaltung der SPD gründet sich als eigenständige Partei.
+
+**1918**: Nach der Kriegsniederlage und Aufständen von Soldaten, Matrosen und Arbeitern ruft der SPD Vorsitzender Philip Scheidemann die Deutsche Republik aus und Kaiser Wilhelm II. dankt ab. Ein Waffenstillstand wird verkündet, der den Krieg beendet. In den Straßen Berlins und anderswo kommt es zu Zusammenstößen zwischen der SPD und dem Spartakusbund, sowie Teilen der USPD.
+
+**1919**: Der Spartakusaufstand, bei dem kommunistische Arbeiter versuchen, die Macht zu übernehmen, bricht aus. Der Aufstand wird von der sozialdemokratischen Regierung unter der Führung von Präsidenten Friedrich Ebert und Reichskanzler Philip Scheidemann mit Unterstützung der rechtsextremen Freikorps-Milizen niedergeschlagen. Die beiden wichtigsten Anführer des Aufstandes, Rosa Luxemburg und Karl Liebknecht, werden von dem Freikorps ermordet. Der Vertrag von Versailles wird unter heftigen Protesten aller politischen Lager in Deutschland unterzeichnet und beendet damit offiziell den Weltkrieg. Die erste "Weimarer Koalition" wird gebildet, angeführt von der SPD, DDP und der Zentrumspartei.
+
+**1920**: Der Kapp-Putsch, ein Versuch reaktionärer Kräfte innerhalb des Militärs die Macht zu ergreifen, wird gestartet und von den Arbeitern durch einen Generalstreik niedergeschlagen. Darauf folgen linke Aufstände im Ruhrgebiet, die von der Reichswehr und den Freikorps niedergeschlagen werden. Die Weimarer Koalition erleidet bei den Wahlen eine Niederlage, während die Rechte und die extreme Linke an Stimmen gewinnen. Die gewählten Regierungen der nachfolgenden Zeit sind sehr instabil und halten oft nur wenige Monate. Es kommt zu einer Spaltung der USPD, wobei sich die Mehrheitsfraktion der KPD und der Kommunistischen Internationale (Komintern) der Sowjetunion anschließt. 
+
+**1921**: Kommunistische Aufstände in Sachsen und Hamburg werden niedergeschlagen. Matthias Erzberger, der Vorsitzende der Zentrumspartei und Unterzeichner des Versailler Vertrags, wird ermordet.
+
+**1922**: Der Vertrag von Rapallo, der die Beziehung mit der Sowjetunion normalisiert, wird unterzeichnet. Walther Rathenau, Außenminister der DDP, wird ermordet. Die SPD schließt sich mit dem Großteil der verbliebenden USPD wieder zusammen. 
+
+**1923**: Es kommt zu einer Hyperinflation, die vor allem auf die Wirtschaftspolitik des "passiven Widerstands" gegen die französisch-belgische Besetzung des Ruhrgebiets und die Reparationszahlungen gemäß dem Versailler Vertrag zurückzuführen ist. Die Währung verliert rasch an Wert, während die Preise für lebensnotwendige Güter auf Milliarden von Reichsmark steigen. Die Regierung leitet eine Reichsexekution gegen Sachsen und Thüringen ein, die von einer Koalitionsregierung aus SPD und KPD geführt wird. In München kommt es zum "Bierkellerputsch" der Nationalsozialisten, der jedoch scheitert und mit der Verhaftung Adolf Hitlers endet. Schließlich gelingt es durch neue politische Maßnahmen, die Währung zu stabilisieren und die Besatzung des Ruhrgebiets endet.
+
+**1924**: Im Mai und Dezember finden Parlamentswahlen statt, wobei letztere zur Bildung einer bürgerlichen-rechten Regierung führt, die bis 1928 im Amt bleibt. Hitler wird aus der Haft entlassen. Der Dawes-Plan zur Rückzahlung der Versailler-Reparationen wird ausgehandelt, wodurch die Zahlung gesenkt und das Wirtschaftswachstum angekurbelt werden. Mit dem Ende der Hyperinflationskrise beginnt für Deutschland eine Phase relativer Stabilität. 
+
+**1925**:  Reichspräsident Friedrich Ebert stirbt und es finden neue Präsidentschaftswahlen statt, die in der zweiten Runde zur knappen Wahl von Paul von Hindenburg führen. Hindenburg ist ein Kriegsheld und ein rechter Reaktionär. Die SPD verabschiedet das Heidelberger Programm als ihr Parteiprogramm. Die Locarno-Verträge werden unterzeichnet, welche die westlichen Grenzen Deutschlands nach dem Krieg festschreiben.
+
+**1926**: Ein von der SPD und der KPD unterstütztes Referendum über die Enteignung der Fürsten scheitert.
+
+@curr_gov
+go-to: cabinet if spd_in_government; menu if not spd_in_government
+
+= Derzeitige Regierung
+
+Präsident: [+ president +]
+
+Kanzler: [+ chancellor +] ([+ chancellor_party +])
+
+Reichstags Zusammensetzung:
+
+# 1928: 30, 1930: 25, 1932: 22
+SPD: [+ spd_r +]%
+[? if sapd_formed and sapd_r > 0: SAPD: [+ sapd_r +]% ?]
+# 1928: 15, 1930: 15, 1932: 
+Z + BVP: [+ z_r +]%
+# 1928: 10, 1930: 13
+KPD: [+ kpd_r +]%
+# 1928: 5, 1930: 4 (as DstP)
+[+ ddp_name +]: [+ ddp_r +]%
+# 1928: 9, 1930: 5
+DVP: [+ dvp_r +]%
+# 1928: 14, 1930: 7
+DNVP: [+ dnvp_r +]%
+# 1928: 3, 1930: 18
+NSDAP: [+ nsdap_r +]%
+# 1928: 9, 1930: 10
+Sonstige: [+ other_r +]%
+
+Rolle der SPD: [? if spd_toleration : Tolerierung ?][? if spd_in_government : in der Regierung - ?][? if spd_toleration == 0 and spd_in_government == 0 and spd_caretaker == 0 : Opposition ?][? if spd_caretaker : geschäftsführende Regierung ?]
+[? if in_weimar_coalition and spd_in_government: Weimarer Koalition ?][? if in_grand_coalition and spd_in_government: Große Koalition ?][? if in_popular_front and spd_in_government: Volksfront ?][? if in_left_front and spd_in_government: Linksfront ?][? if in_spd_majority and spd_in_government: SPD-Mehrheitsregierung ?][? if in_minority_government and spd_in_government: Minderheitsregierung ?][? if in_emergency_government and spd_in_government: Notstandsregierung ?]
+
+[? if spd_in_government and not in_spd_majority and not in_left_front : Coalition dissent: [+ coalition_dissent : coalition_dissent +] ?]
+
+[? if spd_in_government and (in_left_front or in_popular_front): KPD coalition dissent: [+ kpd_coalition_dissent : coalition_dissent +] ?]
+
+@cabinet
+go-to: menu
+
+Current cabinet:
+
+Arbeit: [+ labor_minister_party +]
+
+Inneres: [+ interior_minister_party +]
+
+Finanzen: [+ finance_minister_party +]
+
+Wirtschaft: [+ economic_minister_party +]
+
+Justiz: [+ justice_minister_party +]
+
+Auswärtiges Amt: [+ foreign_minister_party +]
+
+Reichswehr: [+ reichswehr_minister_party +]
+
+Ernährung und Landwirtschaft: [+ agriculture_minister_party +]
+
+
+@demographics
+go-to: menu
+
+**Demographische Gruppen**
+
+**Arbeiterklasse**: Die städtische Arbeiterklasse – Arbeiter in Fabriken, Werkstätten, Bergwerken und ähnlichen Betrieben. Die meisten von ihnen sind Sozialisten und unterstützen entweder die SPD oder die KPD. Sie machen 40–50 % der Bevölkerung aus.
+
+**Alter Mittelstand**: Die alte Mittelschicht besteht aus selbstständigen Handwerkern, Ladenbesitzern und Kleinunternehmern. Sie neigt dazu, konservativ zu sein und bildet die stärkste Basis für die extreme Rechte. 10–15 % der Bevölkerung.
+
+**Neuer Mittelstand**: Die neue Mittelschicht setzt sich aus Angestellten und Beamten zusammen. Sie bildet die Basis des Liberalismus. 10–15 % der Bevölkerung.
+
+**Ländlich**: Kleine und große Landwirte sowie selbstständige Landarbeiter. Protestantische Landwirte unterstützen häufig die DNVP. 20–30 % der Bevölkerung.
+
+**Katholiken** sind mit einem Anteil von etwa 30 % an der Bevölkerung die größte religiöse Minderheit. Sie unterstützen überproportional stark die Zentrumspartei (bzw. in Bayern die Bayerische Volkspartei).
+
+**Juden** machen zwischen 0,5 % und 1 % der Bevölkerung aus und neigen dazu, liberale Parteien zu unterstützen, vor allem die DDP, obwohl eine beträchtliche Anzahl von ihnen die SPD oder die KPD unterstützt.
+
+
+@public_opinion
+on-arrival: {!
+Q.pro_republic_disp = Math.round(Q.pro_republic);
+Q.nationalism_disp = Math.round(Q.nationalism);
+Q.socialism_disp = Math.round(Q.socialism);
+!}
+view-if: (not historical_mode) or game_over
+go-to: election_algorithm
+set-jump: election_projections
+
+**Öffentliche Meinung**
+
+#Unterstützung für Sozialismus: [+ socialism +]%
+
+#Unterstützung für Nationalismus: [+ nationalism +]%
+
+Unterstützung für die Republik: [+ pro_republic_disp +]%
+
+
+@election_projections
+view-if: (not historical_mode) or game_over
+go-to: menu
+
+**Prognostizierte Wahlergebnisse** (wenn die Wahl jetzt stattfinden würde):
+
+# 1928: 30, 1930: 25, 1932: 22
+SPD: [+ spd_votes +]%
+
+[? if sapd_formed: SAPD: [+ sapd_votes +]% ?]
+
+# 1928: 15, 1930: 15, 1932: 
+Z + BVP: [+ z_votes +]%
+
+# 1928: 10, 1930: 13
+KPD: [+ kpd_votes +]%
+
+# 1928: 5, 1930: 4 (as DstP)
+[+ ddp_name +]: [+ ddp_votes +]%
+
+# 1928: 9, 1930: 5
+DVP: [+ dvp_votes +]%
+
+# 1928: 14, 1930: 7
+DNVP: [+ dnvp_votes +]%
+
+# 1928: 3, 1930: 18
+NSDAP: [+ nsdap_votes +]%
+
+# 1928: 9, 1930: 10
+Sonstige: [+ other_votes +]%
+
+**Detaillierte Ergebnisse für jede demografische Gruppe**
+
+Arbeiter: SPD: [+ workers_spd_display +]%, Z: [+ workers_z_display +]%, KPD: [+ workers_kpd_display +]%, [+ ddp_name +]: [+ workers_ddp_display +]%, DVP: [+ workers_dvp_display +]%; DNVP: [+ workers_dnvp_display +]%, NSDAP: [+ workers_nsdap_display +]%, Sonstige: [+ workers_other_display +]% [? if sapd_formed: SAPD: [+ workers_sapd_display +]% ?]
+
+Neuer Mittelstand: SPD: [+ new_middle_spd_display +]%, Z: [+ new_middle_z_display +]%, KPD: [+ new_middle_kpd_display +]%, [+ ddp_name +]: [+ new_middle_ddp_display +]%, DVP: [+ new_middle_dvp_display +]%; DNVP: [+ new_middle_dnvp_display +]%, NSDAP: [+ new_middle_nsdap_display +]%, Sonstige: [+ new_middle_other_display +]% [? if sapd_formed: SAPD: [+ new_middle_sapd_display +]% ?]
+
+Alter Mittelstand: SPD: [+ old_middle_spd_display +]%, Z: [+ old_middle_z_display +]%, KPD: [+ old_middle_kpd_display +]%, [+ ddp_name +]: [+ old_middle_ddp_display +]%, DVP: [+ old_middle_dvp_display +]%; DNVP: [+ old_middle_dnvp_display +]%, NSDAP: [+ old_middle_nsdap_display +]%, Sonstige: [+ old_middle_other_display +]% [? if sapd_formed: SAPD: [+ old_middle_sapd_display +]% ?]
+
+Ländlich: SPD: [+ rural_spd_display +]%, Z: [+ rural_z_display +]%, KPD: [+ rural_kpd_display +]%, [+ ddp_name +]: [+ rural_ddp_display +]%, DVP: [+ rural_dvp_display +]%; DNVP: [+ rural_dnvp_display +]%, NSDAP: [+ rural_nsdap_display +]%, Sonstige: [+ rural_other_display +]% [? if sapd_formed: SAPD: [+ rural_sapd_display +]% ?]
+
+Arbeitslose: SPD: [+ unemployed_spd_display +]%, Z: [+ unemployed_z_display +]%, KPD: [+ unemployed_kpd_display +]%, [+ ddp_name +]: [+ unemployed_ddp_display +]%, DVP: [+ unemployed_dvp_display +]%; DNVP: [+ unemployed_dnvp_display +]%, NSDAP: [+ unemployed_nsdap_display +]%, Sonstige: [+ unemployed_other_display +]% [? if sapd_formed: SAPD: [+ unemployed_sapd_display +]% ?]
+
+Katholiken: SPD: [+ catholics_spd_display +]%, Z: [+ catholics_z_display +]%, KPD: [+ catholics_kpd_display +]%, [+ ddp_name +]: [+ catholics_ddp_display +]%, DVP: [+ catholics_dvp_display +]%; DNVP: [+ catholics_dnvp_display +]%, NSDAP: [+ catholics_nsdap_display +]%, Sonstige: [+ catholics_other_display +]% [? if sapd_formed: SAPD: [+ catholics_sapd_display +]% ?]
+
+@parties
+go-to: menu
+
+**SPD** - *Sozialdemokratische Partei Deutschlands* - das sind wir. Wir sind eine sozialistische und demokratische Partei der Arbeiterklasse. Wir sind die Erben des Vermächtnisses von Marx und Engels, Lassalle und Bebel. Wir sind die führenden Verteidiger der Republik. Die heutige SPD entstand aus dem Zusammenschluss der „Mehrheits“-SPD, die den Weltkrieg unterstützte, und der „Unabhängigen“ SPD bzw. USPD, die sich gegen den Krieg aussprach.
+
+**Z** - *Zentrumspartei* - eine katholische Partei der Mitte bis Mitte-rechts, die die Republik unterstützt und in der Vergangenheit viele unserer Prioritäten in den Bereichen Arbeit, Soziales und Antimilitarismus vertreten hat. Sie war oft Teil von Koalitionen mit uns. Sie wird häufig mit der **BVP** (Bayerische Volkspartei) in Verbindung gebracht, die die Katholiken in Bayern vertritt. [? if year >= 1930 or chancellor = "Brüning" : In letzter Zeit scheinen sie mit dem Aufstieg von Brüning und dem Parteivorsitzenden Ludwig Kaas einen konservativeren Kurs eingeschlagen zu haben. ?]
+
+Momentane Beziehung: [+ z_relation : relationships +]
+
+# TODO: replace this with the german state party after 1930
+**DDP** - *Deutsche Demokratische Partei* - eine linksliberale Partei, die bei der Intelligenz und der gebildeten Mittelschicht beliebt ist. Sie hat oft Koalitionen mit uns gebildet. [? if year >= 1930 : Sie haben sich kürzlich neu gegründet als Deutsche Staatspartei. (DStP). ?]
+
+Momentane Beziehung: [+ ddp_relation : relationships +]
+
+**DVP** - *Deutsche Volkspartei* - eine konservativ-liberale Partei, die von der Mittelschicht und der Bourgeoisie unterstützt wird. Wir waren gelegentlich Teil von Koalitionen.
+
+Momentane Beziehung: [+ dvp_relation : relationships +]
+
+**DNVP** - *Deutschnationale Volkspartei* - eine rechtsgerichtete, nationalistisch-konservative Partei mit autoritären, monarchistischen und rassistischen Zügen. Sie wird vom ehemaligen Adel, von Landbesitzern und von konservativen Lutheranern unterstützt.
+
+Momentane Beziehung: [+ dnvp_relation : relationships +]
+
+**KPD** - *Kommunistische Partei Deutschlands* -  eine radikale linke Abspaltung der SPD, die im Zuge der deutschen Revolution von 1918 entstand; die Partei folgt dem Kurs Moskaus und lehnt die parlamentarische Demokratie zugunsten einer Revolution nach sowjetischem Vorbild ab.
+
+Momentane Beziehung: [+ kpd_relation : relationships +]
+
+[? if sapd_formed: SAPD - Sozialistische Arbeiterpartei Deutschlands - eine Partei, die sich kürzlich durch eine Abspaltung von der SPD gebildet hat. Die SAPD ist im Wesentlichen ein Zusammenschluss verschiedener linker Splittergruppen aus dem Umfeld der SPD und der KPD. ?]
+
+**NSDAP** - *Nationalsozialistische Deutsche Arbeiterpartei* - eine rechtsextreme, nationalistische und antisemitische Partei. Unter der Führung von Adolf Hitler unternahm sie 1923 einen Putschversuch und wurde daraufhin verboten, ist aber inzwischen wieder legal.
+
+Momentane Beziehung: [+ nsdap_relation : relationships +]
+
+**Sonstige Parteien** - es gibt eine Vielzahl kleiner, meist konservativer Parteien, wie beispielsweise die Wirtschaftspartei des deutschen Mittelstandes, die Deutsche Bauernpartei, der Reichslandbund und andere. Ihre politischen Positionen liegen in der Regel zwischen der DVP und der DNVP.
+
+@paramilitaries
+on-arrival: {!
+Q.rb_strength = Math.round(Q.rb_strength);
+Q.sh_strength = Math.round(Q.sh_strength);
+Q.sa_strength = Math.round(Q.sa_strength); 
+!}
+go-to: menu
+
+**Paramilitärische Gruppen:**
+
+**Reichsbanner Schwarz-Rot-Gold**: Das Reichsbanner ist eine Organisation, die mit allen demokratischen Parteien – der SPD, der Z und der DDP – verbunden ist, vor allem aber mit der SPD. Historisch gesehen war dies eine unbewaffnete Organisation.
+
+Stärke: [+ rb_strength +] Tausend
+
+Militarisierung: [+ rb_militancy : militancy +]
+
+**Rotfrontkämpferbund (RFB)**: Der „Rotfrontkämpferbund“ steht der KPD nahe.
+
+Stärke: [+ rfb_strength +] Tausend
+
+Militarisierung: [+ rfb_militancy : militancy +]
+
+**Der Stahlhelm**: Eine rechtsnationalistische Organisation, die sich hauptsächlich aus Veteranen des Weltkriegs zusammensetzt und aus den nach dem Krieg entstandenen *Freikorps* hervorging. Sie steht in Verbindung mit der DNVP.
+
+Stärke: [+ sh_strength +] Tausend
+
+Militarisierung: [+ sh_militancy : militancy +]
+
+**Sturmabteilung (SA)**: Das ist die paramilitärische Gruppe der Nazis.
+
+Stärke: [+ sa_strength +] Tausend
+
+Militarisierung: [+ sa_militancy : militancy +]
+
+**Offizielle militärische Gruppen:**
+
+**Reichswehr**: [+ reichswehr_strength +] Tausend Truppen. Das ist das deutsche Militär.
+
+Loyalität: [+ reichswehr_loyalty : loyalty +]
+
+**Preußische Polizei**: [+ prussian_police_strength +] Tausend Polizisten.
+
+Loyalität: [+ prussian_police_loyalty : loyalty +]
+
+
+
+@factions
+go-to: neorevisionists if neorevisionism > 0; menu if neorevisionism <= 0
+
+**Interne Fraktionen der SPD**
+
+Allgemeine Meinungsverschiedenheiten: [+ dissent_percent : dissent +]
+
+**Linke**
+
+Viele Linke sind ehemalige Mitglieder der USPD (der linken, kriegsgegnerischen Unabhängigen Sozialdemokratischen Partei) oder junge Radikale. Viele sind an einer engeren Zusammenarbeit mit der KPD interessiert, und einige befürworten außerparlamentarische Aktionen.
+
+Stärke: [+ left_strength : strength +]
+
+Unzufriedenheit: [+ left_dissent : dissent +]
+
+**Zentristen**
+
+Die Zentristen in der SPD sind Anhänger der Lehre des orthodoxen Marxismus, wie sie von Karl Kautsky und später von Rudolf Hilferding dargelegt wurde. Sie streben einen Mittelweg zwischen Reform und Revolution an und treten gleichzeitig für den demokratischen Staat ein.
+
+Stärke: [+ center_strength : strength +]
+
+Unzufriedenheit: [+ center_dissent : dissent +]
+
+**Gewerkschafter**
+
+Viele SPD-Mitglieder gehören zudem dem ADGB an, dem Verband der freien Gewerkschaften. Ihr Ziel sind wirtschaftliche Reformen und Vorteile für die gewerkschaftlich organisierten Arbeitnehmer.
+
+Stärke: [+ labor_strength : strength +]
+
+Unzufriedenheit: [+ labor_dissent : dissent +]
+
+**Reformisten**
+
+Reformisten sind pragmatische Regierungsmitglieder, die den Sozialstaat ausbauen und die Demokratie gegen die extreme Rechte und Linke verteidigen wollen. [? if spd_prussia : Sie haben in der Landesregierung von Preußen die Mehrheit. ?]
+
+Stärke: [+ reformist_strength : strength +]
+
+Unzufriedenheit: [+ reformist_dissent : dissent +]
+
+@neorevisionists
+go-to: menu
+
+**Neorevisionisten**
+
+Die Neorevisionisten konzentrieren sich auf die Verteidigung der Republik und den Ausbau der Demokratie, während sie gleichzeitig die Basis der Partei über die Arbeiterklasse hinaus erweitern, um eine Volkspartei zu schaffen. Sie befürworten neue Propagandamethoden und außerparlamentarische Maßnahmen zur Verteidigung der Republik.
+
+Stärke: [+ neorevisionist_strength : strength +]
+
+Unzufriedenheit: [+ neorevisionist_dissent : dissent +]
+
+
+@figures
+title: Abbildungen und Diagramme
+go-to: menu
+on-arrival: z_minus_bvp_r = z_r - 3;
+on-display: {!
+data = [
+    {
+        "id": "kpd",
+        "legend": "KPD",
+        "name": "KPD",
+        "seats": Q.kpd_r*5,
+    }];
+if (Q.sapd_formed && Q.sapd_r) {
+    data.push({
+            "id": "sapd",
+            "legend": "SAPD",
+            "name": "SAPD",
+            "seats": Math.round(Q.sapd_r*5),
+            });
+}
+data = data.concat([
+    {
+        "id": "spd",
+        "legend": "SPD",
+        "name": "SPD",
+        "seats": Q.spd_r*5,
+    },
+    {
+        "id": "ddp",
+        "legend": "DDP",
+        "name": "DDP",
+        "seats": Q.ddp_r*5,
+    },
+    {
+        "id": "z",
+        "legend": "Zentrum",
+        "name": "Zentrum",
+        "seats": (Q.z_r - 3)*5,
+    },
+    {
+        "id": "bvp",
+        "legend": "BVP",
+        "name": "BVP",
+        "seats": 3*5,
+    },
+    {
+        "id": "dvp",
+        "legend": "DVP",
+        "name": "DVP",
+        "seats": Q.dvp_r*5,
+    },
+    {
+        "id": "other",
+        "legend": "Sonstige",
+        "name": "Sonstige",
+        "seats": Q.other_r*5,
+    },
+    {
+        "id": "dnvp",
+        "legend": "DNVP",
+        "name": "DNVP",
+        "seats": Q.dnvp_r*5,
+    },
+    {
+        "id": "nsdap",
+        "legend": "NSDAP",
+        "name": "NSDAP",
+        "seats": Q.nsdap_r*5,
+    },
+]);
+if (d3 && window) {
+    // get screen width
+    var width = 500;
+    var height = 500;
+    var screenWidth = document.getElementById('content').offsetWidth;
+    if (screenWidth < width - 50) {
+        width = screenWidth - 50;
+        height = width;
+        document.getElementById("reichstag").style.height = screenWidth/2 + "px";
+    }
+    var parliament = d3.parliament();
+    parliament.width(width).height(height).innerRadiusCoef(0.4);
+    parliament.enter.fromCenter(true).smallToBig(true);
+    parliament.exit.toCenter(false).bigToSmall(true);
+    d3.select("#reichstag").datum(data).call(parliament);
+
+    var lines = d3.linegraph(false, false,
+            Q.parties,
+            {'spd': '#E3000F', 'kpd': '#8B0000', 'ddp': '#DCCA4A', 'z': '#000', 'dvp': '#D5AC27', 'dnvp': '#3f7bc1', 'nsdap': '#954B00', 'other': '#a0a0a0', 'sapd': '#c40000'},
+            {'spd': 'SPD', 'kpd': 'KPD', 'ddp': Q.ddp_name, 'z': 'Z + BVP', 'dvp': 'DVP', 'dnvp': 'DNVP', 'nsdap': 'NSDAP', 'other': 'Others', 'sapd': 'SAPD'});
+    lines.width(width).height(400);
+    //var svg = lines(Q.election_records);
+    if (Q.election_records.length > 0) {
+        d3.select("#election_history").datum(Q.election_records).call(lines);
+    }
+    //document.getElementById('election_history').innerHTML = svg.outerHTML;
+
+    // party support records should not have so many ticks
+    if (!Q.historical_mode || Q.game_over) {
+        var lines_2 = d3.linegraph(true, true,
+            Q.parties,
+            {'spd': '#E3000F', 'kpd': '#8B0000', 'ddp': '#DCCA4A', 'z': '#000', 'dvp': '#D5AC27', 'dnvp': '#3f7bc1', 'nsdap': '#954B00', 'other': '#a0a0a0', 'sapd': '#c40000'},
+            {'spd': 'SPD', 'kpd': 'KPD', 'ddp': Q.ddp_name, 'z': 'Z + BVP', 'dvp': 'DVP', 'dnvp': 'DNVP', 'nsdap': 'NSDAP', 'other': 'Others', 'sapd': 'SAPD'});
+        lines_2.width(width).height(400);
+        d3.select("#party_support_history").datum(Q.party_support_records).call(lines_2);
+    }
+
+    // economic stats
+    var minInflation = d3.min(Q.economic_records, d => d.inflation);
+    var maxUnemployment = d3.max(Q.economic_records, d => d.unemployment);
+    var lines_3 = d3.linegraph(true, true, ['inflation', 'unemployment'],
+            {'inflation': '#0000FF', 'unemployment': '#FF0000'},
+            {'inflation': 'Inflation', 'unemployment': 'Unemployment'},
+            maxUnemployment + 5, minInflation - 5, 21);
+    lines_3.width(width).height(300);
+    d3.select("#economic_history").datum(Q.economic_records).call(lines_3);
+}
+!}
+
+= Reichstags Zusammensetzung
+
+{!<svg id="reichstag" style="width: 500px; height: 250px;"> </svg>!}
+
+{!<table>!}
+{!<tr><td><div class="box" style='background-color:#E3000F; outline: 2px; outline-style: solid;'> </div></td><td>!} **SPD:** {!</td><td>!} **[+ spd_r +]%** {!</td></tr>!}
+
+[? if sapd_formed : {!<tr><td><div class="box" style='background-color:#C40000'> </div></td> <td> !}SAPD: {!</td><td>!} [+ sapd_r +]% {!</td></tr>!} ?]
+
+{!<tr><td><div class="box" style='background-color:#8B0000'> </div></td> <td>!}KPD: {!</td><td>!} [+ kpd_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#DCCA4A'> </div></td><td>!} [+ ddp_name +]: {!</td><td>!} [+ ddp_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#000'> </div></td><td>!} Z: {!</td><td>!} [+ z_minus_bvp_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#69A2BE'> </div></td><td>!} BVP: {!</td><td>!} 3% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#D5AC27'> </div></td><td>!} DVP: {!</td><td>!} [+ dvp_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#a0a0a0'> </div></td><td>!} Sonstige: {!</td><td>!} [+ other_r +] % {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#3f7bc1'> </div></td><td>!} DNVP: {!</td><td>!} [+ dnvp_r +]% {!</td></tr>!}
+
+{!<tr><td><div class="box" style='background-color:#954B00'> </div></td><td>!} NSDAP: {!</td><td>!} [+ nsdap_r +]% {!</td></tr>!}
+{!</table>!}
+
+= Wahlverlauf
+
+[? if year = 1928 and month < 5 : Noch keine Neuwahlen. ?]
+
+{!<svg id="election_history" style="width: 500px; height: 400px;"> </svg>!}
+
+= Entwicklung der Parteizustimmung
+
+[? if historical_mode: Im historischen Modus nicht verfügbar. ?]
+
+{!<svg id="party_support_history" style="width: 500px; height: 400px;"> </svg>!}
+
+= Wirtschaft
+
+{!<svg id="economic_history" style="width: 500px; height: 300px;"> </svg>!}
+# TODO: maybe add textual histories too? some accessibility stuff as well...

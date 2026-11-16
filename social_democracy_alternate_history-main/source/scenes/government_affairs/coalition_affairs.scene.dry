@@ -1,0 +1,48 @@
+title: Koalitionsangelegenheiten
+new-page: true
+is-card: true
+tags: govt_affairs
+on-arrival: month_actions += 1; coalition_affairs_timer = 5
+view-if: spd_in_government = 1 and coalition_dissent >= 1 and coalition_affairs_timer = 0 and (in_grand_coalition or in_weimar_coalition or in_popular_front)
+card-image: img/muller_cabinet.jpg
+#subtitle: Es gibt Unzufriedenheit innerhalb unserer Koalition.
+
+= Koalitionsangelegenheiten
+
+Our coalition is in trouble. The right-leaning members of the Center [? if in_grand_coalition: and DVP ?] are constantly criticizing us for our policies, and are threatening to call a vote of no confidence to collapse this government[? if spd_prussia :, or to do the same for our government in the state of Prussia ?].
+
+Wie bauen wir die Spannungen mit der Koalition ab?
+
+- @promise_cuts: Stimmen wir den bürgerlichen Plänen zur Kürzung der Sozialleistungen zu.
+- @resources: Unsere Parteiressourcen, um unsere Verbündeten zu unterstützen.
+- @bring_down: Stattdessen werden wir die Regierung durch ein Misstrauensvotum zu Fall bringen und Neuwahlen ausrufen.
+- @no_change: Keine dieser Maßnahmen durchführen.
+- @easy_discard
+
+
+@promise_cuts
+on-arrival: workers_spd -= 5; unemployed_spd -= 6; workers_kpd += 5; unemployed_kpd += 3; unemployed_nsdap += 3; left_dissent += 10; labor_dissent += 5; welfare -= 1; budget += 1; coalition_dissent = 0
+
+Gut. Durch die Kürzung der Sozialleistungen haben wir die Unzufriedenheit innerhalb der Koalition verringert.
+
+@resources
+subtitle: -2 Ressourcen
+view-if: historical_mode = 0
+unavailable-subtitle: Nicht genügend Ressourcen (2 benötigt).
+choose-if: resources >= 2
+on-arrival: resources -= 2; coalition_dissent -= 1
+
+Indem wir Wahlkampfgelder an unsere Koalitionspartner weiterleiten, können wir unsere politischen Vorhaben für sie akzeptabler machen. Manche würden dies als Korruption bezeichnen, doch womöglich ist es notwendig, um die Demokratie zu retten.
+
+@no_change
+
+Nein. Wir werden das nicht tun.
+
+@bring_down
+subtitle: Stürzt diese Regierung, bevor unsere Gegner es tun.
+on-arrival: spd_in_government = 0; in_grand_coalition = 0; in_weimar_coalition = 0; chancellor = "Brüning"; chancellor_party = "Z"; next_election_time = time + 3 if next_election_time > time+3; next_election_month = month + 3 if next_election_time >= time+3; next_election_year = year if next_election_time >= time+3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; spd_toleration = 0; left_strength += 8; pro_republic -= 5; new_middle_spd -= 3; rural_spd -= 3; old_middle_spd -= 3; catholics_spd -= 3; reformist_dissent += 5
+
+Wir haben ein Misstrauensvotum beantragt und diese Regierung zu Fall gebracht. Kanzler [+ chancellor +] fungiert derzeit als amtierender Kanzler.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+

@@ -1,0 +1,121 @@
+title: Politische Kundgebung
+new-page: true
+is-card: true
+tags: party_affairs
+view-if: rally_timer <= 0
+on-arrival: month_actions += 1; rally_timer = 6
+card-image: img/protest.jpg
+go-to: main_rally; sa_disrupt if sa_strength > 180 and not sa_banned and not return_to_normalcy
+
+@sa_disrupt
+
+Die Nazi-SA hat unsere Kundgebung gestört! Ihre Straßentruppen hindern uns daran, uns zu versammeln.
+
+- @police_protect: Rufen Sie die Polizei, um unsere Kundgebung zu schützen.
+- @rb_protect: Setzen Sie das Reichsbanner ein, um unsere Kundgebung zu schützen.
+- @both_protect: Polizei und Reichsbanner sollten zusammenarbeiten, um unsere Kundgebung zu schützen.
+- @cancel: Sagt die Kundgebung ab.
+
+@police_protect
+view-if: spd_prussia == 1
+on-arrival: police_protect_success = prussian_police_loyalty * prussian_police_militancy * prussian_police_strength*2 - sa_militancy*sa_strength;
+go-to: police_protect_win if police_protect_success >= 0; police_protect_lose if police_protect_success < 0
+
+@police_protect_win
+go-to: main_rally
+
+Die Polizei hat unsere Kundgebung erfolgreich geschützt, sodass sie wie geplant stattfinden kann.
+
+@police_protect_lose
+on-arrival: strife += 1; workers_nsdap += 3
+
+Leider war die Polizei nicht in der Lage oder nicht willens, den SA-Mob zurückzuhalten. Die Nazis haben diesen Machtkampf für sich entschieden.
+
+@rb_protect
+on-arrival: rb_success = rb_strength*rb_militancy - sa_strength*sa_militancy; strife += 1
+go-to: rb_protect_win if rb_success >= 0; rb_protect_lose if rb_success < 0
+
+@rb_protect_win
+go-to: main_rally
+
+Das Reichsbanner hat unsere Kundgebung erfolgreich gegen die SA geschützt! Unsere Versammlung kann wie geplant stattfinden.
+
+@rb_protect_lose
+on-arrival: workers_nsdap += 3; rb_strength -= 50
+
+Leider gelang es dem Reichsbanner nicht, den SA-Mob aufzuhalten. Die Nationalsozialisten haben diese Machtprobe für sich entschieden.
+
+@both_protect
+view-if: spd_prussia
+choose-if: prussian_police_training > 0
+unavailable-subtitle: Die loyalen Teile der Polizei haben sich zuvor noch nie mit dem Reichsbanner abgestimmt.
+on-arrival: rb_success = rb_strength*rb_militancy - sa_strength*sa_militancy + prussian_police_loyalty*prussian_police_militancy*prussian_police_strength*2; strife += 1
+go-to: both_protect_win if rb_success >= 0; both_protect_lose if rb_success < 0
+
+@both_protect_win
+go-to: main_rally
+
+Polizei und Reichsbanner haben unsere Kundgebung erfolgreich gegen die SA geschützt! Unsere Versammlung kann wie geplant stattfinden.
+
+@both_protect_lose
+on-arrival: workers_nsdap += 3; rb_strength -= 50
+
+Leider gelang es der Polizei und dem Reichsbanner nicht, den SA-Mob aufzuhalten. Die Nationalsozialisten haben diese Machtprobe für sich entschieden.
+
+
+@cancel
+on-arrival: workers_nsdap += 3;
+
+Die SA hat diesen Machtbeweis gewonnen.
+
+@main_rally
+
+Massenkundgebungen sind ein fester Bestandteil des sozialdemokratischen Lebens, insbesondere im Vorfeld von Wahlen. Was ist das Hauptthema dieser Kundgebung?
+
+- @class_struggle: Der Klassenkampf des Proletariats gegen die Bourgeoisie.
+- @welfare: Sozialpolitik – die Aufrechterhaltung und der Ausbau sozialer Sicherungssysteme.
+- @democracy: Ausbau unserer jungen Demokratie und deren Verteidigung gegen Diktatur und Faschismus.
+- @pacifism: Krieg, Nationalismus und Militarismus um jeden Preis ablehnen.
+- @wtb: Unterstützt den WTB-Plan!
+- @local: Eine Mischung aus verschiedenen lokalen und nationalen Anliegen, die beim Publikum am meisten Anklang finden.
+- @easy_discard
+
+@class_struggle
+on-arrival: workers_spd += 4*(1-dissent); unemployed_spd += 3*(1-dissent) if left_strength > reformist_strength; workers_spd += 4*(1-dissent) if nationalization_progress > 0; unemployed_spd += 3*(1-dissent) if nationalization_progress > 0; left_strength += 5; left_dissent -= 5; old_middle_spd -= 3; new_middle_spd -= 2;
+
+Unsere Botschaft vom Klassenkampf spricht den linken Flügel der Arbeiterklasse an, während sie die Mittelschicht möglicherweise abschreckt. [? if nationalization_progress > 0 : Unsere Erfolge bei der Nationalisierung haben unsere Botschaft verstärkt. ?]
+
+@welfare
+on-arrival: workers_spd += 3*(1-dissent); workers_spd += 3*(1-dissent) if welfare > 0; unemployed_spd += 3*(1-dissent) if welfare > 0; unemployed_spd += 4*(1-dissent) if welfare > 1; reformist_strength += 3; labor_strength += 4; reformist_dissent -= 3; labor_dissent -= 3;
+
+Die reformistische Botschaft spricht die organisierten Arbeiter an, deren Errungenschaften das Ergebnis sozialdemokratischen Wirkens sind. [? if welfare > 1 : Unsere Erfolge beim Ausbau des Sozialwesens haben dieser Botschaft mehr Wirkung verliehen. ?]
+
+@democracy
+on-arrival: democratization += 1; pro_republic += 2*(1 - dissent); workers_spd += 4*(1-dissent) if democratization >= 3; unemployed_spd += 3*(1-dissent) if democratization >= 3; pro_republic += 4*(1 - dissent) if democratization >= 3; new_middle_spd += 4*(1-dissent) if democratization >= 3 
+
+Unsere Redner verteidigen das republikanische System und schimpfen gegen die Monarchisten und Autoritaristen, die es bedrohen.
+
+[? if democratization < 3 : Das Gerede von Demokratie begeistert die Arbeiter nicht so sehr wie eher praktische Fragen. Doch das kann sich ändern; zu unseren Aufgaben gehört es, das Proletariat politisch zu bilden. ?]
+[? if democratization >= 3 : Da wir die Demokratisierung konsequent zum Thema unserer Kampagne gemacht haben, sind die Arbeiter von unserer Botschaft begeistert. ?]
+
+@pacifism
+on-arrival: pacifism += 1; nationalism -= 2*(1 - dissent); workers_spd += 4*(1 - dissent) if pacifism >= 3; unemployed_spd += 3*(1-dissent) if pacifism >= 3; nationalism -= 3*(1-dissent) if pacifism >= 3; new_middle_spd += 4*(1-dissent) if pacifism >= 3
+
+Unsere Redner verurteilen den militärischen Apparat und all die Ausgaben, die in dieses schwarze Loch fließen. Einige wagemutige Redner stellen die Verantwortung der militärischen Eliten für die Organisation des Weltkriegs infrage.
+
+[? if pacifism < 3 : Angesichts des Ausmaßes nationalistischer Indoktrination in unserer Gesellschaft ist es schwierig, so vehement gegen das Militär zu argumentieren. ?]
+[? if pacifism >= 3 : Da wir den Pazifismus konsequent zum Thema unserer Kampagne gemacht haben, sind die Arbeiter von unserer Botschaft begeistert. ?]
+
+@wtb
+view-if: wtb_adopted = 1
+choose-if: return_to_normalcy = 0
+unavailable-subtitle: Die Wirtschaftskrise ist inzwischen weitgehend vorüber, und die Öffentlichkeit ist nicht mehr daran interessiert, etwas darüber zu hören.
+on-arrival: wtb_support += 1; workers_spd += 6*(1-dissent); unemployed_spd += 6*(1-dissent); rural_spd += 3*(1-dissent); new_middle_spd += 3*(1-dissent); old_middle_spd += 3*(1-dissent);
+
+Der WTB-Plan hat sich zu einer populären Losung unserer Partei entwickelt. Die Arbeiter brennen darauf, wieder an die Arbeit zu gehen, und genau das verspricht der Plan.
+
+
+@local
+on-arrival: workers_spd += 3*(1-dissent); old_middle_spd += 1*(1-dissent); new_middle_spd += 2*(1-dissent); unemployed_spd += 3*(1-dissent);
+
+Unsere Redner haben die Stimmungslage erfasst und gehen auf die Themen ein, die die Arbeiter derzeit am meisten zu beschäftigen scheinen.

@@ -1,0 +1,204 @@
+title: Wirtschaftspolitik
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: economic_policy_timer += 12; month_actions += 1; nationalize_budget = 4; nationalize_budget -= 1 if works_councils >= 2; nationalize_budget -= 1 if works_councils >= 3; nationalize_budget -= 1 if socializations + nationalization_progress >= 2; wtb_budget = 4; wtb_budget -= 1 if works_councils >= 2 or socializations >= 1 or pro_labor >= 2
+view-if: spd_in_government = 1 and (economic_minister_party == "SPD" or finance_minister_party == "SPD") and economic_policy_timer <= 0 and economic_plan > 0
+card-image: img/portraits/SchmidtRobert.jpg
+#subtitle: Policies to address the economic crisis.
+
+= Wirtschaftspolitik
+
+Wir haben bereits einen Wirtschaftsplan ausgearbeitet. Jetzt müssen wir ihn umsetzen.
+
+- @wtb_2
+- @wtb_2_deficit
+- @wtb_continuation
+- @implement_wtb_no_deficit
+- @implement_wtb_deficit
+- @nationalize_1
+- @nationalize_2
+- @moderate_plan
+- @moderate_plan_limited_budget
+- @root: Wirtschaftsplan nicht umsetzen.
+- @easy_discard
+- @cancel_advisor_action
+
+@wtb_2
+title: Umsetzung des WTB-Plans fortsetzen.
+subtitle: -3 Budget
+unavailable-subtitle: Die Arbeitslosigkeit ist so niedrig, dass die Zeit für den WTB-Plan abgelaufen ist.
+view-if: wtb_implemented > 2 and budget >= 3 
+choose-if: unemployed > 8
+on-arrival: works_program += 1; budget -= 3; workers_spd += 7*(1-dissent); workers += 1 if works_program <= 4; unemployed -= 3 if unemployed > 8; unemployed_spd += 7*(1-dissent); workers_kpd -= 3; workers_nsdap -= 3; wtb_implemented += 1; kpd_coalition_dissent += 1; kpd_relation -= 5 if in_popular_front or in_left_front; inflation += 2; economic_growth += 1.6; economic_growth -= 0.6 if economic_growth > 5
+
+[? if works_program == 4 : Wir haben mit Phase 2 des WTB-Plans begonnen. ?][? if works_program > 4 :  Wir haben die Umsetzung des WTB-Plans fortgesetzt. ?] Neben Arbeitsbeschaffungsprogrammen konzentrieren wir uns nun auf den Wiederaufbau unserer Industrie.
+
+
+@wtb_2_deficit
+title: Umsetzung des WTB-Plans fortsetzen.
+subtitle: -3 Budget - wir werden ein Defizit verzeichnen.
+unavailable-subtitle: Die Arbeitslosigkeit ist niedrig genug, dass wir keine Defizitfinanzierung betreiben sollten.
+view-if: wtb_implemented > 2 and budget < 3 and budget >= -3
+choose-if: unemployed > 10
+on-arrival: works_program += 1; budget -= 3; workers_spd += 6*(1-dissent); workers += 1 if works_program <= 4; unemployed -= 3 if unemployed > 8; unemployed_spd += 6*(1-dissent); workers_kpd -= 2; workers_nsdap -= 2; coalition_dissent += 1; capital_strike_progress += 1; wtb_implemented += 1; kpd_coalition_dissent += 1; kpd_relation -= 5 if in_popular_front or in_left_front; inflation += 3; economic_growth += 1.6; economic_growth -= 0.6 if economic_growth > 5
+
+Wir haben die Umsetzung des WTB-Plans trotz der anhaltenden Defizitfinanzierung fortgesetzt. Neben Arbeitsbeschaffungsprogrammen konzentrieren wir uns nun auf den Wiederaufbau unserer Industrie.
+
+
+@wtb_continuation
+title: Blicken wir auf unsere Ergebnisse zurück und setzen wir unsere Umsetzung fort...
+view-if: wtb_implemented >= 1 and wtb_implemented <= 2
+on-arrival: budget += 1 if works_program <= 2; unemployed -= 5 if (works_program <= 2 and unemployed > 15) else unemployed -= 3; unemployed += 3 if unemployed < 5; unemployed += 3 if unemployed < 0; workers += 2 if works_program <= 2 else workers += 1; workers_spd += 8*(1-dissent); unemployed_spd += 8*(1-dissent); workers_kpd -= 3; workers_nsdap -= 5; works_program += 1; z_relation += 3; dvp_relation += 3; coalition_dissent -= 1 if coalition_dissent >= 1; wtb_implemented += 1; capital_strike_progress -= 1 if capital_strike_progress >= 3; inflation += 1.5; inflation += 1 if unemployed < 10; economic_growth += 1.2; economic_growth -= 0.5 if economic_growth > 5
+
+Unsere Ausgaben für Arbeitsbeschaffungsprogramme haben zu einem geringeren Bedarf an Arbeitslosenversicherung und Sozialhilfe geführt sowie – dank des Multiplikatoreffekts, während das neue Geld durch die Wirtschaft fließt – zu höheren Steuereinnahmen, wodurch ein Teil der Ausgaben wieder hereingeholt wird. Wir investieren weiterhin den Großteil der neuen Einnahmen in das Programm.
+
+Der Wirtschaft geht es endlich besser. Selbst die bürgerlichen Parteien beginnen, zur Einsicht zu gelangen.
+
+[? if in_popular_front or in_left_front: Die KPD lehnt jedoch weiterhin unsere Politik der „Rettung“ des Kapitalismus ab. ?]
+
+@implement_wtb_no_deficit
+title: WTB-Plan etablieren.
+subtitle: -[+ wtb_budget +] Budget. [? if wtb_budget == 3 : Unsere Gewerkschaftsfreundliche Politik hat die Kosten des Plans gesenkt. ?]
+unavailable-subtitle: Die Arbeitslosigkeit ist so niedrig, dass die Zeit für den WTB-Plan abgelaufen ist.
+view-if: budget >= wtb_budget and wtb_implemented == 0 and wtb_adopted == 1
+choose-if: unemployed > 8
+on-arrival: budget -= wtb_budget; works_program += 1; unemployed -= 4; workers_spd += 8*(1-dissent); unemployed_spd += 8*(1-dissent); wtb_implemented += 1; kpd_coalition_dissent += 1; kpd_relation -= 5 if in_popular_front or in_left_front; inflation += 2; economic_growth += 2.8; pro_republic += 3*(1-dissent);
+achievement: wirtschaftspolitik
+
+Wir haben mit der Umsetzung des WTB-Plans begonnen. Über Investitionen in groß angelegte Arbeitsbeschaffungsprogramme beginnt Geld in die Wirtschaft zu fließen.
+
+[? if in_popular_front or in_left_front: Die KPD lehnt den WTB-Plan ab, da sie ihn eher als Rettung des Kapitalismus denn als Schritt hin zu einem echten Sozialismus betrachtet. ?]
+
+@implement_wtb_deficit
+title: WTB-Plan etablieren.
+subtitle: -[+ wtb_budget +] Budget - wir werden ein Defizit verzeichnen. [? if wtb_budget == 3 : Unsere Gewerkschaftsfreundliche Politik hat die Kosten des Plans gesenkt. ?]
+unavailable-subtitle: Die Arbeitslosigkeit ist so niedrig, dass die Zeit für den WTB-Plan abgelaufen ist.
+view-if: budget < wtb_budget and wtb_implemented == 0 and wtb_adopted == 1
+choose-if: unemployed > 8
+on-arrival: coalition_dissent += 1; coalition_dissent += 1 if historical_mode; coalition_dissent += 1 if chancellor == "Brüning"; works_program += 1; budget -= wtb_budget; unemployed -= 4; workers += 2; workers_spd += 8*(1-dissent); unemployed_spd += 8*(1-dissent); capital_strike_progress += 1; wtb_implemented += 1; kpd_coalition_dissent += 1; kpd_relation -= 5 if in_popular_front or in_left_front; inflation += 3; economic_growth += 3; pro_republic += 3*(1-dissent);
+achievement: wirtschaftspolitik
+
+Wir sind in die Phase der defizitären Ausgabenpolitik eingetreten. Unsere Koalitionspartner sind empört, doch das Arbeitsbeschaffungsprogramm wird dennoch umgesetzt. Über Investitionen in groß angelegte öffentliche Bauvorhaben beginnt Geld in die Wirtschaft zu fließen.
+
+[? if in_popular_front or in_left_front: Die KPD lehnt den WTB-Plan ab, da sie ihn eher als Rettung des Kapitalismus denn als Schritt hin zu einem echten Sozialismus betrachtet. ?]
+
+
+####################### left economic policies (socializations)
+
+@nationalize_1
+title: Den linken Plan zur Umgestaltung der Wirtschaft umsetzen.
+subtitle: -[+ nationalize_budget +] Budget. [? if works_councils >= 3 : Unsere Betriebsräte haben das für dieses Programm erforderliche Budget reduziert. ?] [? if socializations >= 2: Unsere bestehenden Sozialisierungsrichtlinien haben das für dieses Programm erforderliche Budget verringert. ?]
+view-if: nationalization_adopted == 1 and nationalization_progress == 0
+go-to: nationalize_deficit if budget < nationalize_budget; nationalize_no_deficit if budget >= nationalize_budget
+
+
+@nationalize_no_deficit
+on-arrival: nationalization_progress += 1; capital_strike_progress += 2; unemployed -= 3.5 if unemployed >= 6; unemployed -= 1.2 if works_councils >= 3; workers += 2 if nationalization_progress < 2; budget -= nationalize_budget; works_program += 1; workers_spd += 8*(1-dissent); unemployed_spd += 5*(1-dissent); coalition_dissent += 1; dvp_relation -= 4; left_dissent -= 5; new_middle_spd -= 2; old_middle_spd -= 3; economy_goal_completed += 1; inflation += 2; economic_growth += 1.7 if economic_growth < 5;
+achievement: wirtschaftspolitik
+
+[? if nationalization_progress == 1 : Wir haben damit begonnen, stillstehende Betriebe von den Kapitalisten zu erwerben[? if works_councils >= 1: und sie in Abstimmung mit befugten Betriebsräten zu betreiben ?]. Indem wir die Produktion aufrechterhalten, können wir der steigenden Arbeitslosigkeit entgegenwirken. ?]
+
+[? if nationalization_progress == 1 : Die Linke argumentiert, dass dies lediglich ein erster Schritt zur sozialistischen Umgestaltung der Wirtschaft sein sollte. Letztendlich müsse ein Großteil der Wirtschaft unter gesellschaftliche Kontrolle gebracht werden. ?]
+
+[? if nationalization_progress > 1 : Wir erwerben weitere, unzureichend genutzte Unternehmen und führen sie in koordinierter sozialistischer Weise gemeinsam mit den Betriebsräten, wobei wir zuvor entlassene Arbeitskräfte wieder einstellen. Ein bedeutender Teil der Wirtschaft steht nun unter öffentlicher Kontrolle. ?]
+
+@nationalize_deficit
+
+Leider verfügen wir nicht über die finanziellen Mittel, um mit dem Aufkauf von Industrieanlagen zu beginnen. Manche fordern eine kreditfinanzierte Ausgabenpolitik, um Fabriken zu erwerben, während andere zur – derzeit illegalen – Übernahme von Fabriken durch die Belegschaft oder zur entschädigungslosen Verstaatlichung aufrufen. Jeder dieser Schritte würde einen radikalen Bruch mit unseren bisherigen Parteistandpunkten bedeuten.
+
+- @nationalize_deficit_1
+- @nationalize_without_compensation
+- @empower_workers
+- @return: Nein, wir sollten das nicht tun.
+
+
+@nationalize_deficit_1
+title: Um das Verstaatlichungsprogramm zu finanzieren, wird ein Haushaltsdefizit in Kauf genommen.
+choose-if: left_strength > reformist_strength + center_strength or woytinsky_advisor == 1
+subtitle: [? if woytinsky_advisor: Woytinsky kann uns helfen, ein Haushaltsdefizit zu unterstützen. ?]
+unavailable-subtitle: [? if left_strength <= reformist_strength + center_strength: Die Partei befürwortet für diesen Zweck noch keine Haushaltsdefizite. ?] [? if not woytinsky_advisor : Vielleicht könnte es helfen, einen Berater hinzuzuziehen, um diese Maßnahme schmackhaft zu machen? ?]
+on-arrival: nationalization_progress += 1; capital_strike_progress += 3; unemployed -= 3 if unemployed >= 6; unemployed -= 1.2 if works_councils >= 3; budget -= nationalize_budget; works_program += 1; workers_spd += 8*(1-dissent); unemployed_spd += 5*(1-dissent); coalition_dissent += 2; dvp_relation -= 6; z_relation -= 4; new_middle_spd -= 3; old_middle_spd -= 3; economy_goal_completed += 1; inflation += 3; economic_growth += 2 if economic_growth < 5;
+achievement: wirtschaftspolitik
+
+[? if woytinsky_advisor: Der Großteil der Partei – selbst auf dem linken Flügel – lehnt Haushaltsdefizite für jegliche Zwecke ab; eine Ausnahme bildet Wladimir Woytinsky. Zwar unterstützte er ursprünglich nicht den auf einen Strukturwandel abzielenden Plan der Linken, doch hat er seine Haltung inzwischen geändert und die Partei sowie das Finanzministerium davon überzeugt, Haushaltsdefizite in begrenztem Umfang zu befürworten, um den Weg aus der Depression zu ebnen. ?]
+
+[? if nationalization_progress == 1 : Wir haben damit begonnen, stillstehende Betriebe von den Kapitalisten zu erwerben[? if works_councils >= 1: und sie in Abstimmung mit befugten Betriebsräten zu betreiben ?]. Indem wir die Produktion aufrechterhalten, können wir der steigenden Arbeitslosigkeit entgegenwirken. ?]
+
+[? if nationalization_progress == 1 : Die Linke argumentiert, dass dies lediglich ein erster Schritt zur sozialistischen Umgestaltung der Wirtschaft sein sollte. Letztendlich müsse ein Großteil der Wirtschaft unter gesellschaftliche Kontrolle gebracht werden. ?]
+
+[? if nationalization_progress > 1 : Wir erwerben weitere, unzureichend genutzte Unternehmen und führen sie in koordinierter sozialistischer Weise gemeinsam mit den Betriebsräten, wobei wir zuvor entlassene Arbeitskräfte wieder einstellen. Ein bedeutender Teil der Wirtschaft steht nun unter öffentlicher Kontrolle. ?]
+
+@nationalize_without_compensation
+title: Verstaatlichung ohne Entschädigung.
+subtitle: Es gibt keinen Grund, warum wir nicht einfach stillgelegte Fabriken übernehmen sollten. Dies dürfte eine Konfrontation mit den Kapitalisten heraufbeschwören.
+unavailable-subtitle: [? if left_strength <= reformist_strength + center_strength: Der Großteil der Partei unterstützt diese quasi-rechtliche Maßnahme nicht. ?] [? if judicial_reform < 3 : Die Justiz würde sich dieser Maßnahme widersetzen. ?]
+choose-if: left_strength > reformist_strength + center_strength and judicial_reform >= 3
+on-arrival: nationalization_progress += 1; capital_strike_progress += 7; coup_progress += 3; unemployed -= 2.5 if unemployed >= 6; unemployed -= 1.2 if works_councils >= 3 and unemployed >= 3; works_program += 1; workers_spd += 8*(1-dissent); unemployed_spd += 6*(1-dissent); coalition_dissent += 2; dvp_relation -= 10; z_relation -= 8; ddp_relation -= 8; left_strength += 15; reformist_dissent += 10; left_dissent -= 10; new_middle_spd -= 5; old_middle_spd -= 8; economy_goal_completed += 1; kpd_relation += 5*(1-dissent); inflation += 4; economic_growth += 1 if economic_growth < 4;
+achievement: wirtschaftspolitik
+
+Wie zu erwarten, laufen die Kapitalisten gegen unsere Politik der entschädigungslosen Verstaatlichung Sturm. Man nennt es illegale Enteignung und das ist es auch. Dennoch ist offensichtlich, dass sie versagt haben, indem sie ihre Fabriken stillstehen ließen; daher müssen wir radikale Maßnahmen ergreifen.
+
+[? if nationalization_progress == 1 : Wir haben damit begonnen, stillgelegte Betriebe von den Kapitalisten zu übernehmen[? if works_councils >= 1: und sie in Abstimmung mit handlungsfähigen Betriebsräten zu führen ?]. Indem wir die Produktion aufrechterhalten, können wir der steigenden Arbeitslosigkeit entgegenwirken. ?]
+
+[? if nationalization_progress > 1 : Wir haben weitere, unzureichend genutzte Betriebe übernommen und führen sie in koordinierter sozialistischer Weise gemeinsam mit den Betriebsräten, wobei wir zuvor entlassene Arbeitskräfte wieder eingestellt haben. Ein bedeutender Teil der Wirtschaft steht nun unter öffentlicher Kontrolle. ?]
+
+@empower_workers
+title: Ermächtigt die Arbeiter, die Fabriken zu übernehmen.
+subtitle: Wir können versprechen, Fabrikbesetzungen zu legalisieren und die Betriebe an Gewerkschaften zu übergeben. Dies ist ein hochgradig konfrontativer Schritt, der wahrscheinlich Reaktionen sowohl von rechten Militanten als auch von Kapitalisten hervorrufen würde.
+unavailable-subtitle: [? if left_strength <= reformist_strength + neorevisionist_strength : Der Großteil der Partei unterstützt diese radikale Maßnahme nicht. ?] [? if judicial_reform < 3 : Die Justiz würde sich dieser Maßnahme widersetzen. ?] [? if rb_militancy < 0.25 : Wenn wir die Stärke unserer paramilitärischen Kräfte erhöhten, könnten wir dies vielleicht tun. ?] [? if works_councils < 1 : Wir benötigen zunächst die Unterstützung der Betriebsräte. ?]
+choose-if: left_strength > reformist_strength + neorevisionist_strength and (judicial_reform >= 3 or rb_militancy >= 0.25) and works_councils >= 1
+on-arrival: nationalization_progress += 1; capital_strike_progress += 6; coup_progress += 5; unemployed -= 3 if unemployed >= 6; unemployed -= 1.5 if works_councils >= 3 and unemployed > 4; works_program += 1; workers_spd += 10*(1-dissent); unemployed_spd += 10*(1-dissent); coalition_dissent += 2; dvp_relation -= 10; z_relation -= 8; ddp_relation -= 8; workers_nsdap -= 5*(1-dissent); unemployed_nsdap -= 5*(1-dissent); left_strength += 15; reformist_dissent += 10; left_dissent -= 10; new_middle_spd -= 5; old_middle_spd -= 10; factory_takeovers += 1; economy_goal_completed += 1; kpd_relation += 5*(1-dissent); inflation += 3; economic_growth += 1 if economic_growth < 3;
+achievement: wirtschaftspolitik
+
+Wie zu erwarten, laufen die Kapitalisten gegen unsere Politik der Legalisierung von Fabrikbesetzungen Sturm. Sie bezeichnen dies als illegale Enteignung und das ist es auch. Dennoch ist offensichtlich, dass sie gescheitert sind, und wir müssen radikale Maßnahmen ergreifen.
+
+Faschisten gehen zunehmend gewaltsam gegen die besetzten Fabriken vor und beschimpfen uns als Diebe und Plünderer. Allerdings konnten einige der Arbeiter, die die Faschisten unterstützten, von ihnen abgelöst werden, zumindest jene, die über ein Bewusstsein für Klassensolidarität verfügen.
+
+
+@nationalize_2
+title: Den linken Plan zur Umgestaltung der Wirtschaft fortsetzen.
+subtitle: -[+ nationalize_budget +] Budget. [? if works_councils >= 3 : Unsere Betriebsräte haben das für dieses Programm erforderliche Budget reduziert. ?] [? if socializations + nationalization_progress >= 2: Unsere bestehenden Sozialisierungsmaßnahmen haben das für dieses Programm erforderliche Budget verringert. ?]
+view-if: nationalization_adopted == 1 and nationalization_progress >= 1
+go-to: nationalize_deficit if budget < nationalize_budget; nationalize_no_deficit if budget >= nationalize_budget
+
+#######################################
+# Moderate economic plan
+
+@moderate_plan
+title: Setzen wir den Plan der Reformer zur Schaffung von Arbeitsplätzen um.
+subtitle: -2 Budget.
+unavailable-subtitle: -2 budget. [? if budget < 2 : Wir verfügen nicht über das erforderliche Budget. ?] [? if unemployed < 8 : Die Arbeitslosigkeit ist niedrig genug, dass die Schaffung von Arbeitsplätzen nicht erforderlich ist. ?]
+view-if: moderate_plan_adopted == 1
+choose-if: budget >= 2 and unemployed >= 8
+on-arrival: budget -= 2; works_program += 1; unemployed -= 3 if unemployed >= 8; inflation += 1.5; workers_spd += 6*(1-dissent); unemployed_spd += 4*(1-dissent); new_middle_spd += 3*(1-dissent); old_middle_spd += 2*(1-dissent); rural_spd += 2*(1-dissent); moderate_plan_progress += 1; kpd_coalition_dissent += 1; inflation += 1 if unemployed < 10; kpd_relation -= 5 if in_popular_front or in_left_front; economic_growth += 1.6; pro_republic += 3*(1-dissent);
+achievement: wirtschaftspolitik
+
+[? if moderate_plan_progress == 1 : Wir haben mit der Umsetzung des Plans zur Schaffung von Arbeitsplätzen begonnen! Es werden Gelder für öffentliche Bauprogramme in ganz Deutschland bereitgestellt, um die Arbeitslosigkeit zu verringern. ?]
+
+[? if moderate_plan_progress > 1 : Wir haben die Finanzierung des Programms zur Schaffung von Arbeitsplätzen fortgesetzt und unsere Mittel für öffentliche Bauprogramme in ganz Deutschland eingesetzt. ?]
+
+[? if unemployed >= 10 : Das Bürgertum billigt diesen Plan als die „am wenigsten schlechte“ Alternative und hält ihn für notwendig, um Deutschlands Wirtschaft zu retten. ?]
+
+[? if unemployed < 10 : Die Arbeitslosigkeit ist so niedrig, dass der Plan nicht die beabsichtigte Wirkung zu haben scheint. ?]
+
+[? if in_popular_front or in_left_front: Die KPD lehnt den Wirtschaftsplan ab, da sie ihn eher als Rettung des Kapitalismus denn als Schritt hin zum wirklichen Sozialismus betrachtet. ?]
+
+@moderate_plan_limited_budget
+title: Den Plan der Reformer zur Schaffung von Arbeitsplätzen teilweise und zu geringeren Kosten umsetzen.
+subtitle: -1 Budget.
+unavailable-subtitle: -1 Budget. [? if budget < 1 : Wir verfügen nicht über das erforderliche Budget. ?] [? if unemployed < 8 : Die Arbeitslosigkeit ist niedrig genug, dass die Schaffung von Arbeitsplätzen nicht erforderlich ist. ?]
+view-if: moderate_plan_adopted == 1
+choose-if: budget >= 1 and unemployed >= 8
+on-arrival: budget -= 1; works_program += 1; unemployed -= 2 if unemployed >= 8; inflation += 1; workers_spd += 4*(1-dissent); unemployed_spd += 2*(1-dissent); new_middle_spd += 2*(1-dissent); old_middle_spd += 1*(1-dissent); rural_spd += 1*(1-dissent); moderate_plan_progress += 1; kpd_coalition_dissent += 1; inflation += 1 if unemployed < 10; kpd_relation -= 5 if in_popular_front or in_left_front; economic_growth += 0.7; pro_republic += 3*(1-dissent);
+achievement: wirtschaftspolitik
+
+[? if moderate_plan_progress == 1 : Wir haben mit der Umsetzung des Arbeitsbeschaffungsplans begonnen! Es werden Gelder für den Bau öffentlicher Bauprojekte in ganz Deutschland bereitgestellt, wodurch die Arbeitslosigkeit verringert wird. ?]
+
+[? if moderate_plan_progress > 1 : Wir haben die Finanzierung des Programms zur Schaffung von Arbeitsplätzen fortgesetzt und unsere Mittel für den Bau öffentlicher Einrichtungen in ganz Deutschland eingesetzt. ?]
+
+[? if unemployed >= 10 : Das Bürgertum billigt diesen Plan als die „am wenigsten schlechte“ Alternative und hält ihn für notwendig, um Deutschlands Wirtschaft zu retten. ?]
+
+[? if unemployed < 10 : Die Arbeitslosigkeit ist so niedrig, dass der Plan nicht die beabsichtigte Wirkung zu haben scheint. ?]
+
+[? if in_popular_front or in_left_front: Die KPD lehnt den Wirtschaftsplan ab, da sie ihn eher als Rettung des Kapitalismus denn als Schritt hin zum wirklichen Sozialismus betrachtet. ?]

@@ -1,0 +1,43 @@
+title: Nazi-Aufmarsch in Altona
+new-page: true
+subtitle: Eine SA-Demonstration mit Gewaltpotenzial
+tags: event
+view-if: year == 1932 and month == 6 and sa_banned == 0 and spd_prussia == 1
+max-visits: 1
+
+= Nazi-Aufmarsch in Altona
+
+Die nationalsozialistische SA plant einen Aufmarsch durch Altona, einen Hamburger Stadtteil mit einem hohen Arbeiteranteil. Altona gilt als Hochburg der Kommunisten, und der geplante Aufmarsch wird mit an Sicherheit grenzender Wahrscheinlichkeit zu gewaltsamen Auseinandersetzungen führen.
+
+- @ban_march: Verbieten wir den Marsch, bevor er beginnt.
+- @allow_police: Gestatten wir den Marsch unter starker Polizeipräsenz.
+- @allow_no_police: Gestatten wir den Marsch ohne Polizeipräsenz.
+
+@ban_march
+choose-if: judicial_reform >= 2
+unavailable-subtitle: Die Justiz würde uns nicht gestatten, den Protest zu verbieten, aufgrund der Meinungsfreiheit.
+on-arrival: sa_strength -= 10
+
+Wir haben den geplanten Protest untersagt. Die Nazis fechten das Verbot unter Berufung auf die Meinungsfreiheit gerichtlich an. Glücklicherweise stimmt uns die Justiz darin zu, dass die Argumentation der Nazis fadenscheinig ist.
+
+
+@allow_police
+go-to: allow_police_violence if prussian_police_loyalty <= 0.75; allow_police_no_violence if prussian_police_loyalty > 0.75 
+
+@allow_police_violence
+on-arrival: strife += 1; sa_strength += 50; kpd_relation -= 8; communist_coalition -= 1
+
+Als der Marsch in Altona eintrifft, sehen sich die Teilnehmer sofort einer wütenden Menge von Kommunisten und Sozialisten gegenüber, die Gegenstände auf die Nationalsozialisten werfen. Die Polizei versucht vergeblich, die beiden Gruppen zu trennen. Es fallen Schüsse, die Berichten zufolge von Scharfschützen auf den Dächern abgegeben werden (die die Polizei für Kommunisten hält). Als Reaktion darauf feuert die Polizei in die umliegenden Gebäude. Dutzende Menschen kommen ums Leben. Es stellt sich heraus, dass es sich ausschließlich um Zivilisten handelt; die gemeldeten Scharfschützen werden nie gefunden.
+
+Dieser Vorfall wurde in den Medien als „Altonaer Blutsonntag“ bezeichnet. Die Kommunisten prangern die Unfähigkeit der Polizei an, die angeblich unter unserem Befehl steht.
+
+@allow_police_no_violence
+on-arrival: sa_strength += 10
+
+Als der Marsch in Altona eintrifft, sehen sich die Teilnehmer sofort einer wütenden Menge von Kommunisten und Sozialisten gegenüber, die Gegenstände auf die Nationalsozialisten werfen. Die Polizei versucht vergeblich, die beiden Gruppen zu trennen. Es fallen Schüsse, die Berichten zufolge von Scharfschützen auf den Dächern abgegeben werden. Der Polizei gelingt es, die Ruhe zu bewahren; die Schüsse verstummen, und der Marsch löst sich ohne weitere Gewalttätigkeiten auf.
+
+
+@allow_no_police
+on-arrival: sa_strength += 80; rfb_strength += 50; strife += 1; kpd_relation -= 8; communist_coalition -= 1
+
+Als der Marsch in Altona eintrifft, sehen sich die Teilnehmer sofort einer wütenden Menge von Kommunisten und Sozialisten gegenüber, die Gegenstände auf die Nationalsozialisten werfen. Es fallen Schüsse, die Berichten zufolge von Scharfschützen auf den Dächern abgegeben werden. Daraufhin geht die SA gegen die umstehende Menge vor und feuert auf die umliegenden Gebäude. Dutzende Menschen kommen ums Leben, überwiegend Zivilisten. Die Nationalsozialisten instrumentalisieren ihre toten Märtyrer für ihre Zwecke.

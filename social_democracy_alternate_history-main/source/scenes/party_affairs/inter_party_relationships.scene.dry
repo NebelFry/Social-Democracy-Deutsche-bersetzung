@@ -1,0 +1,120 @@
+title: Beziehungen zu anderen Parteien
+new-page: true
+view-if: year <= 1932 and inter_party_relationships_timer <= 0
+tags: party_affairs
+is-card: true
+on-arrival: month_actions += 1; inter_party_relationships_timer = 6;
+card-image: img/weimar_coalition_2.jpg
+max-visits: 12
+#subtitle: Aufbau von Beziehungen zu den anderen politischen Parteien Deutschlands.
+
+= Beziehungen zu anderen Parteien
+
+Die SPD kann noch nicht allein regieren. Da wir über keine parlamentarische Mehrheit verfügen, sind wir auf die Unterstützung anderer Parteien angewiesen. Zuletzt wurden unsere Regierungen von der sogenannten Weimarer Koalition aus SPD, Zentrum und demokratischen Parteien gebildet. Wir können auf diese Parteien zugehen und unsere Verbindungen zu ihnen ausbauen – oder aber wir treten bleiben allein.
+
+- @liberals: Stärken wir unsere Verbindungen zur linksliberalen Deutschen Demokratischen Partei (DDP) und zur konservativ-liberalen Deutschen Volkspartei (DVP).
+- @center: Stärken wir unsere Verbindung mit der katholischen Zentrumspartei.
+- @kpd: Arbeiten wir darauf hin, die Beziehungen zur Kommunistischen Partei zu reparieren.
+- @spd_alone: Die SPD kann vorerst alleine stehen.
+- @easy_discard
+
+
+@kpd
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Reesourcen.
+on-arrival: resources -= 1; kpd_inter_party_seen += 1
+go-to: kpd_blutmai if blutmai = 1; kpd_1 if blutmai = 0 and kpd_coalition_success = 0 and (kpd_relation < 40 or kpd_rectified_history = 1); kpd_rectification_of_history if kpd_relation >= 40 and kpd_rectified_history = 0; kpd_2 if kpd_coalition_success = 1 and kpd_rectified_history = 1
+
+@kpd_1
+on-arrival: kpd_relation += 6*(1 - dissent); communist_coalition += 1 if kpd_inter_party_seen <= 1; reformist_dissent += 2; z_relation -= 2; dvp_relation -= 3
+
+Die Kommunisten stehen unseren Annäherungsversuchen misstrauisch gegenüber – insbesondere die stalinistische Führung, die uns beharrlich als „Sozialfaschisten“ bezeichnet. Dennoch entstehen Verbindungen an der Basis und auf lokaler Ebene.
+
+@kpd_rectification_of_history
+
+Ein Hindernis für unsere Beziehungen zur KPD ist unsere konfliktreiche gemeinsame Geschichte, die bis in die Jahre 1918 und 1919 zurückreicht. Besonders verachtet die KPD Gustav Noske, jenen SPD-„Bluthund“, der Berichten zufolge die gewaltsame Niederschlagung des Spartakusaufstands und anderer KPD-Erhebungen angeordnet hatte. Zudem macht man uns für den Tod von Rosa Luxemburg und Karl Liebknecht verantwortlich – zwei Führungspersönlichkeiten, die von der SPD zur KPD gewechselt waren und während der Niederschlagung des Aufstands getötet wurden.
+
+Für weitere Verbesserungen der Beziehungen zur KPD könnte es notwendig sein, Noske auszuschließen und eine Art Gedenkfeier für Luxemburg und Liebknecht abzuhalten.
+
+- @yes_history: Ja, wir müssen uns für unsere früheren Handlungen entschuldigen.
+- @no_history: Nein, wir haben keinen Grund, uns zu entschuldigen.
+
+@yes_history
+on-arrival: reformist_dissent += 12; reformist_strength -= 2; neorevisionist_dissent += 5; left_dissent -= 6; left_strength += 5; kpd_rectified_history = 1; z_relation -= 6; dvp_relation -= 6; ddp_relation -= 4; kpd_relation += 8*(1-dissent); coalition_dissent += 1
+
+Im Zuge der Normalisierung der Beziehungen zur KPD müssen wir das Unrecht unserer Vergangenheit anerkennen. Wir haben Noske ausgeschlossen und öffentliche Gedenkfeiern für diejenigen abgehalten, die während der Aufstände von Truppen getötet wurden.
+
+Dies führt zu Spannungen mit den Zentristen und Reformern innerhalb unserer Partei sowie zu Kritik vonseiten der konservativen und liberalen Parteien.
+
+@no_history
+on-arrival: kpd_relation -= 3
+
+Wir haben keinen Grund, uns für das Handeln von Ebert und Noske zu entschuldigen; die Schuld liegt bei den Kommunisten, die einen gewaltsamen Aufstand angezettelt haben.
+
+
+@kpd_2
+on-arrival: kpd_relation += 8*(1 - dissent); communist_coalition += 1 if kpd_inter_party_seen <= 1; reformist_dissent += 2; z_relation -= 3; dvp_relation -= 3
+
+Nach dem Erfolg der Koalitionsregierung mit der KPD sind sie uns gegenüber deutlich aufgeschlossener.
+
+@kpd_blutmai
+on-arrival: kpd_relation += 3*(1 - dissent); reformist_dissent += 1
+
+Nach den Ereignissen des „Blutmai“ ist eine Versöhnung mit den Kommunisten schwierig, wenn nicht gar unmöglich. Dennoch müssen wir es versuchen.
+
+@center
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Reesourcen.
+on-arrival: resources -= 1; z_relation += 2 if z_party_leader == "Joos"
+go-to: center_op if z_in_government = 1 and spd_in_government = 0 and chancellor != "Brüning"; center_coalition if spd_in_government = 1 and z_in_government = 1; center_bruning if chancellor = "Brüning"
+
+@center_op
+on-arrival: z_relation += 5*(1 - dissent)
+
+Wir befinden uns derzeit in Opposition zur Regierung unter Führung der Zentrumspartei, doch dies schließt den allgemeinen Aufbau von Wohlwollen nicht aus.
+
+@center_coalition
+on-arrival: z_relation += 8*(1 - dissent)
+
+Wir sind derzeit Koalitionspartner, daher ergibt sich eine Verbesserung der Beziehungen ganz natürlich.
+
+@center_bruning
+on-arrival: z_relation += 5*(1 - dissent)
+
+Das halbautokratische Brüning-Regime macht den Aufbau freundschaftlicher Beziehungen schwierig, aber nicht unmöglich.
+
+@liberals
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Reesourcen.
+on-arrival: resources -= 1; ddp_relation += 5*(1 - dissent)
+go-to: dvp_stresemann if stresemann_dead = 0; dvp_loss if stresemann_dead = 1 and year <= 1930; dvp_moribund if year > 1930
+
+Die [+ ddp_name +] war im Laufe der Geschichte der Republik eine unserer engsten Verbündeten.
+
+@dvp_stresemann
+on-arrival: dvp_relation += 8*(1 - dissent)
+
+Gustav Stresemann, der Vorsitzende der DVP, zählt zu den herausragenden außenpolitischen Führungspersönlichkeiten der Republik; wenngleich er früher monarchistische Tendenzen erkennen ließ, hat er sich uns gegenüber freundlich verhalten.
+
+@dvp_loss
+on-arrival: dvp_relation += 5*(1 - dissent)
+
+Nach dem Tod Gustav Stresemanns ist es weitaus unwahrscheinlicher, dass uns die DVP entgegenkommt. Zudem befinden sich die liberalen Parteien im Abwärtstrend; womöglich sind unsere Bemühungen daher an anderer Stelle besser investiert.
+
+Angesichts des Einflusses der DVP auf die übrigen rechtsgerichteten Parteien [? if president == "Hindenburg": und mit Reichspräsident Hindenburg ?], kann es dennoch hilfreich sein, sie zu beeinflussen.
+
+@dvp_moribund
+on-arrival: dvp_relation += 5*(1 - dissent)
+
+Die liberalen Parteien (sowohl die [+ ddp_name +] als auch die DVP) sind politisch dem Untergang geweiht; vielleicht sind unsere Bemühungen daher an anderer Stelle besser aufgehoben.
+
+Angesichts des Einflusses der DVP auf die übrigen rechtsgerichteten Parteien [? if president == "Hindenburg": und mit Reichspräsident Hindenburg ?], kann es dennoch hilfreich sein, sie zu beeinflussen.
+
+@spd_alone
+
+Ob wir nun nicht können oder wollen – wir verbessern derzeit keine Beziehungen mit anderen Parteien.
+
+- @return: Weitermachen...

@@ -1,0 +1,70 @@
+title: Fragen der Ideologie
+new-page: true
+is-card: true
+tags: party_affairs
+view-if: ideology_timer = 0
+on-arrival: month_actions += 1; old_ideology = ideology; ideology_timer = 18
+card-image: img/arbeiterbew.jpg
+max-visits: 3
+#subtitle: Festlegung der ideologischen Ausrichtung der Partei.
+
+= Fragen der Ideologie
+
+Die SPD ist zwischen vielen verschiedenen ideologischen Strömungen hin- und hergerissen. Was sollte vorerst unsere vorrangige ideologische Orientierung sein?
+
+[? if ideology != 0 : Wir haben uns zuvor für eine [+ ideology +] Ideologie entschieden. Eine Änderung wird wahrscheinlich Nachteile mit sich bringen. ?]
+
+- @class_struggle: Klassenkampf und die Vorbereitung des Proletariats auf die Revolution sind unsere vorrangigen Ziele.
+- @centrist: Der Marxismus der Mitte von Karl Kautsky bleibt der beste Weg, unsere inneren Widersprüche zu lösen.
+- @labor: Wir sollten mit den Gewerkschaften zusammenarbeiten, um das Leben der Arbeiter zu verbessern.
+- @reform: Im Sinne Eduard Bernsteins sollten wir uns für einen ethischen Sozialismus einsetzen, die Demokratie stärken und die Wählerbasis der Partei erweitern.
+- @easy_discard
+
+@class_struggle
+on-arrival: {!
+if (Q.ideology && Q.ideology != "left") {
+    Q.changed = 1;
+}
+!}
+go-to: changed if changed = 1
+on-departure: ideology = "left"; left_strength += 10; communist_coalition += 1; left_dissent -= 5; z_relation -= 3; dvp_relation -= 5; nationalization_support += 1; kpd_relation += 3
+
+Der radikale Flügel der Partei befürwortet einen Kurs des Klassenkampfs und möglicherweise eine Versöhnung mit den Kommunisten.
+
+@centrist
+on-arrival: {!
+if (Q.ideology && Q.ideology != "centrist") {
+    Q.changed = 1;
+}
+!}
+go-to: changed if changed = 1
+on-departure: ideology = "centrist"; center_strength += 10; center_dissent -= 10; left_dissent -= 5; reformist_dissent -= 5
+
+Die Zentrums-Marxisten, vertreten durch Kautsky und Hilferding, befürworten einen Mittelweg; die Vorbereitung auf die Revolution bei gleichzeitiger Stärkung des Klassenbewusstseins der Arbeiterklasse.
+
+@labor
+on-arrival: {!
+if (Q.ideology && Q.ideology != "labor") {
+    Q.changed = 1;
+}
+!}
+go-to: changed if changed = 1
+on-departure: ideology = "labor"; labor_strength += 10; wtb_support += 1; labor_dissent -= 5; kpd_relation -= 3
+
+Der Gewerkschaftsflügel der Partei befürwortet die weitere Regierungsbeteiligung, um den Arbeitern Vorteile zu verschaffen, sowie die Schaffung öffentlicher Beschäftigungsprogramme.
+
+@reform
+on-arrival: {!
+if (Q.ideology && Q.ideology != "reformist") {
+    Q.changed = 1;
+}
+!}
+go-to: changed if changed = 1
+on-departure: ideology = "reformist"; reformist_strength += 10; democratization += 1; reformist_dissent -= 5; z_relation += 5; dvp_relation += 5; kpd_relation -= 8; moderate_plan_support += 1
+
+Der reformorientierte Flügel der Partei strebt den Erhalt der Republik sowie des demokratischen Regierungssystems an und befürwortet nachdrücklich Koalitionen mit den anderen demokratischen Parteien.
+
+@changed
+on-arrival: left_dissent += 5; center_dissent += 5; labor_dissent += 5; reformist_dissent += 5
+
+Wir haben unsere Ideologie gewandelt. Viele fühlen sich losgelöst von der Partei.

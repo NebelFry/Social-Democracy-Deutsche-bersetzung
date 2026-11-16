@@ -1,0 +1,26 @@
+on-arrival: {!
+// Einigkeit - Auf „Einfach“ ohne Bürgerkrieg überleben.
+// Einigkeit und Recht - auf mittlerem Schwierigkeitsgrad ohne Bürgerkrieg überleben.
+// Einigkeit und Recht und Freiheit - Auf „Schwer“ ohne Bürgerkrieg überleben.
+if (Q.difficulty < 0) {
+    this.achieve('einigkeit');
+} else if (Q.difficulty == 0) {
+    this.achieve('einigkeit_und_recht');
+} else if (Q.difficulty > 0) {
+    this.achieve('einigkeit_und_recht_und_freiheit');
+}
+
+if (Q.historical_mode) {
+    this.achieve('schwarz_rot_gold');
+}
+// Brüder, zur Sonne, zur Freiheit - Die Arbeitslosigkeit senken, Reparationszahlungen aussetzen, Frauenrechte stärken, Otto Braun zum Präsidenten wählen und Hitler abschieben – alles in einem einzigen Spieldurchgang auf mindestens dem Schwierigkeitsgrad „Normal“.
+if (Q.difficulty >= 0 && (Q.president == "Braun" || Q.president == "Schumacher" || Q.president == "Juchacz") && !(Q.chancellor == "Hitler") && Q.unemployed < 20 && Q.year >= 1933 && !Q.civil_war_seen && Q.hitler_deported && Q.reparations <= -2 && Q.womens_rights >= 3) {
+    this.achieve('bruder_zur_sonne');
+}
+// Freie Marktwirtschaft - gewinne ohne einen Wirtschaftsplan.
+if (!Q.economic_plan) {
+    this.achieve('freie_marktwirtschaft');
+}
+!}
+
+- @game_over: Spiel vorbei.

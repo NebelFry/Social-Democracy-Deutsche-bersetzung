@@ -1,0 +1,35 @@
+title: Hitler zum Reichskanzler ernannt!
+subtitle: Der Anfang vom Ende...
+view-if: year >= 1933 and president = "Hindenburg" and (chancellor = "Papen" or chancellor = "Schleicher") and in_grand_coalition = 0 and spd_in_government = 0 and largest_party = "NSDAP" and hitler_deported = 0 and not presidential_powers and not schleichers_scheme_success
+on-departure: chancellor = "Hitler"; chancellor_party = "NSDAP"
+tags: event
+new-page: true
+
+= Hitler zum Reichskanzler ernannt!
+
+Interne Intrigen der Camarilla um den Präsidenten veranlassten Präsident Hindenburg, Hitler zum Reichskanzler zu ernennen und damit den unpopulären Kanzler [+ chancellor +] zu ersetzen. [? if hitler_deported : Trotz seiner früheren Ausweisung haben die NS-Führer und ihre reaktionären Verbündeten darauf hingewirkt, dass der Präsident ihm schließlich doch die deutsche Staatsbürgerschaft verlieh. ?] Einige der Reaktionären in Hindenburgs Umfeld glauben, dass er Deutschland zu seinem vermeintlichen früheren Glanz zurückführen werde, während andere der Ansicht sind, sie könnten ihn und seine Bewegung kontrollieren.
+
+Er hat einen Rachefeldzug gegen die Sozialisten angekündigt, und die Nazis haben bereits Blut vergossen. In seinem veröffentlichten Manifest verspricht er eine Kampagne unsagbaren Schreckens gegen die Juden sowie endlose Kriege gewaltsamer Expansion, die ganz Europa ins Verderben stürzen werden.
+
+Was sollen wir jetzt tun?
+
+- @fight: Wir werden auf der Straße kämpfen, um zu verhindern, dass Hitler die Macht übernimmt.
+- @give_up: Wir werden im Reichstag gegen die Nazis stimmen.
+
+
+@fight
+
+Ist uns klar, dass dies einen Bürgerkrieg gegen die volle Macht des Staates bedeutet?
+
+- @civil_war: Ja.
+- @give_up: Wir sind nicht bereit für den Krieg. Stattdessen werden wir im Reichstag gegen die Nazis stimmen.
+
+@give_up
+
+Reden werden gehalten. Abstimmungen finden statt. Auf den Straßen fliegen Kugeln. Manche Sozialisten werden getötet oder inhaftiert. Andere fliehen aus dem Land. Was können Abstimmungen in dieser Situation überhaupt bewirken?
+
+Der Reichstag brennt – angeblich in Brand gesetzt von einem ausländischen Kommunisten. In der Folge erlassen die Nationalsozialisten Verordnungen, die ihnen uneingeschränkte Macht verleihen. Gemeinsam mit der DNVP werden sie bei den nächsten Wahlen die Mehrheit erringen.
+
+Deutschland ist verloren.
+
+- @game_over

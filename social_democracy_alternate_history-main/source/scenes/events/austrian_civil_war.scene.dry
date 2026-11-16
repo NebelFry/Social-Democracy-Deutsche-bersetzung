@@ -1,0 +1,89 @@
+title: Aufstand in Österreich
+new-page: true
+subtitle: Als Reaktion auf Polizeiangriffe erheben sich die österreichischen Sozialisten...
+view-if: year = 1934 and (month = 2 or month = 3) and austrian_parliament_seen
+max-visits: 1
+on-arrival: austrian_civil_war_seen = 1
+face-image: img/schutzbund.png
+tags: event
+
+= Aufstand in Österreich
+
+# pre-emptive democratic victory if sdapo strength >= 6
+# long civil war if sdapo_strength = 5 or 4 - opportunity for interference/forced peace
+# instant defeat if sdapo_strength < 4
+
+Die Krise in Österreich hält an. Die „austrofaschistische“ Regierung unter Engelbert Dollfuß regiert weiterhin per Notverordnung. Sie verfolgt ihre politische Opposition, allen voran die Sozialdemokraten der SDAPÖ.
+
+[? if sdapo_strength < 6: Nun gerät Österreich in einen Bürgerkriegszustand. Als die Polizei versuchte, Waffen des Republikanischen Schutzbundes zu beschlagnahmen, reagierte dieser mit Gewalt und feuerte auf Regierungstruppen. Überall in Österreich sind vereinzelt Kämpfe zwischen dem Schutzbund und Regierungstruppen ausgebrochen. ?]
+
+[? if sdapo_strength >= 6: Die Versuche der Regierung, die sozialistische Partei und den Schutzbund zu unterdrücken, stießen auf Massenproteste, die von der SPD[? if foreign_minister_party = "SPD":  und die deutsche Regierung ?]unterstützt werden. [? if eu_austria: Sie werden zudem von der kürzlich gegründeten Europäischen Union unterstützt und zwar durch Wirtschaftssanktionen, die sich gegen die Regierung richten. ?] ?]
+
+Schließlich...
+
+- @crushed
+- @long_war
+- @sdapo_victory
+
+@crushed
+title: Der aufständische Schutzbund wurde zerschlagen.
+on-arrival: austria_defeat = 1
+view-if: sdapo_strength < 4
+
+Der Aufstand dauerte nur wenige Tage, bevor er niedergeschlagen wurde. Schutzbund und SDAPÖ waren zu schwach und zu zerstritten, um den staatlichen Kräften die Stirn zu bieten.
+
+@long_war
+title: Es ist ein Bürgerkrieg.
+view-if: sdapo_strength = 5 or sdapo_strength = 4
+on-arrival: austria_civil_war = 1
+
+Keine der beiden Seiten gibt nach und die SDAPÖ hat eine Gegenregierung gebildet, nachdem sie die Regierungstruppen in einigen Städten besiegt hat. Österreich befindet sich im Bürgerkrieg.
+
+- @support_sdapo_party
+- @support_sdapo_govt
+- @force_peace
+- @long_war_2
+
+@support_sdapo_party
+title: Als Partei wird die SPD die SDAPÖ unterstützen.
+subtitle: -2 Ressourcen
+choose-if: resources >= 2
+on-arrival: resources -= 2; sdapo_strength += 1
+go-to: sdapo_victory if sdapo_strength >= 6; long_war_2 if sdapo_strength < 6
+
+Die SPD mobilisiert ihre Ressourcen, um die SDAPÖ mit Waffen und Freiwilligen zu versorgen.
+
+@support_sdapo_govt
+title: Das Außenministerium wird die demokratischen österreichischen Kräfte unterstützen.
+view-if: spd_in_government and foreign_minister_party = "SPD"
+on-arrival: sdapo_strength += 1
+go-to: sdapo_victory if sdapo_strength >= 6; long_war_2 if sdapo_strength < 6
+
+Wir leisten den Kräften der SDAPÖ diplomatische sowie gewisse finanzielle und materielle Unterstützung.
+
+@force_peace
+title: Können wir die Konfliktparteien für einen Frieden zusammenbringen?
+view-if: spd_in_government and foreign_minister_party = "SPD" and sdapo_strength = 5
+on-arrival: austria_peace = 1; pro_republic += 3; coup_progress -= 1
+achievement: arbeiter_von_wien
+
+Die österreichische Regierung hält uns offensichtlich für voreingenommen; daher kommt es für sie nicht infrage, uns als Gastgeber für Friedensverhandlungen zu akzeptieren. Dennoch beginnen die Verhandlungen. In der Schweiz wird, unter der Schirmherrschaft des faschistischen Italiens für die Austrofaschisten und Deutschlands für die SDAPÖ ein Friedensabkommen ausgehandelt. Die Sozialisten werden entwaffnet und geben jeden revolutionären Anspruch auf, während auch die rechten Paramilitärs entwaffnet werden. Die Diktatur endet und es kehrt wieder eine reguläre Regierung ein, verbunden mit freien Wahlen.
+
+Angesichts der Ausgangslage der SDAPÖ wird dies als Sieg gewertet. Nun beginnt die langwierige Arbeit des Wiederaufbaus...
+
+@long_war_2
+title: Wir können nichts tun.
+on-arrival: z_relation -= 6; dvp_relation -= 6; ddp_relation -= 3; catholics_spd -= 5; old_middle_spd -= 5; coalition_dissent += 1; economic_growth -= 0.5
+
+Trotz all unserer Bemühungen geht der Krieg weiter. Zu viele Leben werden ausgelöscht. Flüchtlinge strömen nach Deutschland, und der Handel leidet. Viele bezeichnen unser Eingreifen zugunsten Österreichs als Fehler.
+
+
+@sdapo_victory
+title: Die Austrofaschisten geben nach!
+on-arrival: pro_republic += 5; west_relation += 1; east_relation += 1; austria_victory = 1; reichswehr_loyalty += 0.1; coup_progress -= 2
+view-if: sdapo_strength >= 6
+achievement: arbeiter_von_wien
+
+Das Ergebnis ist, dass die Austrofaschisten nachgegeben haben! Im In- und Ausland in eine unhaltbare Lage geraten, haben sie der Wiederherstellung des Nationalrats, ihrem Rücktritt aus der Regierung und der Abhaltung von Neuwahlen zugestimmt. Nun beginnt die langwierige Arbeit des Wiederaufbaus. Unsere Länder werden sich dadurch voraussichtlich einander annähern.
+
+[? if eu_austria: Dies ist ein großer Erfolg der neuen Europäischen Union, deren Ansehen international im Steigen begriffen ist. ?]

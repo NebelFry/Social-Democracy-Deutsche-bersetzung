@@ -1,0 +1,60 @@
+title: Der Tod von Hermann Müller
+view-if: year = 1931 and month >= 3
+frequency: 1000
+max-visits: 1
+tags: event
+go-to: pm if chancellor = "Müller"; not_pm if chancellor != "Müller"
+on-arrival: muller_dead = 1; n_advisors -= 1 if muller_advisor == 1; muller_advisor = 0;
+new-page: true
+face-image: img/portraits/MüllerHermann.jpg
+
+= Der Tod von Hermann Müller
+
+@pm
+on-arrival: muller_died_in_office = 1
+# TODO: achievement for muller dying in office
+
+Reichskanzler Hermann Müller ist im Amt verstorben. Er wird schmerzlich vermisst werden. Doch nun müssen wir einen neuen Reichskanzler wählen.
+
+- @braun_chancellor: Otto Braun (SPD) als Kanzler.
+- @wels_chancellor: Otto Wels (SPD) als Kanzler.
+- @breitscheid_chancellor: Rudolf Breitscheid (SPD) als Kanzler.
+- @bruning_chancellor: Lassen wir Heinrich Brüning von der Zentrumspartei Reichskanzler werden.
+- @wirth_chancellor: Joseph Wirth von der Zentrumspartei sollte Reichskanzler werden.
+
+@braun_chancellor
+on-arrival: chancellor = "Braun"; chancellor_party = "SPD"; z_relation -= 5; dvp_relation -= 5
+subtitle: Die Zentrumspartei ist besorgt darüber, dass so viel Macht in der Hand eines einzigen Mannes liegen soll.
+
+Unsere Koalitionspartner tun sich schwer damit, den neuen Kanzler zu akzeptieren, doch sie erheben keinen lautstarken Einspruch.
+
+
+@wels_chancellor
+on-arrival: chancellor = "Wels"; chancellor_party = "SPD"; z_relation -= 3; dvp_relation -= 3
+subtitle: Er ist ein guter Organisator, aber ist er auch ein guter Kanzler?
+
+Unsere Koalitionspartner tun sich schwer damit, den neuen Kanzler zu akzeptieren, doch sie erheben keinen lautstarken Einspruch.
+
+@breitscheid_chancellor
+on-arrival: chancellor = "Breitscheid"; chancellor_party = "SPD"; z_relation -= 5; dvp_relation -= 5; kpd_relation += 1
+subtitle: Die Zentrumspartei ist besorgt über seine linkslastigen Tendenzen.
+
+Unsere Koalitionspartner tun sich schwer damit, den neuen Kanzler zu akzeptieren, doch sie erheben keinen lautstarken Einspruch.
+
+@bruning_chancellor
+on-arrival: chancellor = "Brüning"; chancellor_party = "Z"; z_relation += 5; dvp_relation += 5
+subtitle: Die Zentrumspartei beansprucht, dass sie an der Reihe ist...
+
+Die Zentrumspartei ist dankbar dafür, dass wir Brüning als Reichskanzler unterstützt haben.
+
+@wirth_chancellor
+on-arrival: chancellor = "Wirth"; chancellor_party = "Z"; z_relation += 5; dvp_relation += 2
+view-if: z_party_leader = "Joos"
+subtitle: Als gemäßigtes Mitglied der Zentrumspartei könnte er für Einheit stehen.
+
+Unsere Koalitionspartner akzeptieren Joseph Wirth von der Zentrumspartei als neuen Reichskanzler.
+
+
+@not_pm
+
+Herman Müller, einer der langjährigen Vorsitzenden der SPD, ist gestorben. Er wird schmerzlich vermisst werden.

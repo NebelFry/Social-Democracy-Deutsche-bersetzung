@@ -1,0 +1,27 @@
+title: Panzerkreuzer A
+subtitle: Eine politische Frage
+tags: event, govt_affairs
+is-card: true
+on-arrival: panzerkreuzer_seen = 1
+view-if: panzerkreuzer_seen = 0 and year = 1928 and month >= 8 and reichswehr_minister_party = "SPD" and spd_in_government = 1
+new-page: true
+face-image: img/panzerkreuzer.jpg
+
+= Panzerkreuzer
+
+Die Führung der Marine fordert den Bau eines neuen Schlachtkreuzers, wie er von der Vorgängerregierung zugesagt worden war. Da wir das Reichswehrministerium kontrollieren, liegt die Entscheidung darüber, ob der Schlachtkreuzer gebaut wird oder nicht, bei uns.
+
+- @vote_yes: Baue den Schlachtkreuzer.
+- @vote_no: Baue den Schlachtkreuzer nicht.
+
+@vote_yes
+on-arrival: left_dissent += 10; labor_dissent += 10; center_dissent += 5; reformist_dissent += 5; neorevisionist_dissent += 5; reichswehr_loyalty += 0.1; panzerkreuzer_funded = 1
+
+Wir haben dem Militär durch unsere Unterstützung für den Bau des Schlachtkreuzers einen Gefallen getan. Doch unsere Parteibasis ist schockiert über unsere Unnachgiebigkeit! Zahlreiche Ortsgruppen haben begonnen, Stimmung gegen die Reichstagsfraktion zu machen.
+
+@vote_no
+on-arrival: coalition_dissent += 1; reichswehr_loyalty -= 0.05; left_dissent -= 10; labor_dissent -= 10; center_dissent -= 5; reformist_dissent -= 5; neorevisionist_dissent -= 5; nationalism -= 5; pacifism += 1; z_relation -= 5; dvp_relation -= 5; workers_spd += 5*(1-dissent); panzerkreuzer_failed = 1
+
+Die militärische Führung ist verärgert über die Entscheidung des Ministeriums, den Schlachtkreuzer nicht zu bauen, und hat ihre Beschwerden an unsere Koalitionspartner herangetragen. Sie können jedoch kaum etwas tun, um den Bau zu erzwingen, da wir die Kontrolle über das Reichswehrministerium innehaben.
+
+Auf jeden Fall wird der Schlachtkreuzer nicht gebaut. Wir haben eines unserer Wahlversprechen eingelöst, und unsere Anhänger sind zufrieden.

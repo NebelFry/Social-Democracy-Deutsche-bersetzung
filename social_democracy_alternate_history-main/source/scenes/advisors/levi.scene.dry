@@ -1,0 +1,32 @@
+title: Paul Levi
+is-pinned-card: true
+tags: advisor, left
+card-image: img/portraits/LeviPaul.jpg
+view-if: levi_advisor = 1
+new-page: true 
+
+= Paul Levi
+
+Levi ist ein ehemaliger Führer der KPD, der die Partei aufgrund ihres Hangs zu Gewalt und revolutionärem Abenteurertum verließ.
+
+- @building_the_left
+- @kpd_cooperation
+- @root: Zurück
+
+@building_the_left
+title: Aufbau der Linken
+subtitle: Drängt die SPD nach links.
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+choose-if: advisor_action_timer = 0
+on-arrival: advisor_action_timer = 6; left_strength += 10; left_dissent -= 8; reformist_dissent += 3
+
+Wir haben die Stärke des linken Flügels innerhalb der SPD erhöht. Dies löste bei den gemäßigten Reformern in der Partei Besorgnis aus.
+
+@kpd_cooperation
+title: Kooperation mit der KPD
+subtitle: Jede Zusammenarbeit zwischen den Parteien erfordert Kompromisse sowohl von der KPD als auch von der SPD.
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+choose-if: advisor_action_timer = 0
+on-arrival: advisor_action_timer = 6; left_strength += 5; kpd_relation += 6*(1-dissent); reformist_dissent += 3; communist_coalition += 1 if kpd_cooperation_seen <= 1; kpd_cooperation_seen += 1
+
+Levi versucht, seine ehemaligen Parteikollegen zu kontaktieren, um die KPD von ihrem derzeitigen extrem stalinistischen Kurs abzubringen. Dabei werden einige Zugeständnisse erreicht.

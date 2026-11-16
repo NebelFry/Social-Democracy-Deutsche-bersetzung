@@ -1,0 +1,32 @@
+title: KPD-Parteitag
+subtitle: Die KPD wählt ihr neues Zentralkomitee – wird die Wittorf-Affäre Einfluss auf die Wahl haben?
+new-page: true
+view-if: kpd_relation >= 50 and wittorf_soviet_union = 1 and year = 1929 and month >= 6 and month <= 8
+max-visits: 1
+on-arrival: kpd_party_conference_seen = 1
+tags: event
+
+= KPD-Parteitag
+
+Derzeit findet der Bundesparteitag der KPD statt, auf dem die neue Parteiführung gewählt werden soll. Über der Veranstaltung liegt der Schatten der Wittorf-Affäre. Auf der einen Seite stehen die kompromisslosen Anhänger Thälmanns, die eine Politik des „Sozialfaschismus“ vertreten und die SPD mit den Nationalsozialisten gleichsetzen. Auf der anderen Seite steht die Fraktion der „Versöhnler“, die einen kooperativeren Kurs gegenüber der SPD befürwortet.
+
+Nach unserem Gespräch mit den Sowjets sind wir geneigt zu glauben, dass Stalin zumindest für die Versöhnler offen ist. Um die Führungswahlen der KPD zu beeinflussen, müssen wir sowohl auf die Führung der Komintern als auch auf die KPD-Mitgliedschaft einwirken.
+
+- @conciliator_success
+- @conciliator_fail
+
+
+@conciliator_success
+title: Die Versöhner sind die neue Führung der KPD.
+choose-if: (levi_advisor or rosenfeld_advisor) and (left_strength >= reformist_strength) and (kpd_relation >= 50) 
+unavailable-subtitle: [?  if not levi_advisor and not rosenfeld_advisor: Unsere Parteiführung ist nicht links genug. ?] [? if left_strength < reformist_strength: Die Komintern bezweifelt unser Bekenntnis zum Sozialismus. ?]
+on-arrival: kpd_party_leader = "Conciliators"; communist_coalition += 3; kpd_relation += 10*(1-dissent); left_strength += 5; left_dissent -= 8
+achievement: versohnler
+
+Mit unserer Unterstützung haben die Versöhner den Kampf um die Führung gewonnen! Die neue Führung besteht aus einer Gruppe von Versöhnern, darunter Arthur Ewert, Hugo Eberlein und Ernst Meyer. Thälmann bleibt zwar im Amt, doch – wie es scheint – weitgehend nur noch als bloße Symbolfigur. Wir hoffen, dass die neue Führung eher zu einer Zusammenarbeit bereit sein wird.
+
+
+@conciliator_fail
+title: Thälmann behält seine Führungsposition.
+
+Leider konnten wir die Wahl der KPD-Führung nicht zugunsten der Gegner der Hardliner beeinflussen. Thälmann ging rasch dazu über, seine absolute Führungsmacht zu festigen, indem er seine Gegner ausschloss oder ins Exil drängte.

@@ -1,0 +1,39 @@
+title: Anna Siemsen
+is-pinned-card: true
+tags: advisor, left
+card-image: img/portraits/SiemsenAnna.jpg
+view-if: siemsen_advisor = 1
+new-page: true 
+
+= Anna Siemsen
+
+Anna Siemsen ist eine Verfechterin der Bildungsreform und Pazifistin; sie war eine der wenigen deutschen Frauen, die in der Vorkriegszeit einen Doktortitel erwarben. Sie war früher Mitglied der USPD.
+
+- @campaign_pacifism
+- @structure_
+- @curriculum_
+- @root: Zurück
+
+@campaign_pacifism
+title: Kundgebung für Pazifismus.
+subtitle: Kampagne für Internationalismus und gegen Militarismus.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6;
+go-to: rally.pacifism
+
+
+@curriculum_
+title: Ändern wir den Bildungslehrplan.
+choose-if: advisor_action_timer = 0 and spd_in_government and chancellor_party = "SPD" and spd_prussia and curriculum_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government : Die SPD ist derzeit nicht an der Regierung beteiligt. ?][? if chancellor_party != "SPD": Die SPD muss das Kanzleramt kontrollieren. ?][? if not spd_prussia: Die SPD muss die preußische Regierung kontrollieren. ?][? if curriculum_timer > 0 : Es ist zu früh, den Lehrplan erneut zu ändern. ?]
+on-arrival: advisor_action_timer = 6; last_advisor_action = 1
+go-to: education_science.curriculum
+
+
+@structure_
+title: Ändern wir die Struktur und Finanzierung des Bildungswesens.
+choose-if: advisor_action_timer = 0 and spd_in_government and chancellor_party = "SPD" and spd_prussia
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government : Die SPD ist derzeit nicht an der Regierung beteiligt. ?][? if chancellor_party != "SPD": Die SPD muss das Kanzleramt kontrollieren. ?][? if not spd_prussia: Die SPD muss die preußische Regierung kontrollieren. ?]
+on-arrival: advisor_action_timer = 6; last_advisor_action = 1
+go-to: education_science.structure

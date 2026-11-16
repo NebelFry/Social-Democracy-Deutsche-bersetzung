@@ -1,0 +1,641 @@
+title: Führungswechsel
+new-page: true
+is-card: true
+tags: party_affairs
+view-if: shuffle_leadership_timer = 0 and difficulty >= 0
+on-arrival: month_activities += 1; shuffle_leadership_timer = 8;
+card-image: img/vorwarts_2.jpg
+go-to: rm_main
+
+Ein Wechsel an der Parteispitze ist schmerzhaft, aber womöglich notwendig, um sich an veränderte Umstände anzupassen.
+
+Das Entfernen von Beratern erhöht den Widerstand innerhalb ihrer Parteifraktion, während die Auswahl von Beratern die Stärke einer Fraktion steigert.
+
+- @rm_main: Berater entfernen
+- @add_advisors: Berater hinzufügen
+- @remove_none: Berater nicht wechseln.
+- @easy_discard
+
+
+###################### removing leaders
+
+@rm_main
+title: Berater entfernen.
+tags: center_advisor, left_advisor, reformist_advisor, labor_advisor, neorev_advisor, nonfactional_advisor 
+frequency: 1
+
+- #remove_advisor
+- @add_advisors: Berater hinzufügen
+
+@remove_none
+title: Aufhören die Berater zu wechseln.
+go-to: root
+tags: remove_advisor
+
+
+@remove_hilferding
+title: Entferne Hilferding
+view-if: hilferding_advisor = 1
+on-arrival: hilferding_advisor = 0; center_dissent += 5; n_advisors -= 1
+tags: remove_advisor
+go-to: rm_main
+
+Hilferding wurde als Berater entlassen. Die Zentristen missbilligen das.
+
+@remove_wels
+title: Entferne Wels
+view-if: wels_advisor = 1
+tags: remove_advisor
+on-arrival: wels_advisor = 0; center_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Wels wurde als Berater entlassen. Die Zentristen missbilligen das.
+
+@remove_muller
+title: Entferne Müller
+view-if: muller_advisor = 1
+tags: remove_advisor
+on-arrival: muller_advisor = 0; center_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Müller wurde als Berater entlassen. Die Zentristen missbilligen das.
+
+
+@remove_breitscheid
+title: Entferne Breitscheid
+view-if: breitscheid_advisor = 1
+tags: remove_advisor
+on-arrival: breitscheid_advisor = 0; center_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Breitscheid wurde als Berater entlassen. Die Zentristen missbilligen das.
+
+# reformists
+
+
+@remove_severing
+title: Entferne Severing
+view-if: severing_advisor = 1
+tags: remove_advisor
+on-arrival: severing_advisor = 0; reformist_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Severing wurde als Berater entlassen. Die Reformisten missbilligen das.
+
+@remove_braun
+title: Entferne Braun
+view-if: braun_advisor = 1
+tags: remove_advisor
+on-arrival: braun_advisor = 0; reformist_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Braun wurde als Berater entlassen. Die Reformisten missbilligen das.
+
+@remove_juchacz
+title: Entferne Juchacz
+view-if: juchacz_advisor = 1
+tags: remove_advisor
+on-arrival: juchacz_advisor = 0; reformist_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Juchacz wurde als Berater entlassen. Die Reformisten missbilligen das.
+
+@remove_pfulf
+title: Entferne Pfülf
+view-if: pfulf_advisor = 1
+tags: remove_advisor
+on-arrival: pfulf_advisor = 0; reformist_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Pfülf wurde als Berater entlassen. Die Reformisten missbilligen das.
+
+
+# labor
+
+@remove_leipart
+title: Entferne Leipart
+view-if: leipart_advisor = 1
+tags: remove_advisor
+on-arrival: leipart_advisor = 0; labor_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Leipart wurde als Berater entlassen. Die Gewerkschaften missbilligen das.
+
+@remove_aufhauser
+title: Entferne Aufhäuser
+view-if: aufhauser_advisor = 1
+tags: remove_advisor
+on-arrival: aufhauser_advisor = 0; labor_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Aufhäuser wurde als Berater entlassen. Die Gewerkschaften missbilligen das.
+
+@remove_wissell
+title: Entferne Wissell
+view-if: wissell_advisor = 1
+tags: remove_advisor
+on-arrival: wissell_advisor = 0; labor_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Wissell wurde als Berater entlassen. Die Gewerkschaften missbilligen das.
+
+
+@remove_woytinsky
+title: Entferne Woytinsky
+view-if: woytinsky_advisor = 1
+tags: remove_advisor
+on-arrival: woytinsky_advisor = 0; labor_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Woytinsky wurde als Berater entlassen. Die Gewerkschaften missbilligen das.
+
+# left
+
+@remove_levi
+title: Entferne Levi
+view-if: levi_advisor = 1
+tags: remove_advisor
+on-arrival: levi_advisor = 0; left_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Levi wurde als Berater entlassen. Die Linken missbilligen das.
+
+@remove_sender
+title: Entferne Sender
+view-if: sender_advisor = 1
+tags: remove_advisor
+on-arrival: sender_advisor = 0; left_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Sender wurde als Berater entlassen. Die Linken missbilligen das.
+
+@remove_rosenfeld
+title: Entferne Rosenfeld
+view-if: rosenfeld_advisor = 1
+tags: remove_advisor
+on-arrival: rosenfeld_advisor = 0; left_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Rosenfeld wurde als Berater entlassen. Die Linken missbilligen das.
+
+@remove_seydewitz
+title: Entferne Seydewitz
+view-if: seydewitz_advisor = 1
+tags: remove_advisor
+on-arrival: seydewitz_advisor = 0; left_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Seydewitz wurde als Berater entlassen. Die Linken missbilligen das.
+
+@remove_siemsen
+title: Entferne Siemsen
+view-if: siemsen_advisor = 1
+tags: remove_advisor
+on-arrival: siemsen_advisor = 0; left_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Siemsen wurde als Berater entlassen. Die Linken missbilligen das.
+
+
+
+
+# neorevisionists
+
+@remove_mierendorff
+title: Entferne Mierendorff
+view-if: mierendorff_advisor = 1
+tags: remove_advisor
+on-arrival: mierendorff_advisor = 0; neorevisionist_dissent += 5; n_advisors -= 1
+go-to: rm_main
+
+Mierendorff wurde als Berater entlassen. Die Neorevisionisten missbilligen das.
+
+@remove_leber
+title: Entferne Leber
+view-if: leber_advisor = 1
+tags: remove_advisor
+on-arrival: leber_advisor = 0; neorevisionist_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Leber wurde als Berater entlassen. Die Neorevisionisten missbilligen das.
+
+@remove_schumacher
+title: Entferne Schumacher
+view-if: schumacher_advisor = 1
+tags: remove_advisor
+on-arrival: schumacher_advisor = 0; neorevisionist_dissent += 3; n_advisors -= 1
+go-to: rm_main
+
+Schumacher wurde als Berater entlassen. Die Neorevisionisten missbilligen das.
+
+
+## nonfactional
+
+# tbh I'm not sure if Baade should be a reformist or nonfactional. same for stampfer. they were vaguely reformist-aligned but had pretty different ideas from the other reformists here. so they're non-factional.
+
+@remove_baade
+title: Entferne Baade
+view-if: baade_advisor = 1
+tags: remove_advisor
+on-arrival: baade_advisor = 0; n_advisors -= 1
+go-to: rm_main
+
+Baade wurde als Berater entlassen.
+
+#Die Reformisten missbilligen das.
+
+
+@remove_hirschfeld
+title: Entferne Hirschfeld
+view-if: hirschfeld_advisor = 1
+tags: remove_advisor
+on-arrival: hirschfeld_advisor = 0; n_advisors -= 1
+go-to: rm_main
+
+Hirschfeld wurde als Berater entlassen. 
+
+@remove_stampfer
+title: Entferne Stampfer
+view-if: stampfer_advisor = 1
+tags: remove_advisor
+on-arrival: stampfer_advisor = 0; n_advisors -= 1
+go-to: rm_main
+
+Stampfer wurde als Berater entlassen. 
+
+@remove_radbruch
+title: Entferne Radbruch
+view-if: radbruch_advisor = 1
+tags: remove_advisor
+on-arrival: radbruch_advisor = 0; n_advisors -= 1
+go-to: rm_main
+
+Radbruch wurde als Berater entlassen. 
+
+
+
+
+
+####################### adding advisors
+
+@add_advisors
+title: Berater einstellen
+choose-if: n_advisors < 3
+unavailable-subtitle: Maximal 3 Berater erlaubt.
+go-to: advisor_menu
+
+@advisor_menu
+title: Weiteren Berater einstellen.
+tags: center_advisor, left_advisor, reformist_advisor, labor_advisor, neorev_advisor, nonfactional_advisor
+frequency: 1
+
+
+- @centrist: Zentristen einstellen
+- @left: Linken einstellen
+- @reformist: Reformisten einstellen
+- @labor: Gewerkschafter einstellen
+- @neorev: Neorevisionisten einstellen
+- @nonfactional: Fraktionsunabhängigen einstellen
+- @rm_main: Berater entlassen.
+- @remove_none: Aufhören Berater zu wechseln.
+
+@centrist
+view-if: n_advisors < 3
+
+- #center_advisor
+
+@reformist
+view-if: n_advisors < 3
+
+- #reformist_advisor
+
+@left
+view-if: n_advisors < 3
+
+- #left_advisor
+
+@labor
+view-if: n_advisors < 3
+
+- #labor_advisor
+
+@neorev
+view-if: neorevisionism > 0 and n_advisors < 3
+
+- #neorev_advisor
+
+@nonfactional
+view-if: n_advisors < 3
+
+- #nonfactional_advisor
+
+@add_hilferding
+title: Rudolf Hilferding
+subtitle: Rudolf Hilferding ist ein Ökonom und einer unserer führenden Marxismus Theoretikern. {!<br><br>!}[? if difficulty < 0 : Aktionen - Gegen Rechts und Links, Tolerierung verteidigen, Fiskalpolitik, Wirtschaftsdemokratie ?]
+is-card: true
+card-image: img/portraits/HilferdingRudolf.jpg
+tags: center_advisor
+view-if: hilferding_advisor = 0 and n_advisors < 3 and centrists_resign = 0
+on-arrival: hilferding_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+
+Rudolf Hilferding ist jetzt ein Berater.
+
+@add_wels
+title: Otto Wels
+subtitle: Otto Wels ist ein langjähriger Parteiorganisator und Mitglied der Parteiführung unter Friedrich Ebert. {!<br><br>!}[? if difficulty < 0 : Aktionen - Hand leern, Parteidisziplin, Notfallspendenaufruf ?]
+is-card: true
+card-image: img/portraits/WelsRudolf.jpg
+tags: center_advisor
+view-if: wels_advisor = 0 and n_advisors < 3 and centrists_resign = 0
+on-arrival: wels_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+
+Otto Wels ist jetzt ein Berater.
+
+@add_muller
+title: Hermann Müller
+subtitle: Hermann Müller is the last Social Democratic Chancellor. {!<br><br>!}[? if difficulty < 0 : Aktionen - Verhandle mit der Koalition, Tolerierung verteidigen ?]
+is-card: true
+card-image: img/portraits/MüllerHermann.jpg
+tags: center_advisor
+view-if: muller_advisor = 0 and muller_dead = 0 and n_advisors < 3 and centrists_resign = 0
+on-arrival: muller_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+
+Hermann Müller ist jetzt ein Berater.
+
+@add_breitscheid
+title: Rudolf Breitscheid
+subtitle: Rudolf Breitscheid stammt aus einem gebildeten Elternhaus und zählt zu unseren führenden Außenpolitikern. {!<br><br>!}[? if difficulty < 0 : Aktionen - Internationale Beziehungen, Außenpolitik, Parteidisziplin ?]
+is-card: true
+card-image: img/portraits/BreitscheidRudolf.jpg
+view-if: breitscheid_advisor = 0 and n_advisors < 3
+on-arrival: breitscheid_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+tags: center_advisor
+
+Rudolf Breitscheid ist jetzt ein Berater.
+
+# reformist
+
+
+@add_severing
+title: Carl Severing
+subtitle: Carl Severing ist ein ehemaliger preußischer Innenminister und Polizeireformer. {!<br><br>!}[? if difficulty < 0 : Aktionen - Preußisches Bollwerk, Polizeiangelegenheiten ?]
+is-card: true
+card-image: img/portraits/SeveringCarl.jpg
+tags: reformist_advisor
+view-if: severing_advisor = 0 and n_advisors < 3
+on-arrival: severing_advisor = 1; n_advisors += 1; reformist_strength += 5
+go-to: advisor_menu
+
+Carl Severing ist jetzt ein Berater.
+
+@add_braun
+title: Otto Braun
+subtitle: Otto Braun ist der preußische Ministerpräsident und einer der bekanntesten sozialdemokratischen Führungspolitiker. {!<br><br>!}[? if difficulty < 0 : Aktionen - Preußisches Bollwerk, Verhandle mit der Koalition ?]
+is-card: true
+card-image: img/portraits/BraunOtto.jpg
+tags: reformist_advisor
+view-if: braun_advisor = 0 and n_advisors < 3
+on-arrival: braun_advisor = 1; n_advisors += 1; reformist_strength += 5
+go-to: advisor_menu
+
+Otto Braun ist jetzt ein Berater.
+
+@add_juchacz
+title: Marie Juchacz
+subtitle: Marie Juchacz ist die Gründerin der Arbeiterwohlfahrt, einer Selbsthilfeorganisation. {!<br><br>!}[? if difficulty < 0 : Aktionen - Notfallspendenaufruf, Arbeiterwohlfahrt, Frauen organisieren ?]
+is-card: true
+card-image: img/portraits/JuchaczMarie.jpg
+view-if: juchacz_advisor = 0 and n_advisors < 3
+on-arrival: juchacz_advisor = 1; n_advisors += 1; reformist_strength += 5
+go-to: advisor_menu
+tags: reformist_advisor
+
+Marie Juchacz ist jetzt eine Beraterin.
+
+@add_pfulf
+title: Antonie Pfülf
+subtitle: Antonie Pfülf ist eine führende Persönlichkeit in der Sozialpolitik und der Frauenrechtsbewegung. {!<br><br>!}[? if difficulty < 0 : Aktionen - Volkspartei unterstützen,	Frauenrechte ?]
+is-card: true
+card-image: img/portraits/PfülfAntonie.jpg
+view-if: pfulf_advisor = 0 and n_advisors < 3
+on-arrival: pfulf_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+tags: reformist_advisor
+
+Antonie Pfülf ist jetzt eine Beraterin.
+
+
+
+# left
+
+@add_levi
+title: Paul Levi
+subtitle: Paul Levi ist ein ehemaliger KPD-Führer, der wegen seiner Kritik an der kommunistischen Politik aus der Partei ausgeschlossen wurde. {!<br><br>!}[? if difficulty < 0 : Aktionen - Aufbau der Linken, Kooperation mit der KPD ?]
+is-card: true
+card-image: img/portraits/LeviPaul.jpg
+view-if: levi_advisor = 0 and levi_dead = 0 and n_advisors < 3 and left_split = 0
+on-arrival: levi_advisor = 1; n_advisors += 1; left_strength += 5
+go-to: advisor_menu
+tags: left_advisor
+
+Paul Levi ist jetzt ein Berater.
+
+@add_sender
+title: Toni Sender
+subtitle: Toni Sender ist eine Kämpferin gegen den Krieg und für Frauenrechte sowie Reichstagsabgeordnete. {!<br><br>!}[? if difficulty < 0 : Aktionen - Zentrum-Links Einheit, Frauen organisieren, Gegen Tolerierung, Bewältigung der Wirtschaftskrise ?]
+is-card: true
+card-image: img/portraits/SenderToni.jpg
+view-if: sender_advisor = 0 and n_advisors < 3
+on-arrival: sender_advisor = 1; n_advisors += 1; left_strength += 5
+go-to: advisor_menu
+tags: left_advisor
+
+Toni Sender ist jetzt eine Beraterin.
+
+@add_rosenfeld
+title: Kurt Rosenfeld
+subtitle: Kurt Rosenfeld ist Rechtsanwalt, antimilitaristischer Aktivist und Reichstagsabgeordneter. {!<br><br>!}[? if difficulty < 0 : Aktionen - Aufbau der Linken, Kooperation mit der KPD, Gegen Tolerierung ?]
+is-card: true
+card-image: img/portraits/RosenfeldKurt.jpg
+view-if: rosenfeld_advisor = 0 and n_advisors < 3 and left_split = 0
+on-arrival: rosenfeld_advisor = 1; n_advisors += 1; left_strength += 5
+go-to: advisor_menu
+tags: left_advisor
+
+Kurt Rosenfeld ist jetzt ein Berater.
+
+@add_seydewitz
+title: Max Seydewitz
+subtitle: Max Seydewitz ist ein ehemaliger Vorsitzender der Jugendorganisation und derzeitiger Anhänger des linken Flügels der SPD; er tritt für den Klassenkampf ein. {!<br><br>!}[? if difficulty < 0 : Aktionen - Kundgebung für den Klassenkampf, Sozialistische Jugend, Gegen Tolerierung ?]
+is-card: true
+card-image: img/portraits/SeydewitzMax.jpg
+view-if: seydewitz_advisor = 0 and n_advisors < 3 and left_split = 0
+on-arrival: seydewitz_advisor = 1; n_advisors += 1; left_strength += 5
+go-to: advisor_menu
+tags: left_advisor
+
+Max Seydewitz ist jetzt ein Berater.
+
+@add_siemsen
+title: Anna Siemsen
+subtitle: Anna Siemsen ist eine Verfechterin der Bildungsreform und Pazifistin, die in der Zeit vor dem Krieg als eine der wenigen deutschen Frauen promovierte. {!<br><br>!}[? if difficulty < 0 : Aktionen - Kundgebung für Pazifismus, Bildungslehrplan, Bildungsstruktur ?]
+is-card: true
+card-image: img/portraits/SiemsenAnna.jpg
+view-if: siemsen_advisor = 0 and n_advisors < 3 and left_split = 0
+on-arrival: siemsen_advisor = 1; n_advisors += 1; left_strength += 5
+go-to: advisor_menu
+tags: left_advisor
+
+Anna Siemsen ist jetzt eine Beraterin.
+
+
+
+# labor
+
+@add_leipart
+title: Theodor Leipart
+subtitle: Theodor Leipart ist der Vorsitzende des ADGB, des Allgemeinen Deutschen Gewerkschaftsbundes. {!<br><br>!}[? if difficulty < 0 : Aktionen - Arbeiter organisieren, Bewältigung der Wirtschaftskrise, Koordinierung zwischen Gewerkschaften und Partei ?]
+is-card: true
+card-image: img/portraits/LeipartTheodor.jpg
+tags: labor_advisor
+view-if: leipart_advisor = 0 and n_advisors < 3 and unions_independent = 0
+on-arrival: leipart_advisor = 1; n_advisors += 1; labor_strength += 5
+go-to: advisor_menu
+
+Theodor Leipart ist jetzt ein Berater.
+
+@add_aufhauser
+title: Siegfried Aufhäuser
+subtitle: Siegfried Aufhäuser ist der Vorsitzende des AfA-Bundes, des Allgemeinen freien Angestelltenbund, der Dachverband der Angestelltengewerkschaft. {!<br><br>!}[? if difficulty < 0 : Aktionen - Organisierung von Angestellten, Koordinierung zwischen Gewerkschaften und Partei, Bewältigung der Wirtschaftskrise ?]
+is-card: true
+card-image: img/portraits/AufhäuserSiegfried.jpg
+tags: labor_advisor
+view-if: aufhauser_advisor = 0 and n_advisors < 3
+on-arrival: aufhauser_advisor = 1; n_advisors += 1; labor_strength += 5
+go-to: advisor_menu
+
+Siegfried Aufhäuser ist jetzt ein Berater.
+
+@add_wissell
+title: Rudolf Wissell
+subtitle: Rudolf Wissell ist ein Wirtschaftswissenschaftler, der als Arbeitsminister tätig war und innerhalb der Regierung die Interessen der Arbeitnehmerschaft vertritt. {!<br><br>!}[? if difficulty < 0 : Aktionen - Koordinierung zwischen Gewerkschaften und Partei, Arbeitsrechte ?]
+is-card: true
+card-image: img/portraits/WissellRudolf.jpg
+tags: labor_advisor
+view-if: wissell_advisor = 0 and n_advisors < 3 and unions_independent = 0
+on-arrival: wissell_advisor = 1; n_advisors += 1; labor_strength += 3
+go-to: advisor_menu
+
+Rudolf Wissell ist jetzt ein Berater.
+
+
+@add_woytinsky
+title: Wladimir Woytinsky
+subtitle: Wladimir Woytinsky ist ein ehemaliger russischer Menschewik, der heute als leitender Ökonom für Gewerkschaften tätig ist. {!<br><br>!}[? if difficulty < 0 : Aktionen - Bewältigung der Wirtschaftskrise, Durchführung des Wirtschaftsplans ?]
+is-card: true
+card-image: img/portraits/WoytinskyWladimir.jpg
+tags: labor_advisor
+view-if: woytinsky_advisor = 0 and n_advisors < 3 and unions_independent = 0
+on-arrival: woytinsky_advisor = 1; n_advisors += 1; labor_strength += 3
+go-to: advisor_menu
+
+Wladimir Woytinsky ist jetzt ein Berater.
+
+
+# neorevisionist leaders
+
+@add_mierendorff
+title: Carlo Mierendorff
+subtitle: Carlo Mierendorff ist einer der jüngsten Abgeordneten des Reichstags und der Begründer der „neo-revisionistischen“ Bewegung. Er ist ein Anti-Nazi-Stratege. {!<br><br>!}[? if difficulty < 0 : Aktionen - Bildet die Eiserne Front, Warnung vor den Nazis ?]
+is-card: true
+card-image: img/portraits/MierendorffCarlo.jpg
+view-if: mierendorff_advisor = 0 and n_advisors < 3
+on-arrival: mierendorff_advisor = 1; n_advisors += 1; neorevisionist_strength += 5
+go-to: advisor_menu
+tags: neorev_advisor
+
+Carlo Mierendorff ist jetzt ein Berater.
+
+@add_schumacher
+title: Kurt Schumacher
+subtitle: Kurt Schumacher ist Veteran des Ersten Weltkriegs, ein engagierter Redner für die sozialdemokratische Sache und befürwortet eine reformorientierte Politik. {!<br><br>!}[? if difficulty < 0 : Aktionen - Notfallspendenaufruf, Aufbau des Reichsbanners, Bewältigung der Wirtschaftskrise ?]
+is-card: true
+card-image: img/portraits/SchumacherKurt.jpg
+tags: neorev_advisor
+view-if: schumacher_advisor = 0 and n_advisors < 3
+on-arrival: schumacher_advisor = 1; n_advisors += 1; neorevisionist_strength += 5
+go-to: advisor_menu
+
+Kurt Schumacher ist jetzt ein Berater.
+
+@add_leber
+title: Julius Leber
+subtitle: Julius Leber ist ein ehemaliger Reichswehroffizier, der aus Protest gegen den Kapp-Putschversuch zurücktrat. {!<br><br>!}[? if difficulty < 0 : Aktionen - Kundgebung für Demokratie, Militärangelegenheiten, Volkspartei unterstützen ?]
+is-card: true
+card-image: img/portraits/LeberJulius.jpg
+view-if: leber_advisor = 0 and n_advisors < 3
+on-arrival: leber_advisor = 1; n_advisors += 1; neorevisionist_strength += 5
+go-to: advisor_menu
+tags: neorev_advisor
+
+Julius Leber ist jetzt ein Berater.
+
+# Nonfactional advisors
+
+@add_baade
+title: Fritz Baade
+subtitle: Fritz Baade ist einer der wenigen agrarpolitischen Experten in der SPD. {!<br><br>!}[? if difficulty < 0 : Aktionen - Agrarpolitik, Wahlkampf im ländlichen Raum, Bewältigung der Wirtschaftskrise ?]
+is-card: true
+card-image: img/portraits/BaadeFritz.jpg
+view-if: baade_advisor = 0 and n_advisors < 3
+on-arrival: baade_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+tags: nonfactional_advisor
+
+Fritz Baade ist jetzt ein Berater.
+
+
+@add_hirschfeld
+title: Magnus Hirschfeld
+subtitle: Magnus Hirschfeld ist der Gründer des Instituts für Sexualwissenschaft und ein Verfechter der Rechte sexueller Minderheiten. {!<br><br>!}[? if difficulty < 0 : Aktionen - Homosexuellen Rechte, Frauenrechte, Wissenschaftsförderung ?]
+is-card: true
+card-image: img/portraits/HirschfeldMagnus.jpg
+view-if: hirschfeld_advisor = 0 and n_advisors < 3
+on-arrival: hirschfeld_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+tags: nonfactional_advisor
+
+Magnus Hirschfeld ist jetzt ein Berater.
+
+# TODO: add radbruch, stampfer
+
+@add_radbruch
+title: Gustav Radbruch
+subtitle: Gustav Radbruch ist ein renommierter Rechtsgelehrter und langjähriger SPD-Justizminister. {!<br><br>!}[? if difficulty < 0 : Aktionen - Justizangelegenheiten, Verfassungsreform ?]
+is-card: true
+card-image: img/portraits/RadbruchGustav.jpg
+view-if: radbruch_advisor = 0 and n_advisors < 3
+on-arrival: radbruch_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+tags: nonfactional_advisor
+
+Gustav Radbruch ist jetzt ein Berater.
+
+
+@add_stampfer
+title: Friedrich Stampfer
+subtitle: Friedrich Stampfer ist langjähriger Chefredakteur unserer Parteizeitung „Vorwärts“. {!<br><br>!}[? if difficulty < 0 : Aktionen - Medien, Redaktionelle Linie, Kooperation mit der KPD ?]
+is-card: true
+card-image: img/portraits/StampferFriedrich.jpg
+view-if: stampfer_advisor = 0 and n_advisors < 3
+on-arrival: stampfer_advisor = 1; n_advisors += 1
+go-to: advisor_menu
+tags: nonfactional_advisor
+
+Friedrich Stampfer ist jetzt ein Berater.
+
+

@@ -1,0 +1,56 @@
+title: Der Weltbühne-Prozess
+new-page: true
+subtitle: Eine Zeitschrift muss sich wegen der Enthüllung militärischer Geheimnisse vor Gericht verantworten ...
+view-if: year = 1929 and (month = 8 or month = 9) and judicial_reform < 4
+max-visits: 1
+on-arrival: weltbuhne_seen = 1
+face-image: img/weltbune.jpg
+tags: event
+
+# if the SPD controls the judiciary then they can just cancel the trial (at the expense of DVP relations).
+# If in a grand coalition then the SPD can pressure the coalition to cancel the trial at the expense of dissent.
+# If the trial goes ahead, then reparations negotiation process gets set back by a few steps and relations with the west suffers.
+
+= Der Weltbühne-Prozess
+
+Die linke Nachrichten- und Literaturzeitschrift „Weltbühne“ ist ins Visier der staatlichen Behörden geraten, weil sie angeblich Staatsgeheimnisse enthüllt hat. Die Zeitschrift veröffentlichte Artikel, in denen der Reichswehr ein geheimes Aufrüstungsprogramm unter Verletzung des Versailler Vertrags vorgeworfen wurde. Die Militärbehörden wollen offensichtlich nicht, dass diese Informationen bekannt werden. Erschwerend kommt hinzu, dass der Herausgeber der Zeitschrift, Carl von Ossietzky, ein bekannter Pazifist ist.
+
+[? if spd_in_government and justice_minister_party = "SPD" : Da wir das Justizministerium kontrollieren, könnten wir den Fall einfach fallen lassen. ?]
+[? if spd_in_government and justice_minister_party != "SPD" : Das Justizministerium strebt die strafrechtliche Verfolgung des Herausgebers und Journalisten der „Weltbühne“ an. Wir können versuchen, unsere Koalitionspartner dazu zu bewegen, das Verfahren einzustellen, doch sie werden sich wahrscheinlich dagegen sträuben. ?]
+
+- @drop_case: Fall fallenlassen.
+- @let_persecute: Lasst der Justiz ihren Lauf.
+- @pressure_drop: Druck auf unsere Koalitionspartner ausüben, den Fall fallen zu lassen.
+- @nothing: Wir können nichts tun.
+
+@drop_case
+view-if: spd_in_government
+choose-if: spd_in_government and justice_minister_party = "SPD"
+unavailable-subtitle: [? if not spd_in_government : SPD not in government. ?] [? if spd_in_government and justice_minister_party != "SPD": Die SPD kontrolliert nciht das Justizministerium. ?]
+on-arrival: weltbuhne_dropped = 1; dvp_relation -= 4; nationalism -= 3*(1-dissent); coalition_dissent += 1 if in_grand_coalition; reichswehr_loyalty -= 0.1; west_relation += 1; east_relation += 1; coup_progress += 1; reparations_negotiation += 1; pacifism += 1
+
+Das Justizministerium hat alle Strafverfahren gegen Carl von Ossietzky und Walter Kreiser, den für die beanstandete Veröffentlichung verantwortlichen Journalisten eingestellt. Manche sind sogar der Ansicht, die „Weltbühne“-Journalisten sollten als Helden gefeiert werden.
+
+Die Westmächte und alle Länder, die sich durch den deutschen Militarismus bedroht fühlen, begrüßen es, dass wir ein Kapitel unserer Geschichte hinter uns gelassen haben.
+[? if in_grand_coalition: Andererseits missbilligen die rechten Mitglieder unserer Regierungskoalition dieses Vorgehen, ebenso wie die Reichswehr. ?][? if not in_grand_coalition : Andererseits missbilligt die Reichswehr die Einstellung des Verfahrens. ?]
+
+@let_persecute
+view-if: spd_in_government
+on-arrival: weltbuhne_dropped = 0; dvp_relation += 4; reichswehr_loyalty += 0.05; west_relation -= 1; east_relation -= 1; reparations_negotiation -= 1; pacifism -= 1; nationalism += 4; left_dissent += 5
+
+Angesichts der involvierten Militärgeheimnisse schreitet das Verfahren nur langsam voran und eine Entscheidung ist vorerst nicht zu erwarten. Die Reichswehr begrüßt unsere Loyalität. Allerdings hat die Angelegenheit bei den Westmächten Misstrauen gegenüber unserem wiedererstarkenden Militarismus geweckt und zudem den linken Parteiflügel verärgert.
+
+@pressure_drop
+view-if: spd_in_government and justice_minister_party != "SPD"
+on-arrival: weltbuhne_dropped = 1; dvp_relation -= 5; nationalism += 3*(1-dissent); coalition_dissent += 1; coalition_dissent += 1 if in_grand_coalition; reichswehr_loyalty -= 0.1; coup_progress += 1; west_relation += 1; east_relation += 1; reparations_negotiation += 1
+
+Wir haben das Justizministerium unter Druck gesetzt, das Verfahren gegen die „Weltbühne“ einzustellen, und damit die Spannungen innerhalb unserer Koalition verschärft.
+
+Die Westmächte und alle Länder, die sich durch den deutschen Militarismus bedroht fühlen, begrüßen es, dass wir ein Kapitel unserer Geschichte abgeschlossen haben.
+Die Reichswehr hingegen missbilligt die Einstellung des Verfahrens.
+
+@nothing
+view-if: not spd_in_government
+on-arrival: weltbuhne_dropped = 0; west_relation -= 1; east_relation -= 1; reparations_negotiation -= 1; pacifism -= 1; nationalism += 4
+
+Angesichts der involvierten Militärgeheimnisse schreitet der Fall nur langsam voran und eine Entscheidung ist vorerst nicht zu erwarten. Die Angelegenheit hat jedoch bei den Westmächten Misstrauen gegenüber unserem wiedererstarkenden Militarismus geweckt.

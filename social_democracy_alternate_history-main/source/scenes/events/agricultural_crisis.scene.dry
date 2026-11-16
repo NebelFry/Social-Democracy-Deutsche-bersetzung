@@ -1,0 +1,22 @@
+title: Agraraufstand
+subtitle: Kleinbauern begehren wegen Schulden und Steuern auf...
+view-if: ((year = 1929 and month >= 1)) and spd_in_government
+max-visits: 1
+on-arrival: agricultural_crisis_seen = 1
+new-page: true
+# tags: event
+
+= Agraraufstand
+
+# TODO
+
+# Schleswig-Holstein Landvolk
+# sources: https://www.journals.uchicago.edu/doi/10.2307/2125668 
+# https://www.jstor.org/stable/1405576?seq=11 - Landvolk Revolt, centered in Schleswig-Holstein
+
+Die deutsche Bauernschaft beginnt, einen Krieg gegen die Regierung zu führen. Ausgehend von Schleswig-Holstein tritt die „Landvolkbewegung“ zunehmend dreist auf und verübt Sabotageakte.
+
+# options:
+# 1. There is nothing we can do.
+# 2. The Landvolk must be suppressed.
+# 3. Increase agricultural financing

@@ -1,0 +1,34 @@
+title: Untersuchung zur Kriegsschuld
+new-page: true
+is-card: true
+tags: govt_affairs
+on-arrival: war_guilt_timer = 6; month_actions += 1
+view-if: spd_in_government = 1 and war_guilt_timer = 0
+card-image: img/reichstag_1.jpg
+max-visits: 1
+
+= Reichstagsuntersuchung zur Kriegsschuldfrage
+
+Der Untersuchungsausschuss zur Kriegsschuldfrage ist ein Ausschuss des Reichstags, der die Ursachen des Weltkriegs und der deutschen Niederlage untersuchen sollte. Bislang stieß er auf massiven Widerstand seitens des militärischen Establishments, bis hinauf zu Reichspräsident Hindenburg.
+
+- @restart: Untersuchung neustarten.
+- @root: Nichts tun.
+- @easy_discard
+- @cancel_advisor_action
+
+@restart
+on-arrival: war_guilt += 1
+
+Was ist das Ziel dieses Tribunals?
+
+- @pure_history: Um eine historische Aufzeichnung der Kriegsereignisse zu liefern.
+- @rewrite: Die populären deutschen Geschichtsdarstellungen zu revidieren und die „Dolchstoßlegende“ endgültig zu Grabe zu tragen.
+
+@pure_history
+
+Die Geschichte wird zusammengetragen, so wie es schon immer der Fall war.
+
+@rewrite
+on-arrival: pacifism += 1; nationalism -= 5*(1-dissent); pro_republic += 5*(1-dissent); coup_progress += 1
+
+Die Zerschlagung des „Dolchstoßlegende“ würde – abgesehen von der längst fälligen Richtigstellung der historischen Fakten – erheblich dazu beitragen, den Ruf unserer Partei zu verbessern. Genau deshalb würde sich das militärische Establishment auf Schritt und Tritt dagegen zur Wehr setzen.

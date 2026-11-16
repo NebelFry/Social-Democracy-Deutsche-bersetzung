@@ -1,0 +1,34 @@
+title: Der Hungerkanzler
+subtitle: Die Unzufriedenheit in der Bevölkerung mit Kanzler [+ chancellor +] wächst.
+new-page: true
+view-if: year >= 1931 and month >= 2 and unemployed >= 18 and welfare < 0 and works_program == 0
+on-arrival: workers_spd *= 0.9 if chancellor_party == "SPD"; workers_spd *= 0.9 if spd_in_government == 1; workers_nsdap += 5 if spd_in_government; workers_kpd += 5 if spd_in_government; unemployed_nsdap += 5 if spd_in_government
+tags: event
+max-visits: 1
+face-image: img/Kollwitz_Hospital.jpg
+
+= Der Hungerkanzler
+
+Die Menschen bezeichnen Kanzler [+ chancellor +] aufgrund seiner als gefühllos empfundenen Haltung angesichts der Wirtschaftskrise als „Hungerkanzler“. [? if chancellor_party == "SPD" or spd_in_government : Das ist offensichtlich ein sehr schlechtes Zeichen für uns. ?]
+
+[? if spd_toleration == 1 : Da wir die [+ chancellor +] Regierung derzeit tolerieren, könnte dies sehr wohl ein schlechtes Licht auf uns werfen. ?]
+
+- @maintain_toleration: Behalten wir die derzeitige Regierung bei.
+- @break_toleration: Brechen wir mit der Duldung; stimmt gegen die Regierung.
+
+@maintain_toleration
+subtitle: Es ist notwendig, die Demokratie zu bewahren.
+view-if: spd_toleration == 1
+on-arrival: workers_nsdap += 5; workers_kpd += 5; unemployed_nsdap += 5; workers_spd -= 5; pro_republic -= 5; kpd_relation -= 5
+
+Unsere Politik der Tolerierung wird fortgesetzt.
+
+
+@break_toleration
+subtitle: Dies dürfte zu Neuwahlen führen.
+view-if: spd_toleration == 1
+on-arrival: next_election_time = time+3 if next_election_time >= time+3; next_election_month = month + 3 if next_election_time >= time+3; next_election_year = year if next_election_time >= time+3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; spd_in_government = 0; in_grand_coalition = 0; spd_toleration = 0;
+
+Wir haben endgültig mit der [+ chancellor +] Regierung gebrochen und bei einem Misstrauensvotum gegen sie gestimmt.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].

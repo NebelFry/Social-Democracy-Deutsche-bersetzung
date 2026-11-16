@@ -1,0 +1,8 @@
+title: Volksentscheid im Preußischen Landtag
+subtitle: Die Rechtsextremen [? if kpd_relation <= 30 and kpd_party_leader != "Conciliators" : und die KPD ?] hoffen, unsere Regierung in Preußen zu stürzen ...
+new-page: true
+view-if: (year = 1931 and month >= 8) and spd_prussia and pro_republic < 50 and (spd_votes + z_votes + ddp_votes < 42)
+max-visits: 1
+# tags: event
+
+# TODO

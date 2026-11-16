@@ -1,0 +1,53 @@
+title: Österreichische Zollunion
+subtitle: Das Außenministerium strebt engere Beziehungen zu Österreich an...
+new-page: true
+on-arrival: customs_union_seen = 1
+tags: event
+view-if: year = 1931 and month >= 3 and foreign_minister_party != "SPD" and foreign_minister_party != "KPD" and customs_union == 0 and not eu
+max-visits: 1
+
+# TODO: this should happen regardless of the current state of the government...
+
+= Österreichische Zollunion
+
+[? if spd_in_government: Der [+ foreign_minister_party +] DAußenminister hat einen Vorschlag für eine Zollunion mit Österreich. Wir können dieses Abkommen entweder annehmen oder ablehnen.. ?]
+[? if not spd_in_government: Die Regierung von Kanzler [+ chancellor +] hat einen Vorschlag für eine Zollunion mit Österreich. Höchstwahrscheinlich wird dies geschehen, ganz gleich, wie wir uns entscheiden. ?]
+
+
+Die nationalistische Rechte sehnt sich schon lange nach engeren Beziehungen zu Österreich, mit dem langfristigen Ziel einer Vereinigung der beiden deutschsprachigen Länder. Eine Zollunion mit Österreich ist der erste Schritt auf diesem Weg. Zudem sind viele der Ansicht, dass eine Union mit Österreich unsere derzeitige wirtschaftliche Lage verbessern würde.
+
+Die Alliierten, insbesondere Frankreich, dürften jedoch Einwände erheben. Dieses Abkommen würde gegen die Bestimmungen des Versailler Vertrags verstoßen und könnte zu Wirtschaftssanktionen führen, die unserer Wirtschaft weiter schaden würden.
+
+- @let_it_happen: Lass es geschehen.
+- @end_coalition: Beenden wir diese Vereinbarung!
+- @end_toleration: Versuchen wir, diese Regelung zu stoppen!
+
+@let_it_happen
+on-arrival: banking_crisis_timer = 2; customs_union = 1; west_relation -= 2; east_relation -= 2
+
+Die Zollunion wurde gebildet. Unverzüglich legten Frankreich und andere Nachbarländer Protest ein. Die längerfristige Reaktion bleibt abzuwarten.
+
+@end_coalition
+view-if: spd_in_government = 1
+on-arrival: coalition_dissent += 1; dvp_relation -= 5; z_relation -= 4; z_relation -= 3 if chancellor_party == "Z"; dvp_relation -= 3 if chancellor_party == "Z"
+
+Wir versuchen, unseren Koalitionspartnern den Ernst einer möglichen Reaktion der Alliierten vor Augen zu führen. Der Vorschlag ist vom Tisch, auch wenn DVP und Zentrum darüber nicht erfreut sind.
+
+
+@end_toleration
+view-if: spd_toleration = 1
+subtitle: Das ist schwierig; alle Parteien rechts der Mitte unterstützen diese Politik.
+go-to: end_toleration_success if spd_r + kpd_r + ddp_r >= 50; end_toleration_fail if spd_r + kpd_r + ddp_r < 50
+
+@end_toleration_success
+on-arrival: time_to_election = 3; spd_in_government = 0; in_grand_coalition = 0; spd_toleration = 0;
+call: set_next_election_time
+
+Mit der Unterstützung der KPD und [+ ddp_name +] haben wir die Bildung der Zollunion erfolgreich verhindert. Dies führt zum Sturz der Regierung [+ chancellor +].
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+@end_toleration_fail
+on-arrival: banking_crisis_timer = 2; customs_union = 1; west_relation -= 2; east_relation -= 2
+
+Leider haben sich die rechtsextremen Parteien mit der Regierung verbündet, um uns zu überstimmen. Die Zollunion wird gebildet werden.

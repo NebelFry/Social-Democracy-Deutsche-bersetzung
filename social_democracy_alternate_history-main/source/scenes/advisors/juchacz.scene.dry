@@ -1,0 +1,45 @@
+title: Marie Juchacz
+is-pinned-card: true
+tags: advisor, reformist
+card-image: img/portraits/JuchaczMarie.jpg
+view-if: juchacz_advisor = 1
+new-page: true 
+
+= Marie Juchacz
+
+Juchacz ist die Gründerin der Arbeiterwohlfahrt, unserer Selbsthilfeorganisation; ihre Erfahrungen als alleinerziehende Mutter in Armut führte sie zum Sozialismus. Sie ist die ranghöchste Frau in der SPD-Führung und gilt oft als erste Ansprechpartnerin, wenn die überwiegend männliche Führung nach der Stimme von Frauen sucht.
+
+- @emergency_fundraising
+- @welfare
+- @organizing_women
+- @root: Zurück
+
+@emergency_fundraising
+title: Notfallspendenaufruf
+subtitle: Eine Notfall-Zufuhr von Ressourcen.
+view-if: difficulty < 1
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; resources += dues
+
+Wir haben +[+ dues +] Ressourcen.
+
+@welfare
+title: Unterstützen wir die Arbeiterwohlfahrt, unsere Organisation für gegenseitige Hilfe.
+subtitle: -1 Ressourcen
+choose-if: resources > 0 and advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if resources < 0: Nicht genügend Ressourcen. ?]
+on-arrival: resources -= 1; workers_aid += 1; unemployed_spd += 5*(1 - dissent); workers_spd += 3*(1-dissent); workers_spd += 2*(1-dissent) if black_thursday_seen; advisor_action_timer = 6;
+
+Wir haben die Mittel für die Arbeiterwohlfahrt erhöht. [? if black_thursday_seen > 0 : In Zeiten der Wirtschaftskrise wird dies dazu beitragen, unser Ansehen bei den Arbeitslosen zu verbessern. ?]
+
+@organizing_women
+title: Frauen organisieren
+subtitle: Juchaczs Strategien richten sich an eher „traditionelle“ Frauen.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: womens_rights += 1; workers_spd += 4*(1-dissent); rural_spd += 3*(1-dissent); old_middle_spd += 3*(1-dissent); advisor_action_timer = 6
+
+Juchaczs Strategien zur Organisierung von Frauen richten sich an Hausfrauen aus der Arbeiterschaft und erkennen die traditionellen häuslichen Rollen der Frauen an. Wir argumentieren, dass unsere wirtschaftlichen Sozialprogramme die Lebensgrundlagen von Frauen und ihren Familien verbessern werden.
+
+[? if spd_r < 50 : Leider unterstützen Frauen nach wie vor überproportional die bürgerlichen Parteien. ?]

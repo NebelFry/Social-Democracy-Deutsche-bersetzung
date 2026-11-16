@@ -1,0 +1,97 @@
+title: Das preußische Bollwerk
+new-page: true
+is-card: true
+view-if: spd_prussia = 1 and prussian_affairs_timer <= 0
+on-arrival: prussian_affairs_timer += 6; month_actions += 1
+tags: govt_affairs
+card-image: img/braun.jpg
+#subtitle: Die preußische Staatsregierung ist ein Bollwerk der Demokratie...
+
+= Preußische Angelegenheiten
+
+Preußen, der bei weitem größte und bedeutendste deutsche Staat, wird von unserer Partei in einer Koalition mit der Zentrumspartei und den demokratischen Parteien regiert. Es handelt sich um die stabilste und demokratischste Landesregierung in Deutschland, angeführt vom fähigen Otto Braun.
+
+Wir können in Preußen politische Maßnahmen erlassen.
+
+- @police_loyalty: Loyalität der Polizei stärken.
+- @police_strength: Zusätzliche Polizeikräfte rekrutieren.
+- @bureaucracy: Die Bürokratie von reaktionären Elementen säubern.
+- @ban_sa: Verbot der SA, der paramilitärischen Gruppe der Nazis.
+- @unban_sa: Hebt das SA-Verbot auf.
+- @ban_rfb: Verbietet den RFB, die kommunistische paramilitärische Organisation.
+- @unban_rfb: Hebt das RFB-Verbot auf.
+- @ban_sh: Verbot des Stahlhelms, der nationalistischen Paramilitärs.
+- @unban_sh: Hebt das Stahlhelm-Verbot auf.
+- @negotiate_concordat: Ein Konkordat mit dem Vatikan aushandeln.
+- @sign_concordat: Unterzeichnet ein Konkordat mit dem Vatikan.
+- @root: Es sind keine neuen Richtlinien erforderlich.
+- @easy_discard
+- @cancel_advisor_action
+
+@police_loyalty
+view-if: prussian_police_loyalty < 1
+on-arrival: prussian_police_loyalty += 0.1
+
+# increase police loyalty
+Historisch gesehen war die Polizei von Reaktionären durchsetzt; wir versuchen, dies Schritt für Schritt zu ändern. Wir haben die Ausbildung und das Rekrutierungsverfahren verbessert, um ein breiteres demografisches Spektrum als das der traditionellen Konservativen anzusprechen und ihre politischen Aktivitäten stärker zu reglementieren. Zudem haben wir Ausschüsse eingerichtet, die die Polizeiränge überprüfen und Personen mit rechtsextremen Sympathien entfernen sollen. Es ist ein langsamer und mühsamer Prozess.
+
+Aktuelle Polizeiloyalität: [+ prussian_police_loyalty : loyalty +].
+
+@police_strength
+on-arrival: prussian_police_strength += 20
+
+Wir haben die Stärke der preußischen Polizei erhöht.
+
+@bureaucracy
+on-arrival: prussian_police_loyalty += 0.05; nationalism -= 5; pacifism += 1; democratization += 1; pro_republic += 3*(1-dissent); new_middle_spd += 2*(1-dissent) if democratization >= 3; new_middle_spd += 2*(1-dissent) if democratization >= 4; coup_progress += 0.5
+
+Die Bürokratie ist zutiefst reaktionär, und viele missbrauchen ihre Macht, um der politischen Rechten Vorschub zu leisten. Indem wir die monarchisten- und diktaturfreundlichen Elemente entfernen, können wir sie demokratisieren. Einige unserer Gegner behaupten, wir würden individuelle Freiheiten beschneiden, doch womöglich verlangt die Sicherheit der Republik genau dies.
+
+@ban_sa
+view-if: nazi_urgency >= 3 and sa_banned == 0
+on-arrival: sa_strength *= 0.9; sa_strength *= 0.75 if prussian_police_loyalty >= 0.75; sa_banned = 1; dvp_relation -= 3; prussian_police_loyalty -= 0.05; sa_militancy -= 0.05; sa_ban_timer = 6;
+
+Wie sich herausstellt, hat die Nazi-SA zahlreiche Verbündete bei Polizei und Bürokratie. Unser Verhältnis zur Polizei verschlechtert sich und die SA kann sich weiterhin illegal organisieren, direkt vor den Augen der Polizei. [? if prussian_police_loyalty >= 0.7 : Dennoch wird die SA durch unser Verbot erheblich geschwächt. ?] 
+
+@unban_sa
+view-if: sa_banned = 1
+on-arrival: sa_banned = 0; sa_strength += 100; sa_militancy += 0.05
+
+Die SA ist nicht mehr verboten. Sofort startet sie eine massive Anwerbeoffensive.
+
+@ban_sh
+on-arrival: sh_strength *= 0.85; sh_strength *= 0.7 if prussian_police_loyalty >= 0.75; sh_banned = 1; dvp_relation -= 5; prussian_police_loyalty -= 0.1; coalition_dissent += 1 if spd_in_government = 1 and in_grand_coalition = 1 and president = "Hindenburg"; sh_ban_timer = 6;
+view-if: sh_banned == 0
+
+[? if president == "Hindenburg": Ein Verbot des Stahlhelms schwächt unsere Beziehungen zu Präsident Hindenburg sowie zur politischen Rechten und zur Polizei. ?][? if president != "Hindenburg": Ein Verbot des Stahlhelms schwächt unsere Beziehungen zur politischen Rechten und zur Polizei. ?] [? if spd_in_government = 1 and in_grand_coalition = 1 and president = "Hindenburg" : Es schwächt auch unsere Koalition aufgrund des Einflusses Hindenburgs auf den rechten Flügel unseres Bündnisses. ?] Darüber hinaus agiert der Stahlhelm weiterhin abseits der Öffentlichkeit.
+
+@unban_sh
+view-if: sh_banned = 1
+on-arrival: sh_banned = 0; sh_strength += 100
+
+Der Stahlhelm ist nicht länger verboten.
+
+
+@ban_rfb
+view-if: communist_coalition < 3 and rfb_banned = 0
+on-arrival: kpd_relation -= 15; rfb_strength -= 50; rfb_banned = 1; communist_coalition -= 1; z_relation += 5; dvp_relation += 5; prussian_police_loyalty += 0.1
+
+Das Verbot wird von der Polizei mit Eifer durchgesetzt – vielleicht sogar mit allzu großem Eifer. Für die Kommunisten ist dies ein weiterer Beleg dafür, dass die Sozialisten Verräter an der Linken sind. Die gemäßigten Parteien sowie jene der politischen Mitte und der Rechten begrüßen die Maßnahme hingegen, ebenso wie die Polizei.
+
+@unban_rfb
+view-if: rfb_banned = 1
+on-arrival: rfb_banned = 0; rfb_strength += 50; prussian_police_loyalty -= 0.1
+
+Der kommunistische RFB ist nicht länger verboten.
+
+@negotiate_concordat
+view-if: prussian_concordat_progress < 1
+on-arrival: prussian_concordat_progress += 1; z_relation += 2*(1-dissent);
+
+Wir machen Fortschritte bei den Verhandlungen über ein Konkordat zwischen Preußen und der katholischen Kirche.
+
+@sign_concordat
+view-if: prussian_concordat_progress >= 1 and prussian_concordat = 0
+on-arrival: prussian_concordat = 1; z_relation += 5; catholics_spd += 3*(1-dissent)
+
+Wir haben ein Konkordat zwischen dem Freistaat Preußen und der römisch-katholischen Kirche unterzeichnet, das den Katholiken in Preußen Religionsfreiheit garantiert. Dies schafft die Grundlage für die Aushandlung eines Reichskonkordats, das ganz Deutschland umfasst.

@@ -1,0 +1,39 @@
+title: Briand-Kellog-Pakt
+new-page: true
+subtitle: Ein internationaler Friedensvertrag
+view-if: year = 1928 and (month = 8 or month = 9)
+max-visits: 1
+on-arrival: kellogg_briand_seen = 1; kellogg_briand_signed = 1 if foreign_minister_party = "DVP"
+tags: event
+#face-image: img/portraits/StresemannGustav.jpg
+
+= Briand-Kellog-Pakt
+
+Es wurde ein internationaler Vertrag ausgehandelt, der ein Ende des Krieges verspricht. Das von dem amerikanischen Außenminister Frank Kellogg und dem französischen Außenminister Aristide Briand ausgehandelte Abkommen sieht vor, dass die Unterzeichnerstaaten auf Krieg als Mittel verzichten und zusagen, ihre Streitigkeiten auf friedlichem Wege beizulegen. Staaten aus der ganzen Welt bekunden ihre Bereitschaft, dieses idealistische Abkommen zu unterzeichnen. Kritiker wenden jedoch ein, dass es keinen Mechanismus zur Durchsetzung der Bestimmungen enthalte und somit lediglich ein wertloses Stück Papier sei.
+
+[? if foreign_minister_party = "DVP": Unser Außenminister Gustav Stresemann hat den Vertrag unterzeichnet. Die Reaktion ist im Allgemeinen verhalten, sowohl Pazifisten als auch Militaristen stehen der Wirksamkeit des Vertrags skeptisch gegenüber. ?]
+
+- @sign_treaty: Außenminister Breitscheid wird den Vertrag natürlich unterzeichnen.
+- @step_forward
+- @not_enough
+
+@sign_treaty
+view-if: spd_in_government and foreign_minister_party = "SPD"
+on-arrival: kellogg_briand_signed = 1
+
+Außenminister Breitscheid wird den Vertrag selbstverständlich unterzeichnen. Die Reaktion ist im Allgemeinen verhalten, sowohl Pazifisten als auch Militaristen stehen der Wirksamkeit des Vertrags skeptisch gegenüber.
+
+- @step_forward
+- @not_enough
+
+@step_forward
+view-if: kellogg_briand_signed
+title: Der Vertrag ist ein Schritt vorwärts zum Frieden.
+
+Trotz unserer Bedenken hinsichtlich des Vertrags stellt er dennoch einen Fortschritt für die Sache des internationalen Friedens dar.
+
+@not_enough
+view-if: kellogg_briand_signed
+title: Der Vertrag reicht nicht aus.
+
+Trotz des dem Vertrag zugrunde liegenden Idealismus ist er unzureichend, um sein Ziel – die Verhinderung von Kriegen – zu erreichen. Es bedarf eines Durchsetzungsmechanismus, etwa automatischer Handelssanktionen oder einer vom Völkerbund kontrollierten Eingreiftruppe. In seiner gegenwärtigen Form sind der Völkerbund und dieser Vertrag zahnlos.

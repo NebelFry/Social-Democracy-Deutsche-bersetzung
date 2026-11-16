@@ -1,0 +1,82 @@
+title: Medien
+new-page: true
+is-card: true
+tags: party_affairs
+view-if: media_timer <= 0
+on-arrival: month_actions += 1; media_timer += 6;
+card-image: img/sangerbund.jpg
+#subtitle: Die Richtung für unsere Zeitungen und unseren Rundfunk vorgeben.
+
+= Medien
+
+Die SPD betreibt ein regelrechtes Medienimperium mit zahlreichen Zeitungen in allen deutschen Städten und Regionen. Wir könnten diese Medien für verschiedene Zwecke nutzen...
+
+- @commercial
+- @campaign
+- @ideological
+- @radio
+- @radio_2
+- @radio_3
+- @radio_4
+- @return: Wir sollten im Moment nichts mit Medien machen.
+- @easy_discard
+- @cancel_advisor_action
+
+@commercial
+title: Machen Sie unsere Zeitungen stärker kommerziell ausgerichtet, indem Sie ihren Anziehungskreis über die Parteianhänger hinaus erweitern.
+subtitle: Das mag ideologische Puristen verärgern, könnte aber mehr Mittel einbringen und womöglich die Mittelschicht mit sozialistischen Ansichten vertraut machen.
+on-arrival: resources += 1; commercialized_media += 1; new_middle_spd += 4*(1 - dissent); old_middle_spd += 3*(1-dissent); left_dissent += 10; labor_dissent += 10
+
+Unsere kommerzialisierten Zeitungen sind in der Lage, mehr Mittel einzubringen. Allerdings äußern die linken und gewerkschaftlichen Gruppierungen ihren Unmut.
+
+@campaign
+title: Der Zweck unserer Medien besteht darin, mehr Sozialdemokraten zu wählen.
+subtitle: Unsere Zeitungen werden sich auf den Wahlkampf konzentrieren.
+on-arrival: campaign_media += 1; workers_spd += 4*(1 - dissent); unemployed_spd += 2*(1-dissent);
+
+Unsere Kampagnen erreichen vor allem Arbeiter, die bereits mit sozialistischer Propaganda gesättigt sind; doch irgendeine Wirkung müssen sie wohl haben – zumindest hoffen wir das.
+
+@ideological
+title: Wir werden lebhafte ideologische Debatten in unseren Zeitungen führen.
+subtitle: Es wird Raum für alle Gruppierungen geben, ihre Ansichten zu äußern.
+on-arrival: left_dissent -= 6; labor_dissent -= 6; center_dissent -= 6; reformist_dissent -= 6; neorevisionist_dissent -= 6
+
+Dies war historisch gesehen unser Kurs in der Medienarbeit und er hat die zahlreichen Spannungen in unserer Partei erfolgreich überdeckt.
+
+@radio
+title: Warum nicht einen Radiosender finanzieren?
+subtitle: -2 Ressourcen
+choose-if: resources >= 2
+unavailable-subtitle: Nicht genügend Ressourcen.
+view-if: radio = 0
+on-arrival: radio += 1; resources -= 2; new_middle_spd += 4*(1 - dissent); old_middle_spd += 3*(1 - dissent); workers_spd += 2*(1 - dissent); labor_dissent += 5; socialism += 3*(1 - dissent); nationalism -= 3*(1 - dissent) if pacifism > 1; pro_republic += 3*(1-dissent) if democratization > 1
+
+Unser neuer Radiosender ermöglicht es uns, in einem persönlicheren Rahmen als bisher mit Menschen in Kontakt zu treten und die Botschaft des Sozialismus – verbunden mit Musik und anderen beliebten Inhalten – zu verbreiten. Da sich die meisten Proletarier derzeit kein Familienradio leisten können, erreichen wir vor allem die Mittelschicht – eine Tatsache, der sich unsere Genossen aus der Arbeiterschaft schmerzlich bewusst sind.
+
+@radio_2
+title: Wir müssen unser Funknetz weiter ausbauen.
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+view-if: radio > 0 and radio <= 3
+on-arrival: radio += 1; resources -= 1; new_middle_spd += 5*(1 - dissent); old_middle_spd += 3*(1 - dissent); workers_spd += 3*(1 - dissent); socialism += 3*(1 - dissent); nationalism -= 3*(1 - dissent)*(pacifism-2) if pacifism > 2; pro_republic += 3*(1-dissent)*(democratization-2) if democratization > 2
+
+Unser neues Radionetzwerk bietet eine Mischung aus Unterhaltungs- und Politiksendungen und erweist sich als Erfolg.
+
+@radio_3
+title: Wir müssen unser Funknetz weiter ausbauen.
+subtitle: Es ist inzwischen finanziell eigenständig und benötigt keine weiteren Ressourcen mehr.
+view-if: radio > 3 and radio <= 5 and year <= 1931
+on-arrival: radio += 1; new_middle_spd += 5*(1 - dissent); old_middle_spd += 4*(1 - dissent); workers_spd += 4*(1 - dissent); rural_spd += 3*(1 - dissent); unemployed_spd += 2*(1-dissent); socialism += 3*(1 - dissent); nationalism -= 3*(1 - dissent)*(pacifism-2) if pacifism > 2; pro_republic += 3*(1-dissent)*(democratization-2) if democratization > 2
+
+Unser Radionetzwerk hat sich zu einem erfolgreichen Instrument zur Verbreitung unserer Botschaft entwickelt.
+
+@radio_4
+title: Wir sollten unser Funknetzwerk weiterhin unterstützen.
+subtitle: As radio becomes more common, the novelty is beginning to wear off, and radio is becoming saturated in society. -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+view-if: radio > 3 and (radio >= 6 or year >= 1932) and radio <= 9
+on-arrival: radio += 1; resources -= 1; new_middle_spd += 3*(1 - dissent); old_middle_spd += 2*(1 - dissent); workers_spd += 3*(1 - dissent); rural_spd += 2*(1 - dissent); unemployed_spd += 2*(1-dissent); socialism += 2*(1 - dissent); nationalism -= 2*(1 - dissent)*(pacifism-2) if pacifism > 2; pro_republic += 2*(1-dissent)*(democratization-2) if democratization > 2
+
+Wir investieren weiterhin in unsere Radiosender. Sowohl kommerzielles als auch politisches Radio werden immer beliebter, was es schwieriger macht, unsere Botschaft im Wettbewerb zu verbreiten.

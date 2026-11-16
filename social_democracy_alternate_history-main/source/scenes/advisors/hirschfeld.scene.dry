@@ -1,0 +1,44 @@
+title: Magnus Hirschfeld
+is-pinned-card: true
+tags: advisor
+card-image: img/portraits/HirschfeldMagnus.jpg
+view-if: hirschfeld_advisor = 1
+new-page: true 
+
+= Magnus Hirschfeld
+
+Magnus Hirschfeld ist der Gründer des Instituts für Sexualwissenschaft und ein Vorkämpfer für die Rechte sexueller Minderheiten.
+
+
+- @homosexual_rights_
+- @womens_rights_
+- @science_funding
+- @root: Zurück
+
+
+@homosexual_rights_
+title: Homosexuellen Rechte
+subtitle: Setzt politische Maßnahmen, die die Rechte von Homosexuellen stärken um.
+choose-if: advisor_action_timer = 0 and spd_in_government and progressive_coalition >= 50
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government : Die SPD ist derzeit nicht an der Regierung beteiligt. ?][? if progressive_coalition < 50 : Wir verfügen nicht über die Stimmen, um diese politischen Maßnahmen zu verabschieden. ?]
+on-arrival: advisor_action_timer = 6; homosexual_rights_timer -= 11; last_advisor_action = 1
+go-to: homosexual_rights
+
+
+@womens_rights_
+title: Frauenrechte
+subtitle: Setzt politische Maßnahmen zu Frauenrechten um.
+choose-if: advisor_action_timer = 0 and spd_in_government
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government : Die SPD ist derzeit nicht an der Regierung beteiligt. ?]
+on-arrival: advisor_action_timer = 6; womens_rights_timer -= 10; last_advisor_action = 1
+go-to: womens_rights
+
+@science_funding
+title: Wissenschaftsförderung
+subtitle: Erhöht die Finanzierung für wissenschaftliche Forschung.
+choose-if: advisor_action_timer = 0 and spd_in_government and economic_minister_party = "SPD" and chancellor_party = "SPD"
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if not spd_in_government : Die SPD ist derzeit nicht an der Regierung beteiligt. ?][? if economic_minister_party != "SPD": Dies erfordert das Wirtschaftsministerium. ?][? if chancellor_party != "SPD": Der Kanzler muss Mitglied der SPD sein. ?]
+on-arrival: advisor_action_timer = 6; last_advisor_action = 1
+go-to: education_science.increase_science
+
+

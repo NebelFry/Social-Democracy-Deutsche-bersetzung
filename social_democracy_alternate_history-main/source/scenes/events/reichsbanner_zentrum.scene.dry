@@ -1,0 +1,34 @@
+title: Austritt aus dem Reichsbanner
+subtitle: Aufgrund seiner Militarisierung verlassen die Zentrumspartei und [+ ddp_name +] das Reichsbanner.
+view-if: rb_militancy >= 0.2 and not rb_exit and not rb_stay
+new-page: true
+tags: event
+
+= Austritt aus dem Reichsbanner
+
+Das Reichsbanner hat sich in jüngster Zeit zunehmend militarisiert – erkennbar an der massiven Aufrüstung, paramilitärischer Ausbildung und dem Zustrom radikalisierter SPD-Mitglieder. Als Reaktion darauf drohen Mitglieder, die den anderen Weimarer Parteien – dem Zentrum und der [+ ddp_name +] – nahestehen, mit dem endgültigen Austritt. Sie hatten sich einer Massenbewegung zur Verteidigung der Republik angeschlossen, nicht einer sozialistischen Miliz.
+
+- @let_go: Lasst die Zentristen und Liberalen gehen.
+- @lower_militancy: Wir müssen die Militanz des Reichsbanners verringern.
+- @keep_them: Können wir sie davon überzeugen, dass ein kämpferisches Reichsbanner zur Verteidigung der Republik notwendig ist?
+
+@let_go
+on-arrival: rb_strength *= 0.9; z_relation -= 5; ddp_relation -= 5; rb_exit = 1; left_strength += 5*(1-dissent)
+
+Wir sind zu der Einschätzung gelangt, dass die Militanz des Reichsbanners wichtiger ist als die Aufrechterhaltung einer Koalition mit der Zentrumspartei und der [+ ddp_name +]. Die diesen Parteien nahestehenden Reichsbanner-Mitglieder treten aus, während der linke Flügel der SPD gestärkt wird.
+
+# TODO: this should make it harder to form Weimar coalitions
+
+
+@lower_militancy
+on-arrival: rb_militancy *= 0.5
+
+Wir geben den Forderungen der anderen Parteien nach und reduzieren die militärische Ausbildung des Reichsbanners, um es so zum Bleiben zu bewegen.
+
+
+@keep_them
+unavailable-subtitle: Sie lassen sich derzeit nicht überzeugen.
+choose-if: strife >= 5 and (z_relation >= 50 or (z_party_leader == "Joos" and z_relation >= 30)) and ddp_relation >= 50
+on-arrival: rb_stay = 1
+
+Angesichts der Unruhen, die Deutschlands Straßen beherrschen, scheinen die Zentrumspartei und [+ ddp_name +] von der Notwendigkeit einer Militarisierung des Reichsbanners überzeugt zu sein und werden die Organisation nicht verlassen.

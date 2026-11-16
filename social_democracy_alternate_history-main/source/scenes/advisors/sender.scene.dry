@@ -1,0 +1,56 @@
+title: Toni Sender
+is-pinned-card: true
+tags: advisor, left
+card-image: img/portraits/SenderToni.jpg
+view-if: sender_advisor = 1
+new-page: true 
+
+= Toni Sender
+
+Toni Sender ist eine Organisatorin und Schriftstellerin, die aus einer bürgerlichen Familie stammt, sich aber nach ihren Erfahrungen in der Arbeitswelt dem Sozialismus zuwandte. Sie gehörte der kriegsgegnerischen USPD an, befürwortet jedoch keine bewaffnete Revolution.
+
+- @left_unity
+- @organizing_women
+- @against_toleration
+- @crisis
+- @root: Zurück
+
+@left_unity
+title: Zentrum-Links Einheit
+subtitle: Fördert die Zusammenarbeit zwischen dem linken Flügel und den Zentristen der Partei.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; left_dissent -= 10; labor_dissent -= 5; center_dissent -= 10; reformist_dissent -= 10; neorevisionist_dissent -= 5
+
+Wir haben die Unzufriedenheit zwischen den Fraktionen der Partei verringert.
+
+@organizing_women
+title: Frauen organisieren
+subtitle: Senders Strategien richten sich an junge berufstätige Frauen.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: womens_rights += 1; workers_spd += 3*(1-dissent); new_middle_spd += 5*(1-dissent); advisor_action_timer = 6
+
+Die Botschaft Senders kommt bei jungen Frauen im Dienstleistungssektor gut an und wir haben viele Angestellte gewonnen.
+
+[? if spd_r < 50 : Leider unterstützen Frauen nach wie vor überproportional die bürgerlichen Parteien. ?]
+
+@against_toleration
+title: Gegen Tolerierung
+view-if: not constructive_vonc
+subtitle: Beenden wir unsere derzeitige Tolerierungsvereinbarung und stürzen Sie die Regierung durch ein Misstrauensvotum.
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?] [? if spd_toleration == 0 : Die SPD befindet sich derzeit nicht in einem Tolerierungsverhältnis. ?]
+choose-if: advisor_action_timer == 0 and spd_toleration
+on-arrival: advisor_action_timer = 6; next_election_time = time + 3 if next_election_time > time+3; next_election_month = month + 3 if next_election_time >= time + 3; next_election_year = year if next_election_time >= time + 3; next_election_year += 1 if next_election_month > 12; next_election_month -= 12 if next_election_month > 12; spd_toleration = 0; left_strength += 8; pro_republic -= 4; new_middle_spd -= 3; rural_spd -= 3; old_middle_spd -= 3; catholics_spd -= 3; reformist_dissent += 8
+
+Wir sind der Last der Tolerierung überdrüssig geworden und haben ein Misstrauensvotum gegen die derzeitige Minderheitsregierung beantragt.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+@crisis
+title: Bewältigung der Wirtschaftskrise
+subtitle: Sender kann dabei helfen, ein linkes Wirtschaftsprogramm zu unterstützen.
+choose-if: advisor_action_timer <= 0 and nationalization_adopted == 0 and black_thursday_seen == 1 and nationalization_support <= 3
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?][? if black_thursday_seen == 0 : Wir befinden uns derzeit nicht in einer Wirtschaftskrise. ?][? if nationalization_adopted > 0 : Wir haben den Plan der Linken bereits übernommen. ?]
+on-arrival: advisor_action_timer = 6;
+go-to: crisis_program.support_left

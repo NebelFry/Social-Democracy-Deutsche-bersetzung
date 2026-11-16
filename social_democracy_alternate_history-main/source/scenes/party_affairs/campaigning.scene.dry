@@ -1,0 +1,70 @@
+title: Wahlkampf
+new-page: true
+on-arrival: month_actions += 1
+max-visits: 36
+is-card: true
+card-image: img/flags.jpg
+frequency: 100
+tags: party_affairs
+
+= Wahlkampf
+
+Unabhängig davon, ob gerade Wahlkampf herrscht oder nicht, ist die Partei stets bestrebt, ihre Wählerbasis zu erweitern. Auf wen sollten wir unsere Wahlkampfbemühungen konzentrieren?
+
+- @workers: Die städtische Arbeiterklasse, unsere traditionelle Unterstützerbasis.
+- @new_middle: Der neue Mittelstand aus Beamten und Angestellten.
+- @old_middle: Der alte Mittelstand aus kleinen selbstständigen Gewerbebetrieben und Handwerkern.
+- @rural: Landarbeiter und Kleinbauern, die sich von uns in der Vergangenheit vernachlässigt gefühlt haben.
+- @unemployed: Die Arbeitslosen.
+- @catholics: Katholiken, die typischerweise die Zentrumspartei unterstützen.
+- @root: Wir wollen oder können im Moment keinen Wahlkampf führen.
+- @easy_discard
+
+@workers
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+on-arrival: workers_spd += 6*(1-dissent); workers_spd -= 2 if unemployed >= 15; workers_spd -= 2 if unemployed >= 25; workers_spd += 6*(1-dissent) if wtb_adopted = 1; resources -= 1; workers_spd += 3*(1-dissent) if nationalization_progress >= 1;
+
+Wir haben unseren Wahlkampf unter den Arbeitern intensiviert. [? if unemployed >= 15: Die hohe Arbeitslosigkeit erschwert unsere Kampagne. ?][? if wtb_adopted = 1 : Die Übernahme des WTB-Plans bietet uns einen neuen Sammelpunkt, um Arbeiter zu gewinnen. ?]
+
+@new_middle
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+on-arrival: new_middle_spd += 6*(1-dissent); new_middle_spd -= 4 if socialism <= 49 and peoples_party == 0; resources -= 1; peoples_party_support += 1;
+
+Wir haben unseren Wahlkampf unter dem neuen Mittelstand intensiviert. [? if socialism <= 49 and peoples_party == 0: Die in dieser Gruppe verbreitete Abneigung gegen den Sozialismus erschwert unsere Kampagne. ?] [? if peoples_party > 0: Als Volkspartei fällt es uns leichter als zuvor, die Unterstützung im Mittelstand zu steigern. ?]
+
+@old_middle
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+on-arrival: old_middle_spd += 5*(1-dissent); resources -= 1; old_middle_spd -= 3 if nationalism >= 51 and peoples_party == 0; peoples_party_support += 1
+
+Wir haben unseren Wahlkampf unter dem alten Mittelstand intensiviert. [? if nationalism >= 51 and peoples_party == 0: Der ausgeprägte Nationalismus in dieser Gruppe erschwert unsere Kampagne. ?] [? if peoples_party > 0: Als Volkspartei fällt es uns leichter als zuvor, die Unterstützung im Mittelstand zu steigern. ?]
+
+@rural
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+on-arrival: rural_spd += 5*(1-dissent); rural_spd -= 3*(1-dissent) if peoples_party == 0; resources -= 1; peoples_party_support += 1; rural_spd += 3*(1-dissent) if rural_policy >= 2
+
+Wir haben unseren Wahlkampf unter den Bauern intensiviert. [? if peoples_party == 0: We Wir haben in der Vergangenheit nicht viel Wahlkampf unter Landwirten betrieben und sie vertrauen uns nicht. ?][? if peoples_party > 0: Als Volkspartei fällt es uns leichter als zuvor, die Unterstützung bei den Landwirten zu steigern. ?][? if rural_policy >= 2 : Unsere Politik für den ländlichen Raum hat es uns erleichtert, Unterstützung bei den Landwirten zu gewinnen. ?]
+
+@unemployed
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+on-arrival: unemployed_spd += 6*(1-dissent); resources -= 1; unemployed_spd -= 3 if welfare < 0; unemployed_spd += 6*(1-dissent) if wtb_adopted = 1; unemployed_spd += 3*(1-dissent) if welfare >= 2;
+
+Wir haben unseren Wahlkampf unter den Arbeitslosen intensiviert. [? if welfare < 0: Die Sozialkürzungen und die daraus resultierende Armut erschweren unsere Kampagne, da wir mit der Regierung in Verbindung gebracht werden, die diese Kürzungen beschlossen hat und unsere Kampagne könnte nach hinten losgehen. ?][? if wtb_adopted = 1 : Die Übernahme des WTB-Plans bietet uns einen neuen Sammelpunkt, um Unterstützung bei den Arbeitslosen zu gewinnen. ?]
+
+@catholics
+subtitle: -1 Ressourcen
+choose-if: resources >= 1
+unavailable-subtitle: Nicht genügend Ressourcen.
+view-if: peoples_party == 1
+on-arrival: catholics_spd += 6*(1-dissent); resources -= 1
+
+Wir haben unseren Wahlkampf unter den Katholiken intensiviert.

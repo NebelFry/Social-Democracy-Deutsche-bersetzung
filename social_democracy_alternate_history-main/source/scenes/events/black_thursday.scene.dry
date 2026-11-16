@@ -1,0 +1,25 @@
+title: Schwarzer Donnerstag
+subtitle: Der große Börsencrash...
+new-page: true
+on-arrival: black_thursday_seen = 1; workers_kpd += 5; workers_nsdap += 3; new_middle_nsdap += 4; old_middle_nsdap += 5; rural_nsdap += 5; unemployed_nsdap += 5; unemployed += 2; budget -= 1 if budget > 0; dues -= 1 if dues > 2; inflation -= 1; economic_growth -= 1;
+tags: event
+view-if: year = 1929 and month >= 10
+max-visits: 1
+face-image: img/bankrun.jpg
+
+= Schwarzer Donnerstag
+
+Der amerikanische Aktienmarkt hat den größten Börsencrash seiner Geschichte erlebt. Es ist noch zu früh, um abzusehen, welche internationalen Auswirkungen dies haben wird, doch gut können sie nicht sein. Unsere Wirtschaft spürt die Folgen bereits: Die Arbeitslosigkeit wird weiter steigen, und die Löhne werden sinken. Wie immer ist es die Krise der Kapitalisten und die Last der Arbeiter.
+
+
+- @cap: Es liegt in der Natur des Kapitalismus ...
+- @do_something: Wir müssen etwas tun, um das Leid zu stoppen...
+
+@cap
+
+Vielleicht ist dies einfach eine der periodischen Krisen des Kapitalismus. Vielleicht wird dieser Moment einfach vorübergehen.
+
+@do_something
+on-arrival: crisis_urgency += 1
+
+Was können wir tun, um das Leid der Arbeiter zu lindern? Diese Frage wird zunehmend hitzig debattiert.

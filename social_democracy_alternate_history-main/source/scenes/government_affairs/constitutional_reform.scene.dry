@@ -1,0 +1,135 @@
+title: Verfassungsreform
+new-page: true
+is-card: true
+view-if: spd_in_government = 1 and justice_minister_party = "SPD" and constitutional_reform_timer = 0 and judicial_reform >= 4 and neorevisionism and ((in_weimar_coalition) or (in_spd_majority) or (in_left_front) or (in_popular_front)) and constitutional_reform < 3
+frequency: 25
+on-arrival: month_actions += 1; constitutional_reform_timer += 12; pass_threshold = 0.51; pass_threshold = 0.6 if pro_republic < 65;
+card-image: img/portraits/RadbruchGustav.jpg
+go-to: reforms_menu
+tags: govt_affairs, cabinet
+#subtitle: Major changes to government.
+
+# technically you could do some trickery to get a 2/3 quorum in the Reichstag by stopping some people from attending... if the NSDAP is boycotting the Reichstag, or if the NSDAP or DNVP are banned in the aftermath of a coup atempt...
+
+# alternatively, a constitutional referendum can be initiated, that requires a simple majority of voters to pass (as I understand article 76). This should depend on support for the republic and for democracy, and the relationships with the other parties (more similar to the presidential election).
+
+= Verfassungsreform
+
+# the ideas for constitutional reform here are based on the bundesrepublik basic law... I'm not sure if it's totally realistic to what someone like Mierendorff would've wanted.
+
+Viele Neorevisionisten halten die Weimarer Verfassung für unzureichend. Sie sind der Ansicht, dass die Bestimmungen der Verfassung eine Mitschuld an der Instabilität des Landes tragen und geändert werden müssen, um eine stabilere demokratische Republik aufzubauen. Ideen sowohl von Sozialisten als auch von Liberalen.
+
+Eine Verfassungsreform erfordert entweder eine Zweidrittelmehrheit im Reichstag oder ein Verfassungsreferendum mit der Unterstützung einer Mehrheit der Wählerschaft. Verfügen wir im Reichstag nicht über eine solche Mehrheit, müssen wir uns der starken Unterstützung der anderen Parteien für das Verfassungsreferendum gewiss sein.
+
+@reforms_menu
+
+- @vote_threshold: Abstimmungsschwelle ändern.
+- @constructive_vonc: Nicht-konstruktive Misstrauensvoten verbieten.
+- @presidential_powers: Befugnisse des Präsidenten beschränken.
+- @as_is: Keine Verfassungsform verfolgen.
+- @easy_discard
+- @cancel_advisor_action
+#- @constitutional_bans: Verbot verfassungsfeindlicher Parteien ermöglichen.
+
+@vote_threshold
+subtitle: Stimmenhürde für den Einzug von Parteien in den Reichstag auf 5 % anheben.
+on-arrival: {!
+Q.reform_support = Q.spd_normalized;
+if (Q.z_relation > 30) {
+    Q.reform_support += Q.z_normalized - 0.03;
+}
+if (Q.kpd_relation > 50 && Q.kpd_normalized >= 0.1) {
+    Q.reform_support += Q.kpd_normalized;
+}
+if (Q.nsdap_normalized >= 0.2 ) {
+    Q.reform_support += Q.nsdap_normalized;
+}
+!}
+view-if: electoral_threshold = 0
+
+# The left is opposed to this.
+
+Einige politische Denker sind der Ansicht, dass die Zersplitterung in zahlreiche Kleinparteien für die Instabilität der Republik verantwortlich ist. Sie glauben, dass eine höhere Wahlhürde den Einfluss kleiner radikaler Parteien verringern würde. Parteien, die in einem Wahlkreis die meisten Stimmen auf sich vereinen, behalten ihre Vertretung bei – ein Vorteil für Regionalparteien wie die BVP.
+
+Die kleineren Parteien werden sich offensichtlich gegen diese Reform aussprechen. [? if z_relation > 30 : Die Zentrumspartei unterstützt diese Reform, während ihre Partner von der BVP sie ablehnen. ?] [? if kpd_relation > 50 and kpd_normalized >= 0.1 : Vielleicht überraschenderweise unterstützt die KPD diese Reform. ?] [? if nsdap_normalized >= 0.2 : Die NSDAP unterstützt diese Reform, da sie glaubt, davon profitieren zu können. ?]
+
+Der linke Flügel der SPD lehnt diese Änderung ab, da er sie für undemokratisch hält.
+
+- @vote_threshold_2: Fordert ein Verfassungsreferendum zur Verabschiedung der Reform!
+- @reforms_menu: Weitere Reformoptionen ansehen.
+
+
+@vote_threshold_2
+choose-if: reform_support >= pass_threshold
+unavailable-subtitle: Wir haben nicht genügend Unterstützung für diese Maßnahme. [? if pro_republic < 65 : Wir sollten beim Referendum einen zusätzlichen Puffer einplanen, da wir eine Mehrheit der Wähler benötigen und viele Wähler, die die Republik nicht unterstützen, sich nicht beteiligen werden. ?] [? if z_relation <= 30 : Die Zentrumspartei vertraut uns nicht genug, um diese Politik zu unterstützen. ?]
+on-arrival: constitutional_reform += 1; electoral_threshold = 5; ddp_relation -= 25; dvp_relation -= 25; left_dissent += 20; workers_dnvp += workers_other*0.4; workers_nsdap += workers_other*0.4; workers_other *= 0.1; new_middle_dvp += new_middle_other*0.3; new_middle_nsdap += new_middle_other*0.3; new_middle_other *= 0.1; old_middle_dvp += 0.3*old_middle_other; old_middle_nsdap += 0.3*old_middle_other; old_middle_dnvp += 0.3*old_middle_other; old_middle_other *= 0.1; rural_dnvp += 0.5*rural_other; rural_nsdap += 0.4*rural_other; rural_other *= 0.1; unemployed_nsdap += 0.3*unemployed_other; unemployed_kpd += 0.4*unemployed_other; unemployed_other *= 0.2; catholics_z += 0.6*catholics_other; catholics_other *= 0.1;
+achievement: verfassungsreform
+
+# this should result in a redistribution of votes - other parties should not get so many votes anymore. maybe ddp and dvp get a recovery of middle-class votes? or maybe they flow to the others.
+
+Wir haben eine Verfassungsänderung verabschiedet, um die Wahlhürde auf 5 % anzuheben. Dies dürfte den größeren Parteien zugutekommen und den kleineren schaden.
+
+
+
+@constructive_vonc
+subtitle: Misstrauensvoten können nur dann beantragt werden, wenn ein alternativer Plan zur Regierungsbildung verabschiedet werden kann, was ihre Häufigkeit erheblich verringert.
+on-arrival: {!
+Q.reform_support = Q.spd_normalized + Q.ddp_normalized;
+if (Q.z_relation >= 30) {
+    Q.reform_support += Q.z_normalized - 0.03;
+}
+if (!Q.stresemann_dead) {
+    Q.reform_support += Q.dvp_normalized;
+}
+!}
+view-if: constructive_vonc = 0
+
+[? if z_relation >= 30 : Die Parteien der Weimarer Koalition, die [+ ddp_name +] und die Zentrumspartei, unterstützen diese Reform, die die Stabilität der Regierung erheblich verbessern wird. ?] [? if z_relation < 30 : Die [+ ddp_name +] unterstützt diese Reform, aber die Zentrumspartei vertraut uns nicht genug, um das Verfassungsreferendum zu unterstützen. ?] Die konservativen und rechtsradikalen Parteien sowie die KPD befinden sich in der Opposition, da sie sich offenbar an der Instabilität des republikanischen Systems ergötzen.
+
+- @constructive_vonc_2: Fordert ein Verfassungsreferendum zur Verabschiedung der Reform!
+- @reforms_menu: Weitere Reformoptionen ansehen.
+
+@constructive_vonc_2
+choose-if: reform_support >= pass_threshold
+unavailable-subtitle: Wir haben nicht genügend Unterstützung für diese Maßnahme. [? if pro_republic < 65 : Wir sollten beim Referendum einen zusätzlichen Puffer einplanen, da wir eine Mehrheit der Wähler benötigen und viele Wähler, die die Republik nicht unterstützen, sich nicht beteiligen werden. ?] [? if z_relation <= 30 : Die Zentrumspartei vertraut uns nicht genug, um diese Politik zu unterstützen. ?]
+on-arrival: constitutional_reform += 1; constructive_vonc = 1
+achievement: verfassungsreform
+
+Wir haben erfolgreich eine Verfassungsänderung verabschiedet, die Misstrauensvoten für den Fall untersagt, dass keine neue Regierung gebildet werden kann. Dies erhöht hoffentlich die Stabilität unserer Regierungen.
+
+@presidential_powers
+subtitle: Der Präsident kann den Reichstag nicht mehr nach Belieben auflösen oder eine Reichsexekution gegen Landesregierungen anordnen.
+on-arrival: {!
+Q.reform_support = Q.spd_normalized + Q.ddp_normalized + Q.kpd_normalized;
+if (Q.z_relation > 49 && (Q.president == "Hindenburg" || Q.president == "Eckener")) {
+    Q.reform_support += Q.z_normalized;
+} else if (Q.president == "Braun") {
+    Q.reform_support += Q.z_normalized - 0.03;
+}
+!}
+view-if: presidential_powers = 0
+
+Die in der Verfassung verankerten weitreichenden Befugnisse des Präsidenten bergen die Gefahr eines Abgleitens in den Autoritarismus. Daher können wir Reformen unterstützen, die die Macht des Präsidenten beschneiden und seine Befugnis beenden, eine gewählte Regierung einseitig abzusetzen sowie Landesregierungen zu entlassen.
+
+Die KPD befürwortet diese Reform, da sie in der Vergangenheit selbst Opfer der Reichsexekution geworden war (als von der KPD unterstützte Landesregierungen in Thüringen und Sachsen abgesetzt wurden). Auch die Demokraten der [+ ddp_name +] unterstützen dies. [? if president == "Hindenburg": Der Widerstand der Konservativen ist jedoch heftig, da sie eine Beschneidung der Befugnisse des Reichspräsidenten als respektlos gegenüber Hindenburg empfinden. ?] [? if z_relation <= 49 and president == "Hindenburg" : Folglich wurde die Zentrumspartei dazu bewegt, sich gegen diese Reformen auszusprechen. ?] [? if z_relation > 49 and president == "Hindenburg" : Dennoch unterstützt die Zentrumspartei die vorgeschlagene Reform. ?] [? if president == "Braun" : Die Zentrumspartei unterstützt diese Reform. ?]
+
+- @presidential_powers_2: Fordert ein Verfassungsreferendum zur Verabschiedung der Reform!
+- @reforms_menu: Weitere Reformoptionen ansehen.
+
+@presidential_powers_2
+choose-if: reform_support >= pass_threshold
+unavailable-subtitle: Wir haben nicht genügend Unterstützung für diese Maßnahme. [? if pro_republic < 65 : Wir sollten beim Referendum einen zusätzlichen Puffer einplanen, da wir eine Mehrheit der Wähler benötigen und viele Wähler, die die Republik nicht unterstützen, sich nicht beteiligen werden. ?] [? if z_relation <= 49 and president != "Braun" : Die Zentrumspartei vertraut uns nicht genug, um diese Politik zu unterstützen. ?]
+on-arrival: constitutional_reform += 1; presidential_powers = 1
+achievement: verfassungsreform
+
+Wir haben erfolgreich eine Verfassungsänderung zur Begrenzung der Befugnisse des Präsidenten verabschiedet! Hoffentlich führt dies zu einem weniger autoritären Deutschland.
+
+
+
+@constitutional_bans
+
+# Temporarily disable this for now - how would this interact with the already-extant law for the protection of the republic? This 
+
+
+@as_is
+go-to: root

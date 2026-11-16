@@ -1,0 +1,86 @@
+title: Untersuchung inländischer Feinde
+on-arrival: month_actions += 1
+view-if: spd_in_government = 1 and interior_minister_party = "SPD"
+#card-image: img/portraits/SeveringCarl.jpg
+#is-card: true
+#new-page: true
+
+# this is not a card...
+
+= Untersuchung inländischer Feinde
+
+Da wir die Kontrolle über das Innenministerium haben, können wir Polizei und Geheimdienste anweisen, gegen innere Feinde zu ermitteln. Wir können verschiedene Organisationen verbieten.
+
+- @deport_hitler
+- @ban_sa: Verbietet die SA.
+- @unban_sa: Erlaubt die SA.
+- @persecute_sa
+- @ban_sh: Verbietet den Stahlhelm.
+- @unban_sh: Erlaubt den Stahlhelm.
+- @persecute_sh
+- @ban_rfb: Verbietet den kommunistischen RFB.
+- @unban_rfb: Erlaubt den RFB.
+- @persecute_rfb
+- @root: Vorerst keine Schritte unternehmen.
+
+@ban_sa
+view-if: nazi_urgency >= 3 and sa_banned == 0
+on-arrival: sa_strength *= 0.85; sa_strength *= 0.7 if interior_police_loyalty >= 0.7; sa_banned = 1; dvp_relation -= 3; prussian_police_loyalty -= 0.05; interior_police_loyalty -= 0.05; sa_militancy -= 0.05; sa_ban_timer = 6;
+
+Wie sich herausstellt, hat die Nazi-SA viele Verbündete in der Polizei und der Bürokratie. Unser Verhältnis zur Polizei wird schwächer, und die SA kann sich immer noch illegal organisieren, direkt vor der Nase der Polizei. [? if interior_police_loyalty >= 0.7 : Dennoch wird die SA durch unser Verbot erheblich geschwächt. ?]
+
+@unban_sa
+view-if: sa_banned = 1
+on-arrival: sa_banned = 0; sa_strength += 100; sa_militancy += 0.05
+
+Die SA ist nicht mehr verboten. Sofort startet sie eine massive Anwerbeoffensive.
+
+@persecute_sa
+title: Die SA weiter verfolgen.
+view-if: sa_banned = 1
+choose-if: judicial_reform >= 3 and interior_police_loyalty >= 0.7
+unavailable-subtitle: [? if judicial_reform < 3 : Die Justiz würde dies nicht zulassen. ?] [? if interior_police_loyalty < 0.7 : Die Polizei ist zu illoyal, als dass man ihr dies anvertrauen könnte. ?]
+on-arrival: sa_strength *= 0.7; sa_militancy -= 0.05
+
+Wir haben weitere Anführer der SA festgenommen und ihre Waffen beschlagnahmt.
+
+@ban_sh
+on-arrival: sh_strength *= 0.85; sh_strength *= 0.7 if interior_police_loyalty >= 0.7; sh_banned = 1; dvp_relation -= 5; prussian_police_loyalty -= 0.1; interior_police_loyalty -= 0.05; coalition_dissent += 1 if spd_in_government = 1 and in_grand_coalition = 1 and president = "Hindenburg"; sh_ban_timer = 6;
+view-if: sh_banned == 0
+
+[? if president == "Hindenburg": Ein Verbot des Stahlhelms schwächt unsere Beziehungen zu Präsident Hindenburg sowie zur politischen Rechten und zur Polizei. ?][? if president != "Hindenburg": Ein Verbot des Stahlhelms schwächt unsere Beziehungen zur politischen Rechten und zur Polizei. ?] [? if spd_in_government = 1 and in_grand_coalition = 1 and president = "Hindenburg" : Es schwächt auch unsere Koalition aufgrund des Einflusses Hindenburgs auf den rechten Flügel unseres Bündnisses. ?] Darüber hinaus agiert der Stahlhelm weiterhin abseits der Öffentlichkeit.
+
+@unban_sh
+view-if: sh_banned = 1
+on-arrival: sh_banned = 0; sh_strength += 100
+
+Der Stahlhelm ist nicht mehr verboten.
+
+@persecute_sh
+title: Den Stahlhelm weiter verfolgen.
+view-if: sh_banned = 1
+choose-if: judicial_reform >= 4 and interior_police_loyalty >= 0.7
+unavailable-subtitle: [? if judicial_reform < 4 : The judiciary would not allow this. ?] [? if interior_police_loyalty < 0.7 : The police are too disloyal to be trusted with this. ?]
+on-arrival: sh_strength *= 0.7; sh_militancy -= 0.05; dvp_relation -= 5; prussian_police_loyalty -= 0.1; interior_police_loyalty -= 0.05; coalition_dissent += 1 if spd_in_government = 1 and in_grand_coalition = 1 and president = "Hindenburg";
+
+Wir haben weitere Anführer des Stahlhelms festgenommen und ihre Waffen beschlagnahmt.
+
+
+@ban_rfb
+view-if: communist_coalition < 3 and rfb_banned = 0
+on-arrival: kpd_relation -= 15; rfb_strength -= 50; rfb_banned = 1; communist_coalition -= 1; z_relation += 5; dvp_relation += 5; prussian_police_loyalty += 0.1; interior_police_loyalty += 0.1; kpd_coalition_dissent += 2; coalition_dissent -= 1 if coalition_dissent > 0 and n_rfb_banned = 0; n_rfb_banned += 1
+
+Das Verbot wird von der Polizei mit Eifer durchgesetzt – vielleicht sogar mit allzu großem Eifer. Für die Kommunisten ist dies ein weiterer Beleg dafür, dass die Sozialisten Verräter an der Linken sind. Die gemäßigten Parteien sowie jene der politischen Mitte und der Rechten begrüßen die Maßnahme hingegen, ebenso wie die Polizei.
+
+@unban_rfb
+view-if: rfb_banned = 1
+on-arrival: rfb_banned = 0; kpd_relation += 5; rfb_strength += 50; prussian_police_loyalty -= 0.05; interior_police_loyalty -= 0.05
+
+Der kommunistische RFB ist nicht mehr verboten.
+
+@persecute_rfb
+title: Den RFB weiter verfolgen.
+view-if: rfb_banned = 1
+on-arrival: rfb_strength *= 0.7; rfb_militancy -= 0.05; kpd_relation -= 10; kpd_coalition_dissent += 1; z_relation += 5; dvp_relation += 5; prussian_police_loyalty += 0.1; interior_police_loyalty += 0.1; coalition_dissent -= 1 if coalition_dissent > 0 and n_rfb_persecuted = 0; n_rfb_persecuted += 1
+
+Wir haben weitere Anführer der RFB festgenommen und ihre Waffen beschlagnahmt.

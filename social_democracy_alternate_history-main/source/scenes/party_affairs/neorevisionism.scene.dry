@@ -1,0 +1,32 @@
+title: Neorevisionismus: eine neue Idee
+new-page: true
+is-card: true
+card-image: img/portraits/MierendorffCarlo.jpg
+view-if: nazi_urgency > 0 and neorevisionism == 0 and (nsdap_r >= 10 or nsdap_normalized >= 0.15)
+on-arrival: shuffle_leadership_timer = 0;
+tags: party_affairs
+frequency: 400
+max-visits: 1
+
+= Neorevisionismus: eine neue Idee
+
+Mehrere junge Sozialisten unter der Führung von Carlo Mierendorff fordern als Reaktion auf die nationalsozialistische Bedrohung einen „neuen Revisionismus“. Diese politische Strömung plädiert für eine Massenbewegung zugunsten der Demokratie, um den nationalsozialistischen und kommunistischen Bewegungen entgegenzutreten sowie Rhetorik und Bildsprache zu modernisieren, damit nicht nur der Verstand, sondern auch die Emotionen angesprochen werden.
+
+#- @shuffle_leadership: Es ist an der Zeit, unsere Berater auszutauschen, um neuen Ideen auszuprobieren.
+- @support_neo: Unterstützen Sie die neorevisionistische Bewegung.
+- @no_new_ideas: Wir brauchen keine neuen Ideen.
+- @easy_discard
+
+@support_neo
+on-arrival: neorevisionist_strength += 10; nazi_urgency += 1; neorevisionism = 1; peoples_party_support += 1
+
+Wir unterstützen die neuen Führungskräfte und beginnen, in unseren Kampagnen Propagandatechniken neuer Art einzusetzen. Die Ergebnisse sind bislang ungewiss ...
+
+- @shuffle_leadership: Wir sollten diese Gelegenheit nutzen, um die Parteiführung auszuwechseln.
+- @root: Weitermachen...
+
+
+@no_new_ideas
+on-arrival: neorevisionist_strength -= 5; center_strength += 5; neorevisionism = -1
+
+Wir brauchen diese neuen Ideen nicht; sie scheinen jene der Nazis und Kommunisten allzu sehr nachzuahmen.

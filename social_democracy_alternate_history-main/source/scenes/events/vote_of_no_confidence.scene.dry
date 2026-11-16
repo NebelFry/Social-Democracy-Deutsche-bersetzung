@@ -1,0 +1,101 @@
+title: Die Rechte beantragt ein Misstrauensvotum gegen die amtierende Regierung!
+subtitle: Wir haben unsere Koalitionspartner zu sehr verärgert...
+new-page: true
+on-arrival: tried_supporting_kpd = 0
+view-if: spd_in_government = 1 and ((in_grand_coalition = 1 or in_popular_front = 1 or in_minority_government = 1) and coalition_dissent >= 3) or (in_weimar_coalition = 1 and coalition_dissent >= 4) and spd_r < 50 and not constructive_vonc
+tags: event
+go-to: vonc_menu
+
+# Options: spend relations to reduce coalition_dissent, ask for kpd to abstain
+# (lmao KPD toleration arc...)
+
+= Misstrauensvotum
+
+[? if in_grand_coalition : Die DVP ?][? if in_weimar_coalition or in_popular_front or in_minority_government: Die Zentrumspartei ?] hat aufgrund unserer verschiedenen politischen Maßnahmen und Meinungsverschiedenheiten ein Misstrauensvotum gegen uns beantragt. Sollte dieses erfolgreich sein, wird es in einigen Monaten Neuwahlen geben.
+
+@vonc_menu
+
+- @try_assuage: Versuchen wir, unsere Partner zu beruhigen.
+- @support_kpd: Könnten wir die KPD dazu bringen, sich der Stimme zu enthalten?
+- @let_it_happen: Lassen wir die Abstimmung stattfinden.
+
+@try_assuage
+
+Wie beruhigen wir unsere Partner?
+
+- @give_up_prussia: Geben wir die Führung Preußens auf.
+- @austerity: Setzen wir einen massiven Sparplan um.
+- @resources: Nutzen wir unsere Ressourcen, um Meinungsverschiedenheiten innerhalb der Koalition zu verringern.
+- @support_kpd: Könnten wir die KPD dazu bringen, sich der Stimme zu enthalten?
+- @let_it_happen: Schon gut. Lasst die Abstimmung stattfinden.
+
+@give_up_prussia
+view-if: spd_prussia == 1
+on-arrival: coalition_dissent = 0; spd_prussia = 0; prussian_government = "I"; reformist_dissent += 10; centrist_dissent += 10; labor_dissent += 10; left_dissent += 5; workers_spd -= 5; rural_spd -= 5; 
+
+Gut. Wir kontrollieren die Regierung von Preußen nicht mehr. Die Abstimmung wurde abgesagt.
+
+@austerity
+view-if: welfare >= 0 and not secularized
+on-arrival: coalition_dissent = 0; workers_spd -= 10; unemployed_spd -= 10; workers_kpd += 7; workers_nsdap += 3; unemployed_kpd += 5; unemployed_nsdap += 5; left_dissent += 15; center_dissent += 10; labor_dissent += 15; reformist_dissent += 5; welfare -= 2; budget += 1; unemployed += 3; kpd_coalition_dissent += 1; kpd_relation -= 10 if in_popular_front
+
+Gut. Wir haben ein massives Sparprogramm zur Kürzung von Sozialleistungen aufgelegt, um die Stabilität unserer Koalition zu wahren. Die Abstimmung wurde abgesagt.
+
+@resources
+view-if: secularized = 0
+choose-if: resources >= 3
+unavailable-subtitle: Wir haben nicht genügend Ressourcen.
+subtitle: -3 Ressourcen
+on-arrival: resources -= 3; coalition_dissent -= 1;
+
+Durch die Übertragung von Ressourcen an unsere Koalitionspartner können wir deren Widerstand gegen unsere Politik verringern. Dies ist eine plumpe, aber wirksame Lösung.
+
+@support_kpd
+choose-if: (in_grand_coalition and communist_coalition >= 3 and kpd_relation >= 50 and kpd_r >= dvp_r) or (in_weimar_coalition and kpd_relation >= 50 and kpd_r >= z_r and communist_coalition >= 3)
+view-if: tried_supporting_kpd = 0
+on-arrival: tried_supporting_kpd = 1
+unavailable-subtitle: [? if communist_coalition < 3 : Die KPD wird sich nicht an einer parlamentarischen Regierung beteiligen. ?] [? if kpd_relation < 50 : Die KPD ist uns gegenüber nicht freundlich genug. ?] [? if (in_grand_coalition and kpd_r < dvp_r) or (in_weimar_coalition and kpd_r < z_r): Die KPD hat nicht genügend Stimmen. ?] [? if in_popular_front : Wir befinden uns bereits in einer Volksfront mit der KPD. ?]
+
+Wenn sich die Kommunisten enthalten, können wir im Grunde eine Minderheitsregierung aufrechterhalten[? if president=="Hindenburg":, wenngleich es sehr schwierig wäre, Politik ohne die Unterstützung von Reichspräsident Hindenburg zu gestalten, eine Unterstützung, über die wir nicht verfügen ?]. Sollte dies geschehen, werden wir tief in der Schuld der KPD stehen. Dies könnte, im Guten wie im Schlechten zu einer umfassenderen Zusammenarbeit in der Zukunft führen.
+
+- @support_kpd_2: Die KPD dazu bewegen, uns zu „tolerieren“?
+- @let_it_happen: Schon gut. Lasst die Abstimmung stattfinden.
+
+@support_kpd_2
+on-arrival: communist_coalition += 1; workers_kpd += 3; kpd_relation += 5
+go-to: support_kpd_weimar if in_weimar_coalition; support_kpd_grand if in_grand_coalition
+
+# TODO: this can form an infinite loop
+
+Die KPD ist an einer Tolerierungsvereinbarung nicht interessiert, sie wird uns nur unterstützen, wenn sie als Teil einer Koalition an der Regierung beteiligt ist. Und sollte es zu einer solchen Tolerierungsvereinbarung kommen, wären die rechten Parteien nicht geneigt, uns zu unterstützen.
+
+@support_kpd_grand
+
+- @election_1928.popular_front_coalition: Eine „Volksfront“-Koalition bilden?
+- @election_1928.left_coalition
+- @try_assuage: Schon gut. Wir müssen das auf andere Weise regeln.
+
+@support_kpd_weimar
+
+- @election_1928.left_coalition
+- @try_assuage: Schon gut. Wir müssen das auf andere Weise regeln.
+
+
+@let_it_happen
+call: set_next_election_time
+on-arrival: time_to_election = 3; spd_in_government = 0; in_grand_coalition = 0; in_weimar_coalition = 0; in_popular_front = 0; spd_toleration = 0; foreign_minister_party = "DVP"; interior_minister_party = "Z"; justice_minister_party = "I"; labor_minister_party = "Z"; reichswehr_minister_party = "I"; economic_minister_party = ddp_name; finance_minister_party = "DVP"; agriculture_minister_party = "Z"; labor_minister = "Stegerwald"; interior_minister = "Wirth"; finance_minister = "Moldenhauer"; economic_minister = "Curtius"; justice_minister = "Koch-Weser"; foreign_minister = "Stresemann"; agriculture_minister = "Dietrich"; reichswehr_minister = "Groener";  coalition_dissent = 0; pro_republic -= 5; old_middle_spd -= 3; new_middle_spd -= 2; workers_spd -= 3 if pro_republic < 50; workers_spd -= 4 if pro_republic < 40; old_middle_nsdap += 4 if pro_republic < 50; new_middle_nsdap += 3 if pro_republic < 50
+go-to: let_it_happen_hindenburg if president != "Braun"; let_it_happen_braun if president == "Braun"
+
+@let_it_happen_hindenburg
+on-arrival: chancellor = "Brüning"; chancellor_party = "Z"; welfare -= 2;
+
+Die Abstimmung ist erfolgreich und unsere Regierung ist zurückgetreten. Reichskanzler Brüning wurde zum Leiter einer geschäftsführenden Regierung ernannt, die sich ausschließlich aus den bürgerlichen Parteien zusammensetzt. Er geht umgehend daran, die Sozialausgaben drastisch zu kürzen.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].
+
+@let_it_happen_braun
+on-arrival: spd_caretaker = 1
+
+Die Abstimmung war erfolgreich, und unsere Regierung ist zurückgetreten. Kanzler [+ chancellor +] bleibt als Regierungschef einer Übergangsregierung im Amt, verfügt jedoch nicht mehr über die Befugnis, neue politische Maßnahmen zu erlassen.
+
+Neuwahlen wurden angesetzt für den [+ next_election_month : month +] [+ next_election_year +].

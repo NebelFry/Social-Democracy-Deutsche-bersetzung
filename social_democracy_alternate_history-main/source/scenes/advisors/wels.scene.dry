@@ -1,0 +1,61 @@
+title: Otto Wels
+is-pinned-card: true
+tags: advisor, centrist
+card-image: img/portraits/WelsOtto.jpg
+view-if: wels_advisor = 1
+new-page: true
+
+= Otto Wels
+
+Wels ist der langjährige Vorsitzende der SPD. Er ist ein begabter Organisator und gehört dem gemäßigten Flügel an.
+
+- @clear_agenda
+- @party_discipline
+- @emergency_fundraising
+- @snap_election
+- @root: Zurück
+
+@clear_agenda
+title: Hand leeren
+subtitle: Entfernt alle Karten von der Hand.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: {!
+Q.advisor_action_timer = 6;
+if (Q.difficulty >= 0) {
+    window.dendryUI.dendryEngine.state.currentHands['main'] = [];
+} else {
+    window.dendryUI.dendryEngine.state.currentHands['main.main_easy'] = [];
+}
+!}
+
+Alle Karten wurden von der Hand entfernt.
+
+@party_discipline
+title: Parteidisziplin
+subtitle: Verringert die Unzufriedenheit innerhalb der Partei.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; left_dissent -= 5; labor_dissent -= 10; center_dissent -= 10; reformist_dissent -= 10; neorevisionist_dissent -= 5
+
+Wir haben die Fraktionsdisziplin durchgesetzt, um die Unzufriedenheit innerhalb aller Fraktionen zu verringern.
+
+@emergency_fundraising
+title: Notfallspendenaufruf
+view-if: difficulty < 1
+subtitle: Eine Notfall-Zufuhr von Ressourcen.
+choose-if: advisor_action_timer = 0
+unavailable-subtitle: [? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+on-arrival: advisor_action_timer = 6; resources += dues
+
+Wir haben +[+ dues +] Ressourcen.
+
+@snap_election
+title: Vorgezogene Neuwahl
+subtitle: Call a snap election.
+unavailable-subtitle: [? if chancellor != "Wels" : Wels muss Kanzler oder Präsident sein. ?][? if advisor_action_timer > 0 : [+ advisor_action_timer +] Monate bis zur nächsten Berateraktion. ?]
+choose-if: advisor_action_timer == 0 and (chancellor == "Wels")
+on-arrival: advisor_action_timer = 6; time_to_election = 3
+call: set_next_election_time
+
+Wir haben Neuwahlen gefordert, die angesetzt sind für [+ next_election_month : month +] [+ next_election_year +].

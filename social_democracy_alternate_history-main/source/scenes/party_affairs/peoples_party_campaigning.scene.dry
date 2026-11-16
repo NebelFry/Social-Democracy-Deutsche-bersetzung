@@ -1,0 +1,50 @@
+title: Wahlkampf (Volkspartei)
+
+# basically, we can campaign as part of the people's party...
+
+- @campaign_workers
+- @campaign_middle
+- @campaign_rural
+- @campaign_unemployed
+- @campaign_women
+- @campaign_catholics
+
+@campaign_workers
+title: Werben wir unter den Arbeitern dafür, ihre Zweifel an unseren Veränderungen auszuräumen.
+on-arrival: workers_spd += 5*(1-dissent);
+
+Die Arbeiterschaft ist nach wie vor ein wesentlicher Teil unserer Wählerschaft und wir dürfen sie im Zuge der Transformation unserer Partei nicht vor den Kopf zu stoßen.
+
+@campaign_middle
+title: Wahlkampf im Mittelstand.
+on-arrival: old_middle_spd += 5*(1-dissent); new_middle_spd += 5*(1-dissent)
+
+Als Volkspartei vertreten wir die Arbeitnehmer und Kleinunternehmer des Mittelstands, und diese zeigen sich zunehmend empfänglich für unsere Botschaften.
+
+@campaign_rural
+title: Wahlkampf in ländlichen Gebieten.
+choose-if: rural_policy > 0
+unavailable-subtitle: Wir haben noch keine ländlichen politischen Maßnahmen erlassen.
+on-arrival: rural_spd += 6*(1-dissent)
+
+Als Volkspartei vertreten wir auch Landwirte und Landarbeiter und diese zeigen sich zunehmend offen für unsere Botschaften.
+
+@campaign_unemployed
+title: Wahlkampf unter Arbeitslosen.
+on-arrival: unemployed_spd += 5*(1-dissent);
+
+Als Volkspartei sind die städtischen Armen nach wie vor ein wesentlicher Teil unserer Wählerschaft.
+
+@campaign_women
+title: Wahlkampf unter Frauen aller Schichten.
+on-arrival: workers_spd += 3*(1-dissent); new_middle_spd += 3*(1-dissent); old_middle_spd += 3*(1-dissent); rural_spd += 3*(1-dissent); unemployed_spd += 3*(1-dissent);
+
+Als Volkspartei vertreten wir Frauen aller Schichten.
+
+@campaign_catholics
+title: Wahlkampf unter politisch engagierten Katholiken.
+on-arrival: catholics_spd += 5*(1-dissent);
+
+Katholiken sind seit jeher mit der Zentrumspartei verbunden, aber es gibt keinen Grund, warum unsere Partei sie nicht ansprechen sollte. Insbesondere das Preußische Konkordat ist ein Zeichen unserer Freundschaft zum Katholizismus.
+
+

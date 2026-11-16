@@ -1,0 +1,96 @@
+title: Londoner Wirtschaftskonferenz
+subtitle: Der Völkerbund schließt sich zusammen, um die Weltwirtschaftskrise zu bewältigen...
+view-if: year = 1933 and month >= 6
+on-arrival: london_economic_conference_seen = 1
+new-page: true
+max-visits: 1
+go-to: economic_recovery if unemployed < 15; no_recovery if unemployed >= 15
+tags: event
+
+= Londoner Wirtschaftskonferenz
+
+# TODO: if you've recovered, you get economic recovery
+# if you haven't recovered, you can either support Roosevelt or support the UK/France
+
+Der Völkerbund veranstaltet eine Konferenz, um den Zustand der Weltwirtschaft und mögliche Lösungen für die anhaltende Depression zu erörtern. Alle Beteiligten wollen die Zölle senken, um den Handel anzukurbeln. Die Westmächte sind jedoch in einer Sackgasse: Frankreich und in geringerem Maße Großbritannien fordern feste Wechselkurse, während US-Präsident Roosevelt neues Geld drucken lassen will, um die Nachfrage zu beleben und eine „kontrollierte Inflation“ anstrebt. Die Europäer wollen ihre Schulden gegenüber den USA reduzieren, wohingegen Amerika auf der fortgesetzten vollständigen Rückzahlung beharrt.
+
+@economic_recovery
+
+[? if wtb_adopted or budget <= 0: Deutschland hat sich weitgehend von der Krise erholt zu einem großen Teil dank genau jener Art von Wirtschaftspolitik, die auch Roosevelt verfolgt. ?]
+[? if not wtb_adopted and budget > 0: Deutschland hat sich weitgehend von der Krise erholt, ohne auf Haushaltsdefizite oder eine Währungsabwertung zurückgreifen zu müssen. ?]
+
+- @support_roosevelt
+- @support_france
+- @stable_currency_out_of_gov
+- @salvage
+- @no_business
+
+@no_recovery
+
+Deutschland steckt, wie der Rest der Welt, noch immer tief in der Wirtschaftskrise, auch wenn der Tiefpunkt scheinbar erreicht ist.
+
+- @support_roosevelt
+- @support_france
+- @stable_currency_out_of_gov
+- @salvage
+- @no_business
+
+
+@stable_currency_out_of_gov
+title: Deutsche Vertreter fordern gemeinsam mit Großbritannien und Frankreich eine stabile Währung.
+view-if: not spd_in_government
+on-arrival: west_relation += 1
+
+Wie erwartet unterstützen die konservativen deutschen Bankiers den Plan Großbritanniens und Frankreichs zur Stabilisierung der Wechselkurse. Als Reaktion auf das Festhalten an festen Wechselkursen und die festgefahrene Situation in der Schuldenfrage ziehen sich die Amerikaner aus der Konferenz zurück, sodass diese ohne jegliche Einigung endet.
+
+[? if unemployed >= 15 : Dennoch erholt sich die Weltwirtschaft langsam, was teilweise auf die Konjunkturmaßnahmen und die liberalere Handelspolitik der Roosevelt-Regierung zurückzuführen ist. ?]
+[? if unemployed < 15 : Dennoch erholt sich die Weltwirtschaft langsam, teils dank der Konjunkturmaßnahmen und der liberaleren Handelspolitik der Roosevelt-Regierung sowie unseres eigenen Wirtschaftsplans. ?]
+
+
+@support_roosevelt
+title: Unterstützen wir Roosevelts Ideen – wir müssen die Währung abwerten.
+view-if: spd_in_government
+
+
+Wir unterstützen Roosevelts Plan einer kontrollierten Inflation, womit wir in Konflikt mit den europäischen Mächten geraten. Angesichts des Festhaltens Frankreichs und Großbritanniens an festen Wechselkursen sowie der festgefahrenen Situation in der Schuldenfrage ziehen sich die Amerikaner aus der Konferenz zurück, sodass diese ohne jegliche Einigung endet.
+
+@support_france
+title: Unterstützen wir Frankreich und Großbritannien – wir brauchen eine stabile Währung.
+view-if: spd_in_government
+on-arrival: west_relation += 1; eu_progress += 1
+
+Unsere Position rückt uns näher an andere europäische Mächte heran. Als Reaktion auf das anhaltende Festhalten an festen Wechselkursen und die festgefahrene Situation in der Schuldenfrage ziehen sich die Amerikaner aus der Konferenz zurück, sodass diese ohne jegliche Einigung endet.
+
+
+@salvage
+title: Können wir versuchen, die Verhandlungen zu retten?
+view-if: spd_in_government
+
+Wie sollten wir versuchen, die Verhandlungen zu retten?
+
+- @salvage_currency: Versuchen wir, Frankreich und Großbritannien davon zu überzeugen, dass eine langsam verlaufende, kontrollierte Inflation möglich und wünschenswert ist.
+- @salvage_debts: Versuchen Sie, die USA davon zu überzeugen, die Kriegsschulden im Interesse des Friedens zu reduzieren.
+- @no_business: Es lässt sich nichts machen.
+
+@salvage_currency
+choose-if: woytinsky_advisor = 1 and wtb_implemented > 1
+unavailable-subtitle: Wladimir Woytinsky wäre im Moment äußerst hilfreich.
+on-arrival: unemployed -= 2 if unemployed >= 10; unemployed -= 1.5 if unemployed >= 5; inflation += 1.5; workers_spd += 4*(1-dissent); new_middle_spd += 3*(1-dissent); economic_growth += 1.5 if economic_growth < 3
+
+Wladimir Woytinsky, der nun unserer Konferenzdelegation angehört, nutzt die erfolgreiche Umsetzung des WTB-Plans als Argument für eine Lockerung der Währungsbewertung. Dieses Argument ist zumindest einigermaßen überzeugend; es kommt zu einer Einigung, die weltweit zu erhöhter Inflation und einer Stimulierung der Nachfrage führt.
+
+@salvage_debts
+choose-if: reparations <= -2 and pacifism >= 3 and (rearmament_exposed or west_relation >= 3)
+unavailable-subtitle: In unserer gegenwärtigen Lage können wir nicht für Pazifismus eintreten.
+on-arrival: budget += 1; unemployed -= 1 if unemployed >= 10; unemployed -= 1 if unemployed >= 5; inflation += 1 if inflation < 0; new_middle_spd += 4*(1-dissent); workers_spd += 3*(1-dissent); economic_growth += 1 if economic_growth < 3
+
+Wir versuchen zu argumentieren, dass die Reduzierung der Kriegsschulden das Risiko eines künftigen europäischen Krieges verringern wird und nutzen dabei unsere erfolgreiche Abrüstung und die Reduzierung der Versailler Reparationszahlungen als Argument. Das Argument überzeugte die Amerikaner zumindest einigermaßen und führte zu einer Vereinbarung zum Abbau der Schulden aus dem Ersten Weltkrieg. Dies verbessert indirekt auch unsere Wirtschaft.
+
+@no_business
+title: Diese Konferenz geht uns nichts an.
+view-if: spd_in_government
+
+Die Konferenz scheitert wie erwartet. Angesichts des anhaltenden Festhaltens an festen Wechselkursen und der festgefahrenen Situation in der Schuldenfrage ziehen sich die Amerikaner aus der Konferenz zurück, ohne dass auch nur eine einzige Einigung erzielt worden wäre.
+
+[? if unemployed >= 15 : Dennoch erholt sich die Weltwirtschaft langsam, was teilweise auf die Konjunkturmaßnahmen und die liberalere Handelspolitik der Roosevelt-Regierung zurückzuführen ist. ?]
+[? if unemployed < 15 : Dennoch bessert sich die Weltwirtschaft langsam, teils dank der Konjunkturmaßnahmen und der liberaleren Handelspolitik der Roosevelt-Regierung sowie unseres eigenen Wirtschaftsplans. ?]

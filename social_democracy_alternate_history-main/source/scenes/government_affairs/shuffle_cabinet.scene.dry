@@ -1,0 +1,36 @@
+title: Kabinett umbilden
+new-page: true
+is-card: true
+tags: govt_affairs, cabinet
+on-arrival: shuffle_cabinet_timer = 6;
+view-if: spd_in_government == 1 and shuffle_cabinet_timer == 0 and chancellor_party == "SPD" and not in_spd_majority and not in_emergency_government and not in_left_front
+card-image: img/muller_cabinet.jpg
+
+Wollen wir unser Kabinett umbilden? Das könnte unsere derzeitige Koalition verärgern.
+
+Aktuelles Kabinett:
+
+Arbeit: [+ labor_minister_party +]
+
+Inneres: [+ interior_minister_party +]
+
+Finanzen: [+ finance_minister_party +]
+
+Wirtschaft: [+ economic_minister_party +]
+
+Justiz: [+ justice_minister_party +]
+
+Außen: [+ foreign_minister_party +]
+
+Reichswehr: [+ reichswehr_minister_party +]
+
+Landwirtschaft: [+ agriculture_minister_party +]
+
+- @shuffle: Ja, macht es.
+- @root: Nein, das ist nicht nötig.
+- @easy_discard
+- @cancel_advisor_action
+
+@shuffle
+on-arrival: coalition_dissent += 1; month_actions += 1
+go-to: election_1928.ministries

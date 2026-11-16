@@ -1,0 +1,51 @@
+title: Panzerkreuzer A
+subtitle: Eine politische Frage
+tags: event, govt_affairs
+is-card: true
+on-arrival: panzerkreuzer_seen = 1
+face-image: img/panzerkreuzer.jpg
+view-if: panzerkreuzer_seen = 0 and year = 1928 and month >= 8 and reichswehr_minister_party != "SPD" and spd_in_government = 1
+new-page: true
+
+= Panzerkreuzer
+
+Das Reichswehrministerium fordert im Zuge der deutschen Aufrüstung den Bau eines neuen Schlachtkreuzers. Unsere Koalitionspartner unterstützen dieses Vorhaben geschlossen. Auch wenn sich viele unserer Mitglieder vehement gegen neue Militärausgaben aussprechen, könnte diese Abstimmung notwendig sein, um die Koalition zu erhalten. 
+Wir haben uns für Lebensmittel für Kinder statt für Schlachtkreuzer eingesetzt. Werden wir unsere Wahlversprechen wirklich brechen?
+
+- @vote_yes: Stimmen wir mit Ja für den Bau des Schlachtkreuzers.
+- @vote_no: Stimmen wir mit Nein gegen den Bau des Schlachtkreuzers.
+- @abstain: Sich der Stimme enthalten.
+
+@vote_yes
+on-arrival: left_dissent += 10; labor_dissent += 5; center_dissent += 5; reformist_dissent += 5; neorevisionist_dissent += 5; panzerkreuzer_funded = 1; kpd_coalition_dissent += 1; kpd_relation -= 6; workers_spd -= 3
+
+Unsere Parteibasis ist schockiert über unsere Unnachgiebigkeit! Zahlreiche Ortsverbände haben begonnen, Stimmung gegen das Kabinett zu machen und unsere Reichstagsabgeordneten planen sogar eine Abstimmung über den Vorschlag – entgegen dem Beschluss der Regierung.
+
+Die Kampagne gegen den Schlachtkreuzer scheitert; lediglich abweichlerische Mitglieder von SPD und KPD stimmen dagegen. Das Schiff wird gebaut.
+
+@vote_no
+on-arrival: dvp_relation -= 8; z_relation -= 5; pacifism += 1; nationalism -= 5*(1-dissent); coalition_dissent += 1
+go-to: vote_no_chancellor if chancellor_party = "SPD"; vote_no_pass if chancellor_party != "SPD"
+
+@vote_no_chancellor
+go-to: braun if chancellor = "Braun"; muller if chancellor = "Müller"
+
+@braun
+on-arrival: panzerkreuzer_funded = 0; nationalism -= 3*(1-dissent); panzerkreuzer_failed = 1; workers_spd += 5*(1-dissent);
+
+Unsere Koalitionspartner sind schockiert über unsere Unnachgiebigkeit! Bundeskanzler Braun gelingt es jedoch, unsere Kabinettsminister davon zu überzeugen, den Plan für eine Abstimmung über den Schlachtkreuzer fallen zu lassen. Das Schiff wird nicht gebaut!
+
+@muller
+on-arrival: panzerkreuzer_funded = 1
+
+Unsere Koalitionspartner sind über unsere Unnachgiebigkeit schockiert! Trotz der Ablehnung des Vorschlags durch Reichskanzler Müller bringen die anderen Parteien die Angelegenheit zur Abstimmung in den Reichstag; der Antrag wird mit Leichtigkeit angenommen, wobei lediglich SPD und KPD dagegen stimmen. Das Schiff wird gebaut.
+
+@vote_no_pass
+on-arrival: panzerkreuzer_funded = 1
+
+Unsere Koalitionspartner sind schockiert über unsere Unnachgiebigkeit! Reichskanzler [+ chancellor +] bringt die Angelegenheit zur Abstimmung in den Reichstag; der Beschluss wird mit den Stimmen aller Parteien außer SPD und KPD angenommen. Das Schiff wird gebaut.
+
+@abstain
+on-arrival: dvp_relation -= 5; z_relation -= 3; left_dissent += 5; labor_dissent += 5; panzerkreuzer_funded = 1; kpd_relation -= 3
+
+Unsere Koalitionspartner sind schockiert über unsere Unnachgiebigkeit! Trotz unserer Enthaltung kommt die Abstimmung im Reichstag durch; alle Parteien stimmen dafür, mit Ausnahme von SPD und KPD. Das Schiff wird gebaut.
